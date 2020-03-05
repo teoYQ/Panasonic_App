@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:panasonic_v1/login_page.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -45,6 +46,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       // Validate will return true if is valid, or false if invalid.
                       if (form.validate()) {
                         print("$_email $_password");
+                        Navigator.push(context,
+                        MaterialPageRoute(builder:(context)=> LoginPage()),);
                       }
                     }),
               ],

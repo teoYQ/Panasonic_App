@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:panasonic_v1/activities.dart';
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -45,6 +45,9 @@ class _LoginPageState extends State<LoginPage> {
                       // Validate will return true if is valid, or false if invalid.
                       if (form.validate()) {
                         print("$_email $_password");
+                        Navigator.push(context,
+                        MaterialPageRoute(builder:(context)=> ActivitiesPage()),);
+                        
                       }
                     }),
               ],
