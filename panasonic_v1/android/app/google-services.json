@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "392162142662",
+    "firebase_url": "https://capst0ned.firebaseio.com",
+    "project_id": "capst0ned",
+    "storage_bucket": "capst0ned.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:392162142662:android:211d88c82bf7f9edcbaac7",
+        "android_client_info": {
+          "package_name": "com.example.panasonic_v1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "392162142662-d2c7sauf9uo8ac02p12vhcna2tif7i7h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFWu8_2QzSjVunDOY0leCUF5EBosiFQxg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "392162142662-d2c7sauf9uo8ac02p12vhcna2tif7i7h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
