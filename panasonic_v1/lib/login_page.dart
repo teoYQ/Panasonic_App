@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:panasonic_v1/activities.dart';
+// import 'package:panasonicv1/authservice.dart'
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
 }
+final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
@@ -45,6 +49,15 @@ class _LoginPageState extends State<LoginPage> {
                       // Validate will return true if is valid, or false if invalid.
                       if (form.validate()) {
                         print("$_email $_password");
+                        _auth.signInWithEmailAndPassword(email:"$_email", password:"$_password");
+                        print('login successful');
+                        FirebaseDatabase database = FirebaseDatabase.instance;
+                        DatabaseReference myRef = database.reference();
+                        DateTime current_time = DateTime.now();
+                        myRef.set("user $_email with password $_password logged it at $current_time");
+                        print('write successful');
+                        _auth.signOut();
+                        print('logout successful');
                         Navigator.push(context,
                         MaterialPageRoute(builder:(context)=> ActivitiesPage()),);
                         
