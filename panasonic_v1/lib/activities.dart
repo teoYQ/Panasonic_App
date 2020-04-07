@@ -24,17 +24,14 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
             Colors.green[800],
             Colors.green[400]
           ])),
-          child: CircleAvatar(radius: 15,backgroundColor: Colors.white,),
+          child: CircleAvatar(
+            radius: 15,
+            backgroundColor: Colors.white,
+          ),
         ),
-        CustomListTile(Icons.person,"Profile",()=>{
-          
-        }),
-        CustomListTile(Icons.settings,"Settings",()=>{
-          
-        }),
-        CustomListTile(Icons.exit_to_app,"Log Out",()=>{
-          
-        }),
+        CustomListTile(Icons.person, "Profile", () => {}),
+        CustomListTile(Icons.settings, "Settings", () => {}),
+        CustomListTile(Icons.exit_to_app, "Log Out", () => {}),
       ])),
       body: Container(
         width: double.infinity,
@@ -64,31 +61,109 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                   ),
                   Text("  What would you like to do today?",
                       style: TextStyle(color: Colors.white, fontSize: 15)),
-                  SizedBox(
-                    height: 10,
-                  ),
+                  
                   //FadeAnimation(1.3, Text("Welcome Back", style: TextStyle(color: Colors.white, fontSize: 18),)),
                 ],
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 10),
             Expanded(
               child: Container(
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(60),
-                        topRight: Radius.circular(60))),
                 child: SingleChildScrollView(
                   child: Padding(
-                    padding: EdgeInsets.all(30),
+                    padding: EdgeInsets.all(10),
                     child: Column(
                       children: <Widget>[
-                        
-                        
+                        FlatButton(
+                            child: Container(
+                                height: 120,
+                                width: 480,
+                                margin: EdgeInsets.symmetric(horizontal: 10),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Colors.white),
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      Image.asset("assets/LiveMonitoring.png",
+                                          height: 100, width: 100),
+                                      Text("Monitor your plants")
+                                    ]))),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        FlatButton(
+                            child: Container(
+                                height: 120,
+                                width: 480,
+                                margin: EdgeInsets.symmetric(horizontal: 10),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Colors.white),
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      Image.asset("assets/PlantPerformance.png",
+                                          height: 100, width: 100),
+                                      Text("Analytics")
+                                    ]))),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        FlatButton(
+                            child: Container(
+                                height: 120,
+                                width: 480,
+                                margin: EdgeInsets.symmetric(horizontal: 10),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Colors.white),
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      Image.asset("assets/ManualAdjustment.png",
+                                          height: 100, width: 100),
+                                      Text("Do it myself")
+                                    ]))),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        FlatButton(
+                            child: Container(
+                                height: 120,
+                                width: 480,
+                                margin: EdgeInsets.symmetric(horizontal: 10),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Colors.white),
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      Image.asset("assets/shoppingcart.png",
+                                          height: 100, width: 100),
+                                      Text("Shop")
+                                    ])))
+                        /*InkWell(
+                          child: Container(
+                            decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                border: Border.all(
+                                  width: 1,
+                                )),
+                            child: Icon(Icons.add, color: Colors.black),
+                          ),
+                          onTap: () {},
+                        ),*/
                         //FadeAnimation(1.5, Text("Forgot Password?", style: TextStyle(color: Colors.grey),)),
-                        makeItem(image: "assets/plants.PNG",tag: 'green',text: " My Crops"),
-                        
+                        //makeItem(image: "assets/LiveMonitoring.png",tag: 'green',text: " My Crops"),
                       ],
                     ),
                   ),
@@ -100,7 +175,8 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
       ),
     );
   }
-    Widget makeItem({image,tag,text}) {
+
+  Widget makeItem({image, tag, text}) {
     return Hero(
       tag: tag,
       child: GestureDetector(
@@ -108,20 +184,16 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
           height: 250,
           width: double.infinity,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            image: DecorationImage(
-              image: AssetImage(image),
-              
-              fit: BoxFit.cover
-              ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey[100],
-                //blurRadius: 10,
-                //offset: Offset(0,30)
-              )
-            ]
-               ),
+              borderRadius: BorderRadius.circular(20),
+              image:
+                  DecorationImage(image: AssetImage(image), fit: BoxFit.cover),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey[100],
+                  //blurRadius: 10,
+                  //offset: Offset(0,30)
+                )
+              ]),
           child: Column(
             //crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -129,22 +201,23 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
               Row(
                 //crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Expanded(child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(text,style: TextStyle(color: Colors.green[900], fontSize: 30, fontWeight: FontWeight.bold))
-                    ]
-                  ))
+                  Expanded(
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                        Text(text,
+                            style: TextStyle(
+                                color: Colors.green[900],
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold))
+                      ]))
                 ],
               )
             ],
-
           ),
-          ),
-          
         ),
-         );
-    
+      ),
+    );
   }
 }
 /*
@@ -186,24 +259,24 @@ class CustomListTile extends StatelessWidget {
   IconData icon;
   String text;
   Function onTap;
-  CustomListTile(this.icon, this.text,this.onTap);
+  CustomListTile(this.icon, this.text, this.onTap);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
         child: InkWell(
-          onTap: onTap,
+            onTap: onTap,
             child: Container(
-              height: 50,
+                height: 50,
                 child: Row(
-          children: <Widget>[
-            Icon(icon),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-            ),
-            Text(text)],
-        ))));
+                  children: <Widget>[
+                    Icon(icon),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                    ),
+                    Text(text)
+                  ],
+                ))));
   }
-
 }

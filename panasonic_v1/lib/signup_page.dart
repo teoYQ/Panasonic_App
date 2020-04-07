@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:panasonic_v1/login_page.dart';
+import 'dart:async';
+import 'dart:io';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -10,6 +13,40 @@ class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   String _password;
   String _email;
+  String _name;
+  File _image;
+  Future getImage() async {
+    final image = await ImagePicker.pickImage(source: ImageSource.camera);
+    setState(() {
+      _image = image;
+    });
+  }
+  void _pickImage() async {
+  final imageSource = await showDialog<ImageSource>(
+      context: context,
+      builder: (context) =>
+          AlertDialog(
+            title: Text("Select the image source"),
+            actions: <Widget>[
+              MaterialButton(
+                child: Text("Camera"),
+                onPressed: () => Navigator.pop(context, ImageSource.camera),
+              ),
+              MaterialButton(
+                child: Text("Gallery"),
+                onPressed: () => Navigator.pop(context, ImageSource.gallery),
+              )
+            ],
+          )
+  );
+  File _pickedImage;
+  if(imageSource != null) {
+    final file = await ImagePicker.pickImage(source: imageSource);
+    if(file != null) {
+      setState(() => _pickedImage = file);
+    }
+  }
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,6 +110,25 @@ class _SignUpPageState extends State<SignUpPage> {
                           child: Column(
                             children: <Widget>[
                               Container(
+                                  child: Row(
+                                    children: <Widget>[
+                                      Expanded(child: CircleAvatar(
+                                backgroundColor: Colors.grey[900],
+                                radius: 50,
+                                child: _image == null ? Text("?") : Image.file(_image) ,
+                              )),
+                              Expanded(child: MaterialButton(
+                                color: Colors.white,
+                                shape: CircleBorder(),
+                                onPressed: (){
+                                  _pickImage();
+                              },
+                                child: Icon(Icons.camera_alt),
+                              ))
+
+                                    ]
+                                  )),
+                              Container(
                                 padding: EdgeInsets.all(10),
                                 decoration: BoxDecoration(
                                     border: Border(
@@ -129,13 +185,11 @@ class _SignUpPageState extends State<SignUpPage> {
                               final form = _formKey.currentState;
                               //form.save();
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => LoginPage()),
-                                );
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LoginPage()),
+                              );
                               // Validate will return true if is valid, or false if invalid.
-                              
-                              
                             },
                             child: Container(
                               height: 50,
@@ -156,7 +210,6 @@ class _SignUpPageState extends State<SignUpPage> {
                         SizedBox(
                           height: 10,
                         ),
-                        
                       ],
                     ),
                   ),
