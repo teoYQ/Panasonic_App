@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:panasonic_v1/DIYpage.dart';
+import 'package:panasonic_v1/analyticspage.dart';
+import 'package:panasonic_v1/monitorpage.dart';
+import 'package:panasonic_v1/shoppage.dart';
 import 'package:panasonic_v1/toggle_buttons.dart';
 
 class ActivitiesPage extends StatefulWidget {
@@ -61,7 +65,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                   ),
                   Text("  What would you like to do today?",
                       style: TextStyle(color: Colors.white, fontSize: 15)),
-                  
+
                   //FadeAnimation(1.3, Text("Welcome Back", style: TextStyle(color: Colors.white, fontSize: 18),)),
                 ],
               ),
@@ -90,7 +94,13 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                                       Image.asset("assets/LiveMonitoring.png",
                                           height: 100, width: 100),
                                       Text("Monitor your plants")
-                                    ]))),
+                                    ])), onPressed: () {
+                                      Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MonitorPage()),
+                            );
+                                    },),
                         SizedBox(
                           height: 10,
                         ),
@@ -110,27 +120,40 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                                       Image.asset("assets/PlantPerformance.png",
                                           height: 100, width: 100),
                                       Text("Analytics")
-                                    ]))),
+                                    ])), onPressed: () {
+                                      Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AnlyticsPage()),
+                            );
+                                    },),
                         SizedBox(
                           height: 10,
                         ),
                         FlatButton(
-                            child: Container(
-                                height: 120,
-                                width: 480,
-                                margin: EdgeInsets.symmetric(horizontal: 10),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: Colors.white),
-                                child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: <Widget>[
-                                      Image.asset("assets/ManualAdjustment.png",
-                                          height: 100, width: 100),
-                                      Text("Do it myself")
-                                    ]))),
+                          child: Container(
+                              height: 120,
+                              width: 480,
+                              margin: EdgeInsets.symmetric(horizontal: 10),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Colors.white),
+                              child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    Image.asset("assets/ManualAdjustment.png",
+                                        height: 100, width: 100),
+                                    Text("Do it myself")
+                                  ])),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DIYPage()),
+                            );
+                          },
+                        ),
                         SizedBox(
                           height: 10,
                         ),
@@ -150,7 +173,13 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                                       Image.asset("assets/shoppingcart.png",
                                           height: 100, width: 100),
                                       Text("Shop")
-                                    ])))
+                                    ])), onPressed: () {
+                                      Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ShopPage()),
+                            );
+                                    },)
                         /*InkWell(
                           child: Container(
                             decoration: BoxDecoration(
