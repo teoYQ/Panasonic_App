@@ -15,38 +15,45 @@ class _SignUpPageState extends State<SignUpPage> {
   String _email;
   String _name;
   File _image;
+  int _curIndex = 0;
   Future getImage() async {
     final image = await ImagePicker.pickImage(source: ImageSource.camera);
     setState(() {
       _image = image;
     });
   }
-  void _pickImage() async {
-  final imageSource = await showDialog<ImageSource>(
-      context: context,
-      builder: (context) =>
-          AlertDialog(
-            title: Text("Select the image source"),
-            actions: <Widget>[
-              MaterialButton(
-                child: Text("Camera"),
-                onPressed: () => Navigator.pop(context, ImageSource.camera),
-              ),
-              MaterialButton(
-                child: Text("Gallery"),
-                onPressed: () => Navigator.pop(context, ImageSource.gallery),
-              )
-            ],
-          )
-  );
-  File _pickedImage;
-  if(imageSource != null) {
-    final file = await ImagePicker.pickImage(source: imageSource);
-    if(file != null) {
-      setState(() => _pickedImage = file);
+
+  File _pickedImage =File("assets/shoppingcart.png") ;
+
+  Future _pickImage() async {
+    final imageSource = await showDialog<ImageSource>(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text("Select the image source"),
+              actions: <Widget>[
+                MaterialButton(
+                  child: Text("Camera"),
+                  onPressed: () => Navigator.pop(context, ImageSource.camera),
+                ),
+                MaterialButton(
+                  child: Text("Gallery"),
+                  onPressed: () => Navigator.pop(context, ImageSource.gallery),
+                )
+              ],
+            ));
+    if (imageSource != null) {
+      final file = await ImagePicker.pickImage(
+          source: imageSource, maxHeight: 100, maxWidth: 100);
+      if (file != null) {
+        setState(() => _pickedImage = file
+        );
+        setState(() {
+          _curIndex = 1;
+        });
+      }
     }
   }
-}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,7 +117,41 @@ class _SignUpPageState extends State<SignUpPage> {
                           child: Column(
                             children: <Widget>[
                               Container(
-                                  child: Row(
+                                child: IndexedStack(
+                                    index: _curIndex,
+                                    children: <Widget>[
+                                      MaterialButton(
+                                        color: Colors.white,
+                                        shape: CircleBorder(),
+                                        onPressed: () {
+                                          _pickImage();
+                                          
+                                        },
+                                        child: Icon(Icons.camera_alt),
+                                      ),
+                                      CircleAvatar(
+                                          backgroundColor: Colors.grey[900],
+                                          radius: 50,
+                                          child: Container(
+                                              width: 100,
+                                              height: 100,
+                                              decoration: new BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  image: new DecorationImage(
+                                                      fit: BoxFit.fill,
+                                                      image:
+                                                          new ExactAssetImage(
+                                                              _pickedImage
+                                                                  .path)))
+
+                                          /*_pickedImage == null
+                                        ? Text("?")
+                                        : Image.file(_pickedImage),
+                                        */
+                                          ),
+                                      )
+                                    ]),
+                                /*child: Row(
                                     children: <Widget>[
                                       Expanded(child: CircleAvatar(
                                 backgroundColor: Colors.grey[900],
@@ -127,7 +168,8 @@ class _SignUpPageState extends State<SignUpPage> {
                               ))
 
                                     ]
-                                  )),
+                                  )*/
+                              ),
                               Container(
                                 padding: EdgeInsets.all(10),
                                 decoration: BoxDecoration(

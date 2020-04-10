@@ -70,6 +70,7 @@ class _MonitorPageState extends State<MonitorPage> {
                     padding: EdgeInsets.all(10),
                     child: Column(
                       children: <Widget>[
+                        
                       ],
                     ),
                   ),
