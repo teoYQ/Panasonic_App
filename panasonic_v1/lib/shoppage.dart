@@ -152,11 +152,15 @@ class _ShopPageState extends State<ShopPage> {
                                       scrollDirection: Axis.horizontal,
                                       itemBuilder: (context, index) {
                                         var product = _plants[index];
-                                        return ProductCard(
+                                        return InkWell(
+                                          onTap:(){
+                                            print("HI");
+                                          },
+                                          child: ProductCard(
                                           text: _plants[index].name,
                                           filename: _plants[index].pic,
                                           price: _plants[index].price,
-                                        );
+                                        ));
                                       })),
                               SizedBox(
                                 height: 20,

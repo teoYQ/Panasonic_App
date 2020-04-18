@@ -10,7 +10,11 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Padding(
+    return InkResponse(
+      onTap:(){
+        print(text);
+      },
+      child: Padding(
         padding: EdgeInsets.only(left: 1),
         child: Container(
             width: 175,
@@ -54,6 +58,6 @@ class ProductCard extends StatelessWidget {
                   child: Icon(Icons.add)
                 )
               ],
-            )));
+            ))));
   }
 }

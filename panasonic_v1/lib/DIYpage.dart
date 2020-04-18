@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:panasonic_v1/widgets/buttons_.dart';
+import 'package:panasonic_v1/widgets/tapbox.dart';
 
 class DIYPage extends StatefulWidget {
   @override
@@ -6,70 +8,82 @@ class DIYPage extends StatefulWidget {
 }
 
 class _DIYPageState extends State<DIYPage> {
+  String _lights = 'Turn on the lights'; 
   @override
-  String _lights = 'off';
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.green[900],
-        elevation: 0.0,
-      ),
-      drawer: Drawer(
-          child: ListView(children: <Widget>[
-        DrawerHeader(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(colors: <Color>[
-            Colors.green[900],
-            Colors.green[800],
-            Colors.green[400]
-          ])),
-          child: CircleAvatar(
-            radius: 15,
-            backgroundColor: Colors.white,
+    bool _state = false;
+        return Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.green[900],
+            elevation: 0.0,
           ),
-        ),
-        CustomListTile(Icons.person, "Profile", () => {}),
-        CustomListTile(Icons.settings, "Settings", () => {}),
-        CustomListTile(Icons.exit_to_app, "Log Out", () => {}),
-      ])),
-      body: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-            gradient: LinearGradient(begin: Alignment.topCenter, colors: [
-          Colors.green[900],
-          Colors.green[800],
-          Colors.green[400]
-        ])),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(
-              height: 30,
-            ),
-            Padding(
-              padding: EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    "Control Your incubator",
-                    style: TextStyle(color: Colors.white, fontSize: 40),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  //FadeAnimation(1.3, Text("Welcome Back", style: TextStyle(color: Colors.white, fontSize: 18),)),
-                ],
+          drawer: Drawer(
+              child: ListView(children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(colors: <Color>[
+                Colors.green[900],
+                Colors.green[800],
+                Colors.green[400]
+              ])),
+              child: CircleAvatar(
+                radius: 15,
+                backgroundColor: Colors.white,
               ),
             ),
-            SizedBox(height: 10),
-            Expanded(
-              child: Container(
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Column(
-                      children: <Widget>[
+            CustomListTile(Icons.person, "Profile", () => {}),
+            CustomListTile(Icons.settings, "Settings", () => {}),
+            CustomListTile(Icons.exit_to_app, "Log Out", () => {}),
+          ])),
+          body: Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+                gradient: LinearGradient(begin: Alignment.topCenter, colors: [
+              Colors.green[900],
+              Colors.green[800],
+              Colors.green[400]
+            ])),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(
+                  height: 30,
+                ),
+                Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        "Control Your incubator",
+                        style: TextStyle(color: Colors.white, fontSize: 40),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      //FadeAnimation(1.3, Text("Welcome Back", style: TextStyle(color: Colors.white, fontSize: 18),)),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 10),
+                Expanded(
+                  child: Container(
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Column(
+                          children: <Widget>[
+                            
+                            Row(children: <Widget>[
+                            TapboxA(),
+                              //ButtonActivity(Icons.lightbulb_outline, _state ? 'Turn x lights' : 'Turn on lights', () => {_state = !_state}),
+                          ButtonActivity(Icons.wb_sunny, "   Increase  \n  temperature", () => {print("hi")})
+                        ],),
+                        SizedBox(height: 20,),
+                        Row(children: <Widget>[
+                          ButtonActivity(Icons.local_drink, "Dose Fertilizer", () => {print("hi")}),
+                          ButtonActivity(Icons.wb_sunny, "   Decrease  \n  temperature", () => {print("hi")})
+                        ],)
                       ],
                     ),
                   ),
