@@ -27,7 +27,9 @@ class ButtonActivity extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(5.0),
                     ),
-                    Icon(icon),
+                    IconTheme(data: new IconThemeData(color: Colors.green[900]),
+                    child: new Icon(icon),),
+                    //Icon(icon),
                     Padding(
                       padding: const EdgeInsets.all(1.0),
                     ),

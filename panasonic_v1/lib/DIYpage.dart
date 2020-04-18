@@ -82,7 +82,7 @@ class _DIYPageState extends State<DIYPage> {
                         SizedBox(height: 20,),
                         Row(children: <Widget>[
                           ButtonActivity(Icons.local_drink, "Dose Fertilizer", () => {print("hi")}),
-                          ButtonActivity(Icons.wb_sunny, "   Decrease  \n  temperature", () => {print("hi")})
+                          ButtonActivity(Icons.wb_cloudy, "   Decrease  \n  temperature", () => {print("hi")})
                         ],)
                       ],
                     ),
