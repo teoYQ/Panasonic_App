@@ -3,6 +3,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:panasonic_v1/login_page.dart';
 import 'dart:async';
 import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart'; // For File Upload To Firestore
+import 'package:path/path.dart' as Path;
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -15,6 +17,7 @@ class _SignUpPageState extends State<SignUpPage> {
   String _email;
   String _name;
   File _image;
+  String _uploadedUrl;
   int _curIndex = 0;
   Future getImage() async {
     final image = await ImagePicker.pickImage(source: ImageSource.camera);
@@ -23,7 +26,21 @@ class _SignUpPageState extends State<SignUpPage> {
     });
   }
 
-  File _pickedImage =File("assets/shoppingcart.png") ;
+  File _pickedImage = File("assets/shoppingcart.png");
+  Future uploadFile() async {
+    print(_pickedImage.path);
+    StorageReference storageReference = FirebaseStorage.instance
+        .ref()
+        .child('profile/${Path.basename(_pickedImage.path)}}');
+    StorageUploadTask uploadTask = storageReference.putFile(_pickedImage);
+    await uploadTask.onComplete;
+    print('File Uploaded');
+    storageReference.getDownloadURL().then((fileURL) {
+      setState(() {
+        _uploadedUrl = fileURL;
+      });
+    });
+  }
 
   Future _pickImage() async {
     final imageSource = await showDialog<ImageSource>(
@@ -45,8 +62,7 @@ class _SignUpPageState extends State<SignUpPage> {
       final file = await ImagePicker.pickImage(
           source: imageSource, maxHeight: 100, maxWidth: 100);
       if (file != null) {
-        setState(() => _pickedImage = file
-        );
+        setState(() => _pickedImage = file);
         setState(() {
           _curIndex = 1;
         });
@@ -125,30 +141,27 @@ class _SignUpPageState extends State<SignUpPage> {
                                         shape: CircleBorder(),
                                         onPressed: () {
                                           _pickImage();
-                                          
                                         },
                                         child: Icon(Icons.camera_alt),
                                       ),
                                       CircleAvatar(
-                                          backgroundColor: Colors.grey[900],
-                                          radius: 50,
-                                          child: Container(
-                                              width: 100,
-                                              height: 100,
-                                              decoration: new BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  image: new DecorationImage(
-                                                      fit: BoxFit.fill,
-                                                      image:
-                                                          new ExactAssetImage(
-                                                              _pickedImage
-                                                                  .path)))
+                                        backgroundColor: Colors.grey[900],
+                                        radius: 50,
+                                        child: Container(
+                                            width: 100,
+                                            height: 100,
+                                            decoration: new BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                image: new DecorationImage(
+                                                    fit: BoxFit.fill,
+                                                    image: new ExactAssetImage(
+                                                        _pickedImage.path)))
 
-                                          /*_pickedImage == null
+                                            /*_pickedImage == null
                                         ? Text("?")
                                         : Image.file(_pickedImage),
                                         */
-                                          ),
+                                            ),
                                       )
                                     ]),
                                 /*child: Row(
@@ -192,7 +205,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                         bottom: BorderSide(
                                             color: Colors.grey[200]))),
                                 child: TextFormField(
-                                  onSaved: (value) => _password = value,
+                                  onSaved: (value) => _name = value,
                                   obscureText: true,
                                   decoration: InputDecoration(
                                       hintText: "Name",
@@ -224,6 +237,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         //FadeAnimation(1.5, Text("Forgot Password?", style: TextStyle(color: Colors.grey),)),
                         FlatButton(
                             onPressed: () {
+                              uploadFile();
                               final form = _formKey.currentState;
                               //form.save();
                               Navigator.push(
