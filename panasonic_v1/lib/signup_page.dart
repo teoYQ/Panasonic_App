@@ -1,34 +1,72 @@
 import 'package:flutter/material.dart';
-// import 'package:panasonicv1/authservice.dart'
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
-<<<<<<< Updated upstream
-=======
-import 'package:panasonic_v1/activities.dart';
-import 'package:panasonic_v1/signup_page.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:panasonic_v1/login_page.dart';
+import 'dart:async';
+import 'dart:io';
 import 'package:panasonic_v1/authentication.dart';
->>>>>>> Stashed changes
+import 'package:firebase_database/firebase_database.dart';
 
-class LoginPage extends StatefulWidget {
-  LoginPage({Key key, this.auth, this.userId, this.loginCallback})
+class SignUpPage extends StatefulWidget {
+  SignUpPage({Key key, this.auth, this.loginCallback})
       : super(key: key);
   final BaseAuth auth;
   final VoidCallback loginCallback;
-  final String userId;
-
+  // final String userId;
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _SignUpPageState createState() => _SignUpPageState(auth);
 }
-final FirebaseAuth _auth = FirebaseAuth.instance;
 
-class _LoginPageState extends State<LoginPage> {
+class _SignUpPageState extends State<SignUpPage> {
+  static FirebaseDatabase database = FirebaseDatabase.instance;
   final _formKey = GlobalKey<FormState>();
+  BaseAuth auth;
+  _SignUpPageState(this.auth);
   String _password;
   String _email;
+  String _name;
+  File _image;
   String _errorMessage;
-  bool _isLoginForm;
+  bool _isSignUpForm;
   bool _isLoading;
-  static FirebaseDatabase database = FirebaseDatabase.instance;
+  int _curIndex = 0;
+  Future getImage() async {
+    final image = await ImagePicker.pickImage(source: ImageSource.camera);
+    setState(() {
+      _image = image;
+    });
+  }
+
+  File _pickedImage =File("assets/shoppingcart.png") ;
+
+  Future _pickImage() async {
+    final imageSource = await showDialog<ImageSource>(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text("Select the image source"),
+              actions: <Widget>[
+                MaterialButton(
+                  child: Text("Camera"),
+                  onPressed: () => Navigator.pop(context, ImageSource.camera),
+                ),
+                MaterialButton(
+                  child: Text("Gallery"),
+                  onPressed: () => Navigator.pop(context, ImageSource.gallery),
+                )
+              ],
+            ));
+    if (imageSource != null) {
+      final file = await ImagePicker.pickImage(
+          source: imageSource, maxHeight: 100, maxWidth: 100);
+      if (file != null) {
+        setState(() => _pickedImage = file
+        );
+        setState(() {
+          _curIndex = 1;
+        });
+      }
+    }
+  }
+
   bool validateAndSave() {
     final form = _formKey.currentState;
     if (form.validate()) {
@@ -46,20 +84,21 @@ class _LoginPageState extends State<LoginPage> {
     if (validateAndSave()) {
       String userId = "";
       try {
-        if (_isLoginForm) {
-          userId = await widget.auth.signIn(_email, _password);
-          print('Signed in: $userId');
-        } else {
+        if (_isSignUpForm) {
           userId = await widget.auth.signUp(_email, _password);
+          print('Signed up user: $userId');
+        } else {
+          print('Signed in: $userId');
+          // userId = await widget.auth.signIn(_email, _password);
           //widget.auth.sendEmailVerification();
           //_showVerifyEmailSentDialog();
-          print('Signed up user: $userId');
+          // print('Signed up user: $userId');
         }
         setState(() {
           _isLoading = false;
         });
 
-        if (userId.length > 0 && userId != null && _isLoginForm) {
+        if (userId.length > 0 && userId != null && _isSignUpForm) {
           widget.loginCallback();
         }
       } catch (e) {
@@ -72,28 +111,11 @@ class _LoginPageState extends State<LoginPage> {
       }
     }
   }
-  // void findName() async {
-  //   String username = "";
-  //   try{
-  //     username = await database.reference().child('Users').orderByValue().equalTo("$_email").once();
-  //   }catch (e) {
-  //       print('Error: $e');
-  //       setState(() {
-  //         _isLoading = false;
-  //         _errorMessage = e.message;
-  //         _formKey.currentState.reset();
-  //       });
-  //     }
-  //   return username;
-  // }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-<<<<<<< Updated upstream
-        appBar: AppBar(
-          title: Text("Login Page Flutter "),
-=======
-      
       body: Container(
         width: double.infinity,
         decoration: BoxDecoration(
@@ -114,7 +136,7 @@ class _LoginPageState extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    "Login",
+                    "Sign Up",
                     style: TextStyle(color: Colors.white, fontSize: 40),
                   ),
                   SizedBox(
@@ -126,6 +148,8 @@ class _LoginPageState extends State<LoginPage> {
             ),
             SizedBox(height: 20),
             Expanded(
+              child: Form(
+              key: _formKey,
               child: Container(
                 decoration: BoxDecoration(
                     color: Colors.white,
@@ -151,10 +175,62 @@ class _LoginPageState extends State<LoginPage> {
                                     blurRadius: 20,
                                     offset: Offset(0, 10))
                               ]),
-                          child: Form(
-                            key: _formKey,
                           child: Column(
                             children: <Widget>[
+                              Container(
+                                child: IndexedStack(
+                                    index: _curIndex,
+                                    children: <Widget>[
+                                      MaterialButton(
+                                        color: Colors.white,
+                                        shape: CircleBorder(),
+                                        onPressed: () {
+                                          _pickImage();
+                                          
+                                        },
+                                        child: Icon(Icons.camera_alt),
+                                      ),
+                                      CircleAvatar(
+                                          backgroundColor: Colors.grey[900],
+                                          radius: 50,
+                                          child: Container(
+                                              width: 100,
+                                              height: 100,
+                                              decoration: new BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  image: new DecorationImage(
+                                                      fit: BoxFit.fill,
+                                                      image:
+                                                          new ExactAssetImage(
+                                                              _pickedImage
+                                                                  .path)))
+
+                                          /*_pickedImage == null
+                                        ? Text("?")
+                                        : Image.file(_pickedImage),
+                                        */
+                                          ),
+                                      )
+                                    ]),
+                                /*child: Row(
+                                    children: <Widget>[
+                                      Expanded(child: CircleAvatar(
+                                backgroundColor: Colors.grey[900],
+                                radius: 50,
+                                child: _image == null ? Text("?") : Image.file(_image) ,
+                              )),
+                              Expanded(child: MaterialButton(
+                                color: Colors.white,
+                                shape: CircleBorder(),
+                                onPressed: (){
+                                  _pickImage();
+                              },
+                                child: Icon(Icons.camera_alt),
+                              ))
+
+                                    ]
+                                  )*/
+                              ),
                               Container(
                                 padding: EdgeInsets.all(10),
                                 decoration: BoxDecoration(
@@ -177,6 +253,21 @@ class _LoginPageState extends State<LoginPage> {
                                         bottom: BorderSide(
                                             color: Colors.grey[200]))),
                                 child: TextFormField(
+                                  onSaved: (value) => _name = value,
+                                  obscureText: true,
+                                  decoration: InputDecoration(
+                                      hintText: "Name",
+                                      hintStyle: TextStyle(color: Colors.grey),
+                                      border: InputBorder.none),
+                                ),
+                              ),
+                              Container(
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                    border: Border(
+                                        bottom: BorderSide(
+                                            color: Colors.grey[200]))),
+                                child: TextFormField(
                                   onSaved: (value) => _password = value,
                                   obscureText: true,
                                   decoration: InputDecoration(
@@ -187,7 +278,6 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ],
                           ),
-                          ),
                         ),
                         SizedBox(
                           height: 40,
@@ -196,54 +286,18 @@ class _LoginPageState extends State<LoginPage> {
                         FlatButton(
                             onPressed: () {
                               final form = _formKey.currentState;
-                              // form.save();
-
-                              // Validate will return true if is valid, or false if invalid.
-                              if (validateAndSave()) {
-                                // print("$_email $_password");
-                                widget.auth.signIn("$_email", "$_password");
-                                // database.reference().child("Users").equalTo("$_email");
-                                var _name = widget.auth.getName("$_email",database);
-                                print('DIS MAH NAME $_name'); 
-                                print("SENDING");
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ActivitiesPage(auth: widget.auth, email : "$_email", name : "$_name")),
-                                );
-                              }
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //       builder: (context) => ActivitiesPage(auth: widget.auth)),
-                              // );
-                            },
-                            child: Container(
-                              height: 50,
-                              margin: EdgeInsets.symmetric(horizontal: 50),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(50),
-                                  color: Colors.green[900]),
-                              child: Center(
-                                child: Text(
-                                  "Log In",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            )),
-
-                        SizedBox(
-                          height: 10,
-                        ),
-                        FlatButton(
-                            onPressed: () {
+                              form.save();
+                              // if (validateAndSave()) {
+                              // validateAndSubmit();
+                              widget.auth.signUp(_email, _password);
+                              database.reference().child("Users").push().set({_name : _email});
+                              // }
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => SignUpPage(auth: widget.auth)),
+                                    builder: (context) => LoginPage(auth : new Auth()),),
                               );
+                              // Validate will return true if is valid, or false if invalid.
                             },
                             child: Container(
                               height: 50,
@@ -259,60 +313,21 @@ class _LoginPageState extends State<LoginPage> {
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),
-                            ))
+                            )),
+
+                        SizedBox(
+                          height: 10,
+                        ),
                       ],
                     ),
                   ),
                 ),
               ),
+              ),
             )
           ],
->>>>>>> Stashed changes
         ),
-        body: Container(
-          padding: EdgeInsets.all(20.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: <Widget>[
-                SizedBox(height: 20.0), // <= NEW
-                Text(
-                  'Login Information',
-                  style: TextStyle(fontSize: 20),
-                ),
-                SizedBox(height: 20.0), // <= NEW
-                TextFormField(
-                    onSaved: (value) => _email = value,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration(labelText: "Email Address")),
-                TextFormField(
-                    onSaved: (value) => _password = value,
-                    obscureText: true,
-                    decoration: InputDecoration(labelText: "Password")),
-                SizedBox(height: 20.0), // <= NEW
-                RaisedButton(
-                    child: Text("LOGIN"),
-                    onPressed: () {
-                      final form = _formKey.currentState;
-                      form.save();
-
-                      // Validate will return true if is valid, or false if invalid.
-                      if (form.validate()) {
-                        print("$_email $_password");
-                        _auth.signInWithEmailAndPassword(email:"$_email", password:"$_password");
-                        print('login successful');
-                        FirebaseDatabase database = FirebaseDatabase.instance;
-                        DatabaseReference myRef = database.reference();
-                        DateTime current_time = DateTime.now();
-                        myRef.set("user $_email with password $_password logged it at $current_time");
-                        print('write successful');
-                        _auth.signOut();
-                        print('logout successful');
-                      }
-                    }),
-              ],
-            ),
-          ),
-        ));
+      ),
+    );
   }
 }

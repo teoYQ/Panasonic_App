@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:panasonic_v1/authentication.dart';
 import 'package:panasonic_v1/login_page.dart';
 import 'home_page.dart';
 
@@ -13,7 +14,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+<<<<<<< Updated upstream
       home: LoginPage(),
+=======
+      home: LoginPage(auth : new Auth()),
+>>>>>>> Stashed changes
     );
   }
 }
