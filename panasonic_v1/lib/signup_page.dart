@@ -34,7 +34,7 @@ class _SignUpPageState extends State<SignUpPage> {
       _image = image;
     });
   }
-
+  bool _newimg = false;
   File _pickedImage = File("assets/shoppingcart.png");
   Future uploadFile(
     String email,
@@ -80,6 +80,7 @@ class _SignUpPageState extends State<SignUpPage> {
         setState(() => _pickedImage = file);
         setState(() {
           _curIndex = 1;
+          _newimg = true;
         });
       }
     }
@@ -287,7 +288,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                           //FadeAnimation(1.5, Text("Forgot Password?", style: TextStyle(color: Colors.grey),)),
                           FlatButton(
-                              onPressed: () {
+                              onPressed: (_newimg) ? () {
                                 final form = _formKey.currentState;
                                 form.save();
                                 // if (validateAndSave()) {
@@ -316,7 +317,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   ),
                                 );
                                 // Validate will return true if is valid, or false if invalid.
-                              },
+                              } : null,
                               child: Container(
                                 height: 50,
                                 margin: EdgeInsets.symmetric(horizontal: 50),
