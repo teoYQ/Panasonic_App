@@ -12,7 +12,7 @@ class AuthService with ChangeNotifier {
     return Future.value(currentUser);
   }
 
-  // wrappinhg the firebase calls
+  // wrapping the firebase calls
   Future logout() {
     this.currentUser = null;
     notifyListeners();
