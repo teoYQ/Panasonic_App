@@ -36,7 +36,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
     auth.getName(email,database).then((val) => setState(() {
           name = val;
           print(name);
-          display(name);
+          display(email);
         }));
     
     //StorageReference storageReference = FirebaseStorage.instance.ref().child("profile/$name"); 

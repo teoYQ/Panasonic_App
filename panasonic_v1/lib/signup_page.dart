@@ -44,7 +44,7 @@ class _SignUpPageState extends State<SignUpPage> {
     userauth.signIn(email, password);
     print(_pickedImage.path);
     StorageReference storageReference =
-        FirebaseStorage.instance.ref().child('profile/$_name');
+        FirebaseStorage.instance.ref().child('profile/$email');
     // .child('profile/${Path.basename(_pickedImage.path)}}');
     StorageUploadTask uploadTask = storageReference.putFile(_pickedImage);
     await uploadTask.onComplete;
