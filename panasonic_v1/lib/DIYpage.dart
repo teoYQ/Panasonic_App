@@ -9,20 +9,23 @@ import 'authentication.dart';
 class DIYPage extends StatefulWidget {
   final BaseAuth auth;
   final String name;
-  DIYPage({Key key, this.auth, this.name})
+  final int temp;
+  DIYPage({Key key, this.auth, this.name,this.temp})
     : super(key: key);
   @override
-  _DIYPageState createState() => _DIYPageState(auth,name);
+  _DIYPageState createState() => _DIYPageState(auth,name,temp);
 }
 
 class _DIYPageState extends State<DIYPage> {
   String _lights = 'Turn on the lights'; 
   String name;
+  int temp;
   BaseAuth auth;
-  _DIYPageState(this.auth,this.name);
+  _DIYPageState(this.auth,this.name,this.temp);
   static FirebaseDatabase database = FirebaseDatabase.instance;
   
   @override
+
   Widget build(BuildContext context) {
     var userref = database.reference().child(name);
     print("DIS IS MAH $name");
@@ -85,18 +88,19 @@ class _DIYPageState extends State<DIYPage> {
                   child: Container(
                     child: SingleChildScrollView(
                       child: Padding(
-                        padding: EdgeInsets.all(10),
+                        padding: EdgeInsets.all(7),
                         child: Column(
                           children: <Widget>[
                             
                             Row(children: <Widget>[
                             TapboxA(),
                               //ButtonActivity(Icons.lightbulb_outline, _state ? 'Turn x lights' : 'Turn on lights', () => {_state = !_state}),
-                          ButtonActivity(Icons.wb_sunny, "   Increase  \n  temperature", () => {
+                          ButtonActivity(Icons.wb_sunny, "   Increase  \n  temperature \n $temp", () => {
                               widget.auth.getTemp(name,database).then((val) => setState(() {
                               print(val);
                               int inc_temp = val+1;
                               print(inc_temp);
+                              temp = val+1;
                               userref.update({"temperature":inc_temp});
                             }))
                             })
@@ -108,14 +112,16 @@ class _DIYPageState extends State<DIYPage> {
                               print(val);
                               int inc_dose = val+1;
                               print(inc_dose);
+
                               userref.update({"dose":inc_dose});
                               }))
                           }),
-                          ButtonActivity(Icons.wb_cloudy, "   Decrease  \n  temperature", () => {
+                          ButtonActivity(Icons.wb_cloudy, "   Decrease  \n  temperature \n $temp", () => {
                               widget.auth.getTemp(name,database).then((val) => setState(() {
                               print(val);
                               int dec_temp = val-1;
                               print(dec_temp);
+                              temp = val -1;
                               userref.update({"temperature":dec_temp});
                             }))
                             })

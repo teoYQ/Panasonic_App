@@ -1,3 +1,5 @@
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:panasonic_v1/DIYpage.dart';
 import 'package:panasonic_v1/analyticspage.dart';
@@ -13,6 +15,7 @@ class ActivitiesPage extends StatefulWidget {
   final String userId;
   final String email;
   final String name;
+  String _imgUrl = "https://firebasestorage.googleapis.com/v0/b/capst0ned.appspot.com/o/profile%2Fscaled_f1062f2c-718c-4bd3-98d1-5c77673ffe2e5822050796730969480.jpg%7D?alt=media&token=412e3c50-5e35-4189-b7a3-46f29767e84c";
   ActivitiesPage({Key key, this.auth, this.userId, @required this.email, this.name, this.logoutCallback})
       : super(key: key);
   
@@ -26,18 +29,45 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
   String email;
   static FirebaseDatabase database = FirebaseDatabase.instance;
   String name;
+  String _imgUrl = "https://firebasestorage.googleapis.com/v0/b/capst0ned.appspot.com/o/profile%2Fscaled_f1062f2c-718c-4bd3-98d1-5c77673ffe2e5822050796730969480.jpg%7D?alt=media&token=412e3c50-5e35-4189-b7a3-46f29767e84c";
   // _ActivitiesPageState(this.email,this.auth);
-
+  //String _imgUrl;// = "https://firebasestorage.googleapis.com/v0/b/capst0ned.appspot.com/o/profile%2FJackson?alt=media&token=996b6707-6ac0-4053-b225-21d7654e6b49";
   _ActivitiesPageState(this.email,this.auth) {
     auth.getName(email,database).then((val) => setState(() {
           name = val;
+          print(name);
+          display(name);
         }));
-  }
+    
+    //StorageReference storageReference = FirebaseStorage.instance.ref().child("profile/$name"); 
+    //storageReference.getDownloadURL().then((val) => setState((){
+      //   print(val);
+        //_imgUrl = val;
+   // }));
 
+  }
+  display(String name) async{
+    print("hi");
+    print(name);
+    print(_imgUrl);
+    String filepath =  "profile/$name";
+    await FirebaseStorage.instance.ref().child(filepath).getDownloadURL().then((value) => setState((){
+      _imgUrl = value;
+    }));
+    print(_imgUrl);
+    //setState(() {
+      //_imgUrl = data;
+    //});
+  }
+  
   @override
   String _lights = 'off';
+
   Widget build(BuildContext context) {
     // var name = widget.auth.getName(widget.email,database);
+    print(_imgUrl);
+    //display(name);
+    print(_imgUrl);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green[900],
@@ -52,9 +82,15 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
             Colors.green[800],
             Colors.green[400]
           ])),
+          
           child: CircleAvatar(
-            radius: 15,
-            backgroundColor: Colors.white,
+            child: ClipRRect(
+              
+              borderRadius: new BorderRadius.circular(75),
+              child: (_imgUrl == "https://firebasestorage.googleapis.com/v0/b/capst0ned.appspot.com/o/profile%2Fscaled_f1062f2c-718c-4bd3-98d1-5c77673ffe2e5822050796730969480.jpg%7D?alt=media&token=412e3c50-5e35-4189-b7a3-46f29767e84c") ? Image.asset("assets\coriander.png"): Image.network(_imgUrl,width:150,fit: BoxFit.fill,),
+                
+
+              )
           ),
         ),
         CustomListTile(Icons.person, "Profile", () => {}),
@@ -173,11 +209,13 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                                     Text("Do it myself")
                                   ])),
                           onPressed: () {
+                            auth.getTemp(name, database).then((value) => 
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => DIYPage(auth : widget.auth, name : name)),
-                            );
+                                  builder: (context) => DIYPage(auth : widget.auth, name : name, temp : value)),
+                            )
+                            ); 
                           },
                         ),
                         SizedBox(
