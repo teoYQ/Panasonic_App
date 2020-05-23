@@ -154,6 +154,11 @@ class _LoginPageState extends State<LoginPage> {
                                             color: Colors.grey[200]))),
                                 child: TextFormField(
                                   onSaved: (value) => _email = value,
+                                  validator: (String value) {
+                                      return value.length < 6
+                                          ? "Required"
+                                          : null;
+                                    },
                                   keyboardType: TextInputType.emailAddress,
                                   decoration: InputDecoration(
                                       hintText: "Email or Phone number",
@@ -170,6 +175,11 @@ class _LoginPageState extends State<LoginPage> {
                                 child: TextFormField(
                                   onSaved: (value) => _password = value,
                                   obscureText: true,
+                                  validator: (String value) {
+                                      return value.length < 6
+                                          ? "Required"
+                                          : null;
+                                    },
                                   decoration: InputDecoration(
                                       hintText: "Password",
                                       hintStyle: TextStyle(color: Colors.grey),
