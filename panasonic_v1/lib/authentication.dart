@@ -12,14 +12,27 @@ abstract class BaseAuth {
   Future<String> getName(String email, FirebaseDatabase database);
 
   Future<int> getTemp(String name, FirebaseDatabase database);
+  Future<int> getIncubatorTemp(
+      String name, String incubatorName, FirebaseDatabase database);
 
   Future<int> getDose(String name, FirebaseDatabase database);
+  Future<int> getIncubatorDose(
+      String name, String incubatorName, FirebaseDatabase database);
 
+  Future<String> getIncubatorLight(
+      String name, String incubatorName, FirebaseDatabase database);
+  Future<List> getActiveIncubators(String name, FirebaseDatabase database);
   Future<void> sendEmailVerification();
 
   Future<void> signOut();
 
   Future<bool> isEmailVerified();
+
+  Future<List> getIncubators(String name, FirebaseDatabase database);
+
+  Future<Map> getIncubatorMap(String name, FirebaseDatabase database);
+
+  Future<List> getIncubatorDetails(String name, FirebaseDatabase database);
 }
 
 class Auth implements BaseAuth {
@@ -35,7 +48,12 @@ class Auth implements BaseAuth {
   }
 
   Future<String> getName(String email, FirebaseDatabase database) async {
-    DataSnapshot result = await database.reference().child('Users').orderByValue().equalTo(email).once();
+    DataSnapshot result = await database
+        .reference()
+        .child('Users')
+        .orderByValue()
+        .equalTo(email)
+        .once();
 // .then((DataSnapshot snapshot) {
 //     print(snapshot.value);
 //     String user_uid=snapshot.value.entries.elementAt(0).key;
@@ -52,15 +70,96 @@ class Auth implements BaseAuth {
   }
 
   Future<int> getTemp(String name, FirebaseDatabase database) async {
-    DataSnapshot result = await database.reference().child(name).child("temperature").once();
+    DataSnapshot result =
+        await database.reference().child(name).child("temperature").once();
     print(result.value);
     // String value = int.parse(result.value);
     // return value;
     return result.value;
   }
 
-    Future<int> getDose(String name, FirebaseDatabase database) async {
-    DataSnapshot result = await database.reference().child(name).child("dose").once();
+  Future<List> getIncubators(String name, FirebaseDatabase database) async {
+    DataSnapshot result = await database.reference().child(name).once();
+    //var users = [];
+    //for (var key in result.value.keys) print(key);
+    var _list = result.value.keys.toList();
+    //result.value.forEach((v) => print(v));
+    print(_list);
+    // String value = int.parse(result.value);
+    // return value;
+    return _list;
+  }
+
+  Future<Map> getIncubatorMap(String name, FirebaseDatabase database) async {
+    DataSnapshot result = await database.reference().child(name).once();
+    //var users = [];
+    //for (var key in result.value.keys) print(key);
+    var _list = result.value;
+    //result.value.forEach((v) => print(v));
+    print(_list);
+    // String value = int.parse(result.value);
+    // return value;
+    return _list;
+  }
+
+  Future<List> getIncubatorDetails(
+      String name, FirebaseDatabase database) async {
+    DataSnapshot result = await database.reference().child(name).once();
+    //var users = [];
+    //for (var key in result.value.keys) print(key);
+    var _list = result.value.values.toList();
+    //result.value.forEach((v) => print(v));
+    print(_list);
+    // String value = int.parse(result.value);
+    // return value;
+    return _list;
+  }
+
+  Future<int> getIncubatorTemp(
+      String name, String incubator_name, FirebaseDatabase database) async {
+    DataSnapshot result = await database
+        .reference()
+        .child(name)
+        .child(incubator_name)
+        .child("temperature")
+        .once();
+    print(result.value);
+    // String value = int.parse(result.value);
+    // return value;
+    return result.value;
+  }
+
+  Future<int> getDose(String name, FirebaseDatabase database) async {
+    DataSnapshot result =
+        await database.reference().child(name).child("dose").once();
+    print(result.value);
+    // String value = int.parse(result.value);
+    // return value;
+    return result.value;
+  }
+
+  Future<int> getIncubatorDose(
+      String name, String incubator_name, FirebaseDatabase database) async {
+    DataSnapshot result = await database
+        .reference()
+        .child(name)
+        .child(incubator_name)
+        .child("dose")
+        .once();
+    print(result.value);
+    // String value = int.parse(result.value);
+    // return value;
+    return result.value;
+  }
+
+  Future<String> getIncubatorLight(
+      String name, String incubator_name, FirebaseDatabase database) async {
+    DataSnapshot result = await database
+        .reference()
+        .child(name)
+        .child(incubator_name)
+        .child("lights")
+        .once();
     print(result.value);
     // String value = int.parse(result.value);
     // return value;
@@ -72,6 +171,21 @@ class Auth implements BaseAuth {
         email: email, password: password);
     FirebaseUser user = result;
     return user.uid;
+  }
+
+  Future<List> getActiveIncubators(
+      String name, FirebaseDatabase database) async {
+    DataSnapshot result =
+        await database.reference().child("Active Incubators").once();
+    //var users = [];
+    //for (var key in result.value.keys) print(key);
+    print("HAHHSDAU");
+    var _list = result.value.keys.toList();
+    //result.value.forEach((v) => print(v));
+    print(_list);
+    // String value = int.parse(result.value);
+    // return value;
+    return _list;
   }
 
   Future<FirebaseUser> getCurrentUser() async {

@@ -151,7 +151,7 @@ class _ShopPageState extends State<ShopPage> {
                                       itemCount: _plants.length,
                                       scrollDirection: Axis.horizontal,
                                       itemBuilder: (context, index) {
-                                        var product = _plants[index];
+                                        //var product = _plants[index];
                                         return InkWell(
                                           onTap:(){
                                             print("HI");

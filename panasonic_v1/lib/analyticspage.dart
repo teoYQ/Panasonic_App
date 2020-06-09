@@ -1,14 +1,70 @@
 import 'package:flutter/material.dart';
+import 'package:panasonic_v1/widgets/incubators.dart';
+
+import 'package:panasonic_v1/authentication.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:panasonic_v1/DIYpage.dart';
+import 'authentication.dart';
 
 class AnlyticsPage extends StatefulWidget {
+  final BaseAuth auth;
+  final String name;
+  final int temp;
+  AnlyticsPage({Key key, this.auth, this.name, this.temp}) : super(key: key);
   @override
-  _AnlyticsPageState createState() => _AnlyticsPageState();
+  _AnlyticsPageState createState() => _AnlyticsPageState(auth, name, temp);
 }
 
 class _AnlyticsPageState extends State<AnlyticsPage> {
+  String _lights = 'Turn on the lights';
+  String name;
+  int temp;
+  BaseAuth auth;
+  List _list;
+  _AnlyticsPageState(this.auth, this.name, this.temp);
+  static FirebaseDatabase database = FirebaseDatabase.instance;
+  bool new_inc = false;
+  bool temp_bool = false;
+  final TextEditingController _controller = new TextEditingController();
+  List _incubators;
+  List active;
+  /*void _addIncubator(String name) {
+    _list.add(Incubators(name: name));
+  }*/
+  List templist = [];
+  Map mapper;
   @override
-  String _lights = 'off';
+  void initState() {
+    print(_list);
+    super.initState();
+    auth.getIncubators(name, database).then((value) => setState(() {
+          print("hi");
+          _incubators = value;
+
+          /*for (var item in _list) {
+        _addIncubator(item);
+      }*/
+          print(_incubators);
+        }));
+    print("sadiwqojd");
+    auth.getIncubatorMap(name, database).then((value) => mapper = value);
+    auth.getActiveIncubators(name, database).then((value) => active = value);
+  }
+
   Widget build(BuildContext context) {
+    print("dewdsadasDIS IS MAH $name");
+    print(_list);
+    /*setState(() {
+      _incubators = _list;
+    });*/
+    print("hello");
+    print(_incubators);
+    print("mapper");
+    print(mapper);
+    print("printing acitve");
+    print(active);
+    var userref = database.reference().child("Active Incubators");
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green[900],
@@ -62,7 +118,6 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
                 ],
               ),
             ),
-            SizedBox(height: 10),
             Expanded(
               child: Container(
                 child: SingleChildScrollView(
@@ -70,6 +125,127 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
                     padding: EdgeInsets.all(10),
                     child: Column(
                       children: <Widget>[
+                        Container(
+                          width: MediaQuery.of(context).size.width - 50,
+                          height: 50,
+                          //margin: EdgeInsets.symmetric(horizontal:10),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(.12),
+                                  offset: Offset(0, 10),
+                                  blurRadius: 30,
+                                )
+                              ]),
+                          child: Center(
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 18, right: 22),
+                              child: TextField(
+                                controller: _controller,
+                                decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: "Add an incubator",
+                                    suffixIcon: IconButton(
+                                        icon: Icon(Icons.add),
+                                        onPressed: () {
+                                          //auth.getTemp(name, database).then((value) =>
+                                          //templist.add(value));
+                                          if (_incubators.length > 3) {
+                                            showAlertDialog(context);
+                                          } else {
+                                            if ( active != null && active
+                                                .contains(_controller.text)) {
+                                              print("exists");
+                                              print(_controller.text);
+                                              _incubators.add(_controller.text);
+                                              database
+                                                  .reference()
+                                                  .child(name)
+                                                  .update({
+                                                _controller.text: {
+                                                  "dose": 0,
+                                                  "lights": "off",
+                                                  "temperature": 25
+                                                }
+                                              });
+                                              new_inc = true;
+                                              //print(new_inc);
+                                              debugPrint(_controller.text);
+                                              userref.child(_controller.text).remove();
+                                              
+                                            }
+                                            else{
+                                              showAlertDialog2(context);
+                                            }
+                                          }
+
+                                          /* setState((){
+                                            _incubators = ;
+                                          });*/
+                                        })),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                            height: MediaQuery.of(context).size.height - 100,
+                            child: ListView.builder(
+                                itemCount: _incubators
+                                    .length, //mapper.keys.toList().length,
+                                scrollDirection: Axis.vertical,
+                                itemBuilder: (context, index) {
+                                  //var product = _incubators[index];
+                                  if ((index == _incubators.length - 1) &&
+                                      new_inc) {
+                                    temp_bool = new_inc;
+                                    new_inc = false;
+                                    print("iejjiodew");
+                                  }
+
+                                  return InkWell(
+                                      onTap: () {
+                                        print("go to diy page");
+                                      },
+                                      //a ? b : c evaluates to b if a is true and evaluates to c if a is false.
+                                      child: IncubatorCard(
+                                        text: _incubators[index],
+                                        temp: (index >
+                                                (mapper.keys.toList().length -
+                                                    1))
+                                            ? "25"
+                                            : (mapper[_incubators[index]]
+                                                    ["temperature"])
+                                                .toString(),
+                                        lights: (index >
+                                                (mapper.keys.toList().length -
+                                                    1))
+                                            ? "off"
+                                            : (mapper[_incubators[index]]
+                                                    ["lights"])
+                                                .toString(),
+                                        auth: widget.auth,
+                                        name:
+                                            name, //mapper.keys.toList()[index],
+                                        /*temp: ((index ==
+                                                    _incubators.length - 1) &&
+                                                temp_bool)
+                                            ? "25"
+                                            : (mapper[_incubators[index]]
+                                                    ["temperature"])
+                                                .toString(),
+                                        lights: ((index ==
+                                                    _incubators.length - 1) &&
+                                                temp_bool)
+                                            ? "off"
+                                            : mapper[_incubators[index]]
+                                                ["lights"],*/
+                                      ));
+                                })),
                       ],
                     ),
                   ),
@@ -81,8 +257,6 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
       ),
     );
   }
-
-
 }
 /*
         body: Container(
@@ -143,4 +317,53 @@ class CustomListTile extends StatelessWidget {
                   ],
                 ))));
   }
+}
+
+showAlertDialog(BuildContext context) {
+  // set up the buttons
+  Widget cancelButton = FlatButton(
+    child: Text("Cancel"),
+    onPressed: () {
+      Navigator.pop(context);
+    },
+  );
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Alert"),
+    content: Text("You can only have up to 4 incubators"),
+    actions: [
+      cancelButton,
+    ],
+  );
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+showAlertDialog2(BuildContext context) {
+  // set up the buttons
+  Widget cancelButton = FlatButton(
+    child: Text("Cancel"),
+    onPressed: () {
+      Navigator.pop(context);
+    },
+  );
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Alert"),
+    content: Text("Please register the incubator first"),
+    actions: [
+      cancelButton,
+    ],
+  );
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }

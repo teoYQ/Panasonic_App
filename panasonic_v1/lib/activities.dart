@@ -179,14 +179,14 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                                   children: <Widget>[
                                     Image.asset("assets/PlantPerformance.png",
                                         height: 100, width: 100),
-                                    Text("Analytics")
+                                    Text("Incubators")
                                   ])),
                           onPressed: () {
-                            Navigator.push(
+                            auth.getIncubators(name, database).then((value) => Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => AnlyticsPage()),
-                            );
+                                  builder: (context) => AnlyticsPage(auth : widget.auth, name : name)),
+                            ));
                           },
                         ),
                         SizedBox(
