@@ -3,7 +3,7 @@ import 'package:panasonic_v1/widgets/buttons_.dart';
 import 'package:panasonic_v1/widgets/tapbox.dart';
 import 'package:panasonic_v1/authentication.dart';
 import 'package:firebase_database/firebase_database.dart';
-
+import 'analyticspage.dart';
 import 'authentication.dart';
 
 class DIYPage extends StatefulWidget {
@@ -37,8 +37,16 @@ class _DIYPageState extends State<DIYPage> {
           appBar: AppBar(
             backgroundColor: Colors.green[900],
             elevation: 0.0,
+            leading: IconButton(icon: Icon(Icons.arrow_back),
+            onPressed: () {
+                            auth.getIncubatorMap(name, database).then((value) => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AnlyticsPage(auth : widget.auth, name : name,mapper: value,)),
+                            ));
+                          })
           ),
-          drawer: Drawer(
+          /*drawer: Drawer(
               child: ListView(children: <Widget>[
             DrawerHeader(
               decoration: BoxDecoration(
@@ -55,7 +63,7 @@ class _DIYPageState extends State<DIYPage> {
             CustomListTile(Icons.person, "Profile", () => {}),
             CustomListTile(Icons.settings, "Settings", () => {}),
             CustomListTile(Icons.exit_to_app, "Log Out", () => {}),
-          ])),
+          ]))*/
           body: Container(
             width: double.infinity,
             decoration: BoxDecoration(

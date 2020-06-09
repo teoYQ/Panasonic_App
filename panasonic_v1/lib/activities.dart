@@ -182,10 +182,10 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                                     Text("Incubators")
                                   ])),
                           onPressed: () {
-                            auth.getIncubators(name, database).then((value) => Navigator.push(
+                            auth.getIncubatorMap(name, database).then((value) => Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => AnlyticsPage(auth : widget.auth, name : name)),
+                                  builder: (context) => AnlyticsPage(auth : widget.auth, name : name,mapper: value,)),
                             ));
                           },
                         ),

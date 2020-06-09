@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:panasonic_v1/activities.dart';
 import 'package:panasonic_v1/widgets/incubators.dart';
 
 import 'package:panasonic_v1/authentication.dart';
@@ -9,30 +10,32 @@ import 'authentication.dart';
 class AnlyticsPage extends StatefulWidget {
   final BaseAuth auth;
   final String name;
-  final int temp;
-  AnlyticsPage({Key key, this.auth, this.name, this.temp}) : super(key: key);
+  final Map mapper;
+  AnlyticsPage({Key key, this.auth, this.name, this.mapper}) : super(key: key);
   @override
-  _AnlyticsPageState createState() => _AnlyticsPageState(auth, name, temp);
+  _AnlyticsPageState createState() => _AnlyticsPageState(auth, name, mapper);
 }
 
 class _AnlyticsPageState extends State<AnlyticsPage> {
   String _lights = 'Turn on the lights';
   String name;
-  int temp;
   BaseAuth auth;
   List _list;
-  _AnlyticsPageState(this.auth, this.name, this.temp);
+
+  Map mapper;
+  _AnlyticsPageState(this.auth, this.name, this.mapper);
   static FirebaseDatabase database = FirebaseDatabase.instance;
   bool new_inc = false;
   bool temp_bool = false;
+  int itemcount = 0;
   final TextEditingController _controller = new TextEditingController();
   List _incubators;
   List active;
   /*void _addIncubator(String name) {
     _list.add(Incubators(name: name));
   }*/
+  bool ready = false;
   List templist = [];
-  Map mapper;
   @override
   void initState() {
     print(_list);
@@ -40,15 +43,16 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
     auth.getIncubators(name, database).then((value) => setState(() {
           print("hi");
           _incubators = value;
-
+          itemcount = _incubators.length;
           /*for (var item in _list) {
         _addIncubator(item);
       }*/
           print(_incubators);
         }));
     print("sadiwqojd");
-    auth.getIncubatorMap(name, database).then((value) => mapper = value);
+    //auth.getIncubatorMap(name, database).then((value) => mapper = value);
     auth.getActiveIncubators(name, database).then((value) => active = value);
+    ready = true;
   }
 
   Widget build(BuildContext context) {
@@ -67,10 +71,24 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green[900],
-        elevation: 0.0,
-      ),
-      drawer: Drawer(
+          backgroundColor: Colors.green[900],
+          elevation: 0.0,
+          leading: IconButton(
+              icon: Icon(Icons.home),
+              onPressed: () {
+                auth
+                    .getEmail(name, database)
+                    .then((value) => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ActivitiesPage(
+                                    auth: widget.auth,
+                                    name: name,
+                                    email: value,
+                                  )),
+                        ));
+              })),
+      /*drawer: Drawer(
           child: ListView(children: <Widget>[
         DrawerHeader(
           decoration: BoxDecoration(
@@ -87,7 +105,7 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
         CustomListTile(Icons.person, "Profile", () => {}),
         CustomListTile(Icons.settings, "Settings", () => {}),
         CustomListTile(Icons.exit_to_app, "Log Out", () => {}),
-      ])),
+      ])),*/
       body: Container(
         width: double.infinity,
         decoration: BoxDecoration(
@@ -155,8 +173,9 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
                                           if (_incubators.length > 3) {
                                             showAlertDialog(context);
                                           } else {
-                                            if ( active != null && active
-                                                .contains(_controller.text)) {
+                                            if (active != null &&
+                                                active.contains(
+                                                    _controller.text)) {
                                               print("exists");
                                               print(_controller.text);
                                               _incubators.add(_controller.text);
@@ -173,10 +192,10 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
                                               new_inc = true;
                                               //print(new_inc);
                                               debugPrint(_controller.text);
-                                              userref.child(_controller.text).remove();
-                                              
-                                            }
-                                            else{
+                                              userref
+                                                  .child(_controller.text)
+                                                  .remove();
+                                            } else {
                                               showAlertDialog2(context);
                                             }
                                           }
@@ -190,15 +209,15 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
                           ),
                         ),
                         SizedBox(
-                          height: 10,
+                          height: 20,
                         ),
                         Container(
                             height: MediaQuery.of(context).size.height - 100,
                             child: ListView.builder(
-                                itemCount: _incubators
-                                    .length, //mapper.keys.toList().length,
+                                itemCount: itemcount, //mapper.keys.toList().length,
                                 scrollDirection: Axis.vertical,
                                 itemBuilder: (context, index) {
+                                  
                                   //var product = _incubators[index];
                                   if ((index == _incubators.length - 1) &&
                                       new_inc) {
@@ -343,6 +362,7 @@ showAlertDialog(BuildContext context) {
     },
   );
 }
+
 showAlertDialog2(BuildContext context) {
   // set up the buttons
   Widget cancelButton = FlatButton(

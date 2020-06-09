@@ -27,6 +27,7 @@ abstract class BaseAuth {
   Future<void> signOut();
 
   Future<bool> isEmailVerified();
+  Future<String>getEmail(String name, FirebaseDatabase database);
 
   Future<List> getIncubators(String name, FirebaseDatabase database);
 
@@ -72,6 +73,14 @@ class Auth implements BaseAuth {
   Future<int> getTemp(String name, FirebaseDatabase database) async {
     DataSnapshot result =
         await database.reference().child(name).child("temperature").once();
+    print(result.value);
+    // String value = int.parse(result.value);
+    // return value;
+    return result.value;
+  }
+  Future<String> getEmail(String name, FirebaseDatabase database) async {
+    DataSnapshot result =
+        await database.reference().child("Users").child(name).once();
     print(result.value);
     // String value = int.parse(result.value);
     // return value;
