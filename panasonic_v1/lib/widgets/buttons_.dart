@@ -20,7 +20,7 @@ class ButtonActivity extends StatelessWidget {
           child:InkWell( 
             onTap: onTap,
             child: Container(
-                height: 150,
+                height: 70,
                 width: 150,
                 child: Row(
                   children: <Widget>[

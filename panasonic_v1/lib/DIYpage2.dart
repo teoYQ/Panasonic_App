@@ -11,42 +11,52 @@ class DIYPage extends StatefulWidget {
   final String name;
   final int temp;
   final String incubatorname;
-  DIYPage({Key key, this.auth, this.name,this.temp,this.incubatorname})
-    : super(key: key);
+  final int dose;
+  DIYPage(
+      {Key key, this.auth, this.name, this.temp, this.dose, this.incubatorname})
+      : super(key: key);
   @override
-  _DIYPageState createState() => _DIYPageState(auth,name,temp,incubatorname);
+  _DIYPageState createState() =>
+      _DIYPageState(auth, name, temp, dose, incubatorname);
 }
 
 class _DIYPageState extends State<DIYPage> {
-  String _lights = 'Turn on the lights'; 
-  String light;
+  String _lights = 'Turn on the lights';
+  String light = "On";
   String name;
   int temp;
   BaseAuth auth;
+  int dose;
+  final TextEditingController _controller = new TextEditingController();
   String incubatorname;
-  _DIYPageState(this.auth,this.name,this.temp,this.incubatorname);
+  _DIYPageState(this.auth, this.name, this.temp, this.dose, this.incubatorname);
   static FirebaseDatabase database = FirebaseDatabase.instance;
-  
-  @override
 
+  @override
   Widget build(BuildContext context) {
     var userref = database.reference().child(name).child(incubatorname);
-    print("DIS IS MAH $name");
+    print("DIS IS MAH $incubatorname");
     bool _state = false;
-        return Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.green[900],
-            elevation: 0.0,
-            leading: IconButton(icon: Icon(Icons.arrow_back),
-            onPressed: () {
-                            auth.getIncubatorMap(name, database).then((value) => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => AnlyticsPage(auth : widget.auth, name : name,mapper: value,)),
-                            ));
-                          })
-          ),
-          /*drawer: Drawer(
+    return Scaffold(
+      appBar: AppBar(
+          backgroundColor: Colors.green[900],
+          elevation: 0.0,
+          leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                auth
+                    .getIncubatorMap(name, database)
+                    .then((value) => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AnlyticsPage(
+                                    auth: widget.auth,
+                                    name: name,
+                                    mapper: value,
+                                  )),
+                        ));
+              })),
+      /*drawer: Drawer(
               child: ListView(children: <Widget>[
             DrawerHeader(
               decoration: BoxDecoration(
@@ -64,85 +74,135 @@ class _DIYPageState extends State<DIYPage> {
             CustomListTile(Icons.settings, "Settings", () => {}),
             CustomListTile(Icons.exit_to_app, "Log Out", () => {}),
           ]))*/
-          body: Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-                gradient: LinearGradient(begin: Alignment.topCenter, colors: [
-              Colors.green[900],
-              Colors.green[800],
-              Colors.green[400]
-            ])),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                SizedBox(
-                  height: 30,
-                ),
-                Padding(
-                  padding: EdgeInsets.all(20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        "Control Your incubator, $name",
+      body: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+            gradient: LinearGradient(begin: Alignment.topCenter, colors: [
+          Colors.green[900],
+          Colors.green[800],
+          Colors.green[400]
+        ])),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SizedBox(
+              height: 30,
+            ),
+            Padding(
+              padding: EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(children: <Widget>[
+                    InkWell(
+                      onTap: _showDialog,
+                      child: Text(
+                        "$incubatorname",
                         style: TextStyle(color: Colors.white, fontSize: 40),
                       ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      //FadeAnimation(1.3, Text("Welcome Back", style: TextStyle(color: Colors.white, fontSize: 18),)),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 10),
-                Expanded(
-                  child: Container(
-                    child: SingleChildScrollView(
-                      child: Padding(
-                        padding: EdgeInsets.all(7),
-                        child: Column(
-                          children: <Widget>[
-                            
-                            Row(children: <Widget>[
-                            ButtonActivity(Icons.lightbulb_outline, " Switch Lights \n Status : $light", () => {
-                              widget.auth.getIncubatorLight(name,incubatorname,database).then((val) => setState(() {
-                              print(val);
-                              (val == "On") ? light = "Off" : light = "On";
-                              userref.update({"lights": light});
-                            }))
-                            }),
-                              //ButtonActivity(Icons.lightbulb_outline, _state ? 'Turn x lights' : 'Turn on lights', () => {_state = !_state}),
-                          ButtonActivity(Icons.wb_sunny, "   Increase  \n  temperature \n $temp", () => {
-                              widget.auth.getIncubatorTemp(name,incubatorname,database).then((val) => setState(() {
-                              print(val);
-                              int inc_temp = val+1;
-                              print(inc_temp);
-                              temp = val+1;
-                              userref.update({"temperature":inc_temp});
-                            }))
-                            })
-                        ],),
-                        SizedBox(height: 20,),
-                        Row(children: <Widget>[
-                          ButtonActivity(Icons.local_drink, "Dose Fertilizer", () => {
-                              widget.auth.getIncubatorDose(name,incubatorname,database).then((val) => setState(() {
-                              print(val);
-                              int inc_dose = val+1;
-                              print(inc_dose);
+                    ),
+                    Icon(
+                      Icons.edit,
+                      color: Colors.white,
+                    )
+                  ]),
 
-                              userref.update({"dose":inc_dose});
-                              }))
-                          }),
-                          ButtonActivity(Icons.wb_cloudy, "   Decrease  \n  temperature \n $temp", () => {
-                              widget.auth.getIncubatorTemp(name,incubatorname,database).then((val) => setState(() {
-                              print(val);
-                              int dec_temp = val-1;
-                              print(dec_temp);
-                              temp = val -1;
-                              userref.update({"temperature":dec_temp});
-                            }))
-                            })
-                        ],)
+                  /*Text(
+                    "$incubatorname",
+                    style: TextStyle(color: Colors.white, fontSize: 40),
+                  ),*/
+                  SizedBox(
+                    height: 10,
+                  ),
+                  //FadeAnimation(1.3, Text("Welcome Back", style: TextStyle(color: Colors.white, fontSize: 18),)),
+                ],
+              ),
+            ),
+            SizedBox(height: 10),
+            Expanded(
+              child: Container(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.all(7),
+                    child: Column(
+                      children: <Widget>[
+                        SizedBox(height: 300),
+                        Row(
+                          children: <Widget>[
+                            ButtonActivity(
+                                Icons.lightbulb_outline,
+                                " Switch Lights \n Status : $light",
+                                () => {
+                                      widget.auth
+                                          .getIncubatorLight(
+                                              name, incubatorname, database)
+                                          .then((val) => setState(() {
+                                                print(val);
+                                                (val == "On")
+                                                    ? light = "Off"
+                                                    : light = "On";
+                                                userref
+                                                    .update({"lights": light});
+                                              }))
+                                    }),
+                            //ButtonActivity(Icons.lightbulb_outline, _state ? 'Turn x lights' : 'Turn on lights', () => {_state = !_state}),
+                            ButtonActivity(
+                                Icons.wb_sunny,
+                                " Increase \n temperature : $temp",
+                                () => {
+                                      widget.auth
+                                          .getIncubatorTemp(
+                                              name, incubatorname, database)
+                                          .then((val) => setState(() {
+                                                print(val);
+                                                int inc_temp = val + 1;
+                                                print(inc_temp);
+                                                temp = val + 1;
+                                                userref.update(
+                                                    {"temperature": inc_temp});
+                                              }))
+                                    })
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          children: <Widget>[
+                            ButtonActivity(
+                                Icons.local_drink,
+                                "Dose Fertilizer",
+                                () => {
+                                      widget.auth
+                                          .getIncubatorDose(
+                                              name, incubatorname, database)
+                                          .then((val) => setState(() {
+                                                print(val);
+                                                int inc_dose = val + 1;
+                                                print(inc_dose);
+
+                                                userref
+                                                    .update({"dose": inc_dose});
+                                              }))
+                                    }),
+                            ButtonActivity(
+                                Icons.wb_cloudy,
+                                " Decrease \n temperature : $temp",
+                                () => {
+                                      widget.auth
+                                          .getIncubatorTemp(
+                                              name, incubatorname, database)
+                                          .then((val) => setState(() {
+                                                print(val);
+                                                int dec_temp = val - 1;
+                                                print(dec_temp);
+                                                temp = val - 1;
+                                                userref.update(
+                                                    {"temperature": dec_temp});
+                                              }))
+                                    })
+                          ],
+                        )
                       ],
                     ),
                   ),
@@ -155,7 +215,70 @@ class _DIYPageState extends State<DIYPage> {
     );
   }
 
+  _showDialog() async {
+    await showDialog<String>(
+      context: context,
+      child: new AlertDialog(
+        contentPadding: const EdgeInsets.all(16.0),
+        content: new Row(
+          children: <Widget>[
+            new Expanded(
+              child: new TextField(
+                controller: _controller,
+                autofocus: true,
+                decoration: new InputDecoration(
+                    labelText: 'Full Name', hintText: 'eg. John Smith'),
+              ),
+            )
+          ],
+        ),
+        actions: <Widget>[
+          new FlatButton(
+              child: const Text('CANCEL'),
+              onPressed: () {
+                print("Cacnel");
 
+                Navigator.pop(context);
+              }),
+          new FlatButton(
+              child: const Text('Rename'),
+              onPressed: () {
+                print("RENAMIGN");
+                print(incubatorname);
+
+                print(_controller.text);
+                database.reference().child(name).update({
+                  _controller.text: {
+                    "dose":
+                        dose, //widget.auth.getIncubatorDose(name, incubatorname, database),
+                    "lights":
+                        light, //widget.auth.getIncubatorLight(name, incubatorname, database),
+                    "temperature":
+                        temp, //widget.auth.getIncubatorTemp(name, incubatorname, database)
+                  }
+                });
+
+                //incubatorname = _controller.text;
+                //Navigator.pop(context);
+                database.reference().child(name).child(incubatorname).remove();
+                auth
+                    .getIncubatorTemp(name, _controller.text, database)
+                    .then((value) => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DIYPage(
+                                    auth: widget.auth,
+                                    name: name,
+                                    dose: dose,
+                                    temp: value,
+                                    incubatorname: _controller.text,
+                                  )),
+                        ));
+              })
+        ],
+      ),
+    );
+  }
 }
 /*
         body: Container(

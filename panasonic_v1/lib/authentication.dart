@@ -21,13 +21,15 @@ abstract class BaseAuth {
 
   Future<String> getIncubatorLight(
       String name, String incubatorName, FirebaseDatabase database);
+  Future<List> getIncubatorTempDoseLight(
+      String name, String incubatorName, FirebaseDatabase database);
   Future<List> getActiveIncubators(String name, FirebaseDatabase database);
   Future<void> sendEmailVerification();
 
   Future<void> signOut();
 
   Future<bool> isEmailVerified();
-  Future<String>getEmail(String name, FirebaseDatabase database);
+  Future<String> getEmail(String name, FirebaseDatabase database);
 
   Future<List> getIncubators(String name, FirebaseDatabase database);
 
@@ -78,6 +80,7 @@ class Auth implements BaseAuth {
     // return value;
     return result.value;
   }
+
   Future<String> getEmail(String name, FirebaseDatabase database) async {
     DataSnapshot result =
         await database.reference().child("Users").child(name).once();
@@ -175,6 +178,16 @@ class Auth implements BaseAuth {
     return result.value;
   }
 
+  Future<List> getIncubatorTempDoseLight(
+      String name, String incubator_name, FirebaseDatabase database) async {
+    DataSnapshot result =
+        await database.reference().child(name).child(incubator_name).once();
+    print(result.value);
+    // String value = int.parse(result.value);
+    // return value;
+    return result.value.values.toList();
+  }
+
   Future<String> signUp(String email, String password) async {
     FirebaseUser result = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email, password: password);
@@ -192,9 +205,11 @@ class Auth implements BaseAuth {
     var _list = result.value.keys.toList();
     //result.value.forEach((v) => print(v));
     print(_list);
+    var _list2 = result.value.values.toList();
+    List out = [_list, _list2];
     // String value = int.parse(result.value);
     // return value;
-    return _list;
+    return out;
   }
 
   Future<FirebaseUser> getCurrentUser() async {

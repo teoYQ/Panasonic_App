@@ -7,9 +7,10 @@ class IncubatorCard extends StatelessWidget {
   final String lights;
   final String name;
   final BaseAuth auth;
+  final int dose;
 
 
-  IncubatorCard({this.text, this.temp, this.lights,this.auth,this.name});
+  IncubatorCard({this.text, this.temp, this.lights,this.auth,this.name, this.dose});
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -18,7 +19,7 @@ class IncubatorCard extends StatelessWidget {
           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => DIYPage(auth : this.auth, name : name, temp : int.parse(temp),incubatorname: this.text)),
+                                  builder: (context) => DIYPage(auth : this.auth, name : name, temp : int.parse(temp),dose: dose,incubatorname: this.text)),
                             );
         },
         child: Padding(

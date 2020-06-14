@@ -138,6 +138,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                     padding: EdgeInsets.all(10),
                     child: Column(
                       children: <Widget>[
+                        /*
                         FlatButton(
                           child: Container(
                               height: 120,
@@ -164,7 +165,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                         ),
                         SizedBox(
                           height: 10,
-                        ),
+                        ),*/
                         FlatButton(
                           child: Container(
                               height: 120,
@@ -192,7 +193,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                         SizedBox(
                           height: 10,
                         ),
-                        FlatButton(
+                        /*FlatButton(
                           child: Container(
                               height: 120,
                               width: 480,
@@ -220,7 +221,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                         ),
                         SizedBox(
                           height: 10,
-                        ),
+                        ),*/
                         FlatButton(
                           child: Container(
                               height: 120,
@@ -263,6 +264,29 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                                     Image.asset("assets/trophy.png",
                                         height: 100, width: 100),
                                     Text("Achievements")
+                                  ])),
+                          onPressed: () {
+                            
+                          },
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        FlatButton(
+                          child: Container(
+                              height: 120,
+                              width: 480,
+                              margin: EdgeInsets.symmetric(horizontal: 10),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Colors.white),
+                              child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    Image.asset("assets/forum-19.png",
+                                        height: 100, width: 100),
+                                    Text("Forum")
                                   ])),
                           onPressed: () {
                             

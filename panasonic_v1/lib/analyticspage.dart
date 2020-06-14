@@ -31,6 +31,7 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
   final TextEditingController _controller = new TextEditingController();
   List _incubators;
   List active;
+
   /*void _addIncubator(String name) {
     _list.add(Incubators(name: name));
   }*/
@@ -76,17 +77,15 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
           leading: IconButton(
               icon: Icon(Icons.home),
               onPressed: () {
-                auth
-                    .getEmail(name, database)
-                    .then((value) => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ActivitiesPage(
-                                    auth: widget.auth,
-                                    name: name,
-                                    email: value,
-                                  )),
-                        ));
+                auth.getEmail(name, database).then((value) => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ActivitiesPage(
+                                auth: widget.auth,
+                                name: name,
+                                email: value,
+                              )),
+                    ));
               })),
       /*drawer: Drawer(
           child: ListView(children: <Widget>[
@@ -126,7 +125,7 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    "Track Your Plants",
+                    "Incubators",
                     style: TextStyle(color: Colors.white, fontSize: 40),
                   ),
                   SizedBox(
@@ -174,16 +173,18 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
                                             showAlertDialog(context);
                                           } else {
                                             if (active != null &&
-                                                active.contains(
+                                                active[1].contains(
                                                     _controller.text)) {
                                               print("exists");
                                               print(_controller.text);
-                                              _incubators.add(_controller.text);
+                                              int index = active[1]
+                                                  .indexOf(_controller.text);
+                                              _incubators.add(active[0][index]);
                                               database
                                                   .reference()
                                                   .child(name)
                                                   .update({
-                                                _controller.text: {
+                                                active[0][index]: {
                                                   "dose": 0,
                                                   "lights": "off",
                                                   "temperature": 25
@@ -193,8 +194,24 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
                                               //print(new_inc);
                                               debugPrint(_controller.text);
                                               userref
-                                                  .child(_controller.text)
+                                                  .child(active[0][index])
                                                   .remove();
+
+                                              auth
+                                                  .getIncubatorMap(
+                                                      name, database)
+                                                  .then((value) =>
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                AnlyticsPage(
+                                                                  auth: widget
+                                                                      .auth,
+                                                                  name: name,
+                                                                  mapper: value,
+                                                                )),
+                                                      ));
                                             } else {
                                               showAlertDialog2(context);
                                             }
@@ -214,10 +231,10 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
                         Container(
                             height: MediaQuery.of(context).size.height - 100,
                             child: ListView.builder(
-                                itemCount: itemcount, //mapper.keys.toList().length,
+                                itemCount:
+                                    itemcount, //mapper.keys.toList().length,
                                 scrollDirection: Axis.vertical,
                                 itemBuilder: (context, index) {
-                                  
                                   //var product = _incubators[index];
                                   if ((index == _incubators.length - 1) &&
                                       new_inc) {
@@ -248,6 +265,12 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
                                                     ["lights"])
                                                 .toString(),
                                         auth: widget.auth,
+                                        dose: (index >
+                                                (mapper.keys.toList().length -
+                                                    1))
+                                            ? 0
+                                            : (mapper[_incubators[index]]
+                                                    ["dose"]),
                                         name:
                                             name, //mapper.keys.toList()[index],
                                         /*temp: ((index ==
@@ -374,7 +397,7 @@ showAlertDialog2(BuildContext context) {
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
     title: Text("Alert"),
-    content: Text("Please register the incubator first"),
+    content: Text("Invalid Password"),
     actions: [
       cancelButton,
     ],
