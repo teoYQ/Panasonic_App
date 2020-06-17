@@ -1,9 +1,10 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:panasonic_v1/DIYpage.dart';
+//import 'package:panasonic_v1/DIYpage.dart';
 import 'package:panasonic_v1/analyticspage.dart';
-import 'package:panasonic_v1/monitorpage.dart';
+import 'package:panasonic_v1/forum.dart';
+//import 'package:panasonic_v1/monitorpage.dart';
 import 'package:panasonic_v1/shoppage.dart';
 import 'package:panasonic_v1/authentication.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -289,7 +290,8 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                                     Text("Forum")
                                   ])),
                           onPressed: () {
-                            
+                            Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) => ForumPage()),);
                           },
                         )
                         /*InkWell(

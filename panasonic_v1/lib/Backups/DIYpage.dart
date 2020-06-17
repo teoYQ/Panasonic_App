@@ -4,7 +4,7 @@ import 'package:panasonic_v1/widgets/tapbox.dart';
 import 'package:panasonic_v1/authentication.dart';
 import 'package:firebase_database/firebase_database.dart';
 
-import 'authentication.dart';
+//import 'authentication.dart';
 
 class DIYPage extends StatefulWidget {
   final BaseAuth auth;

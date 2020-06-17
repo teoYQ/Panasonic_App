@@ -4,7 +4,7 @@ import 'package:panasonic_v1/widgets/incubators.dart';
 
 import 'package:panasonic_v1/authentication.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:panasonic_v1/DIYpage.dart';
+//import 'package:panasonic_v1/DIYpage.dart';
 import 'authentication.dart';
 
 class AnlyticsPage extends StatefulWidget {
