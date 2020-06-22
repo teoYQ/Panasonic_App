@@ -120,6 +120,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                   Text(
                     "Welcome Back, $name",
                     style: TextStyle(color: Colors.white, fontSize: 40),
+                    key:  Key('Welcome'),
                   ),
                   SizedBox(
                     height: 10,

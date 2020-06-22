@@ -23,10 +23,20 @@ class _ForumPageState extends State<ForumPage> {
           elevation: 0.0,
         ),
         body: Builder(builder: (BuildContext context) {
-          return WebView(
+          return Container(
+            child: Stack( 
+            children: <Widget>[
+           
+            WebView(
             initialUrl: 'https://www.facebook.com/groups/541659439845227',
             javascriptMode: JavascriptMode.unrestricted,
-          );
+          ),
+           Container(
+              color: Colors.green[900],
+              height: 1.0,
+              width: 468,
+            
+          ),]));
         }));
   }
 }

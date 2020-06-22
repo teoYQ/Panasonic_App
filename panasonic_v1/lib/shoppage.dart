@@ -22,6 +22,7 @@ class _ShopPageState extends State<ShopPage> {
       Plants(name: "lettuce", pic: ("assets/lettuce.png"), price: "1.48"),
       Plants(name: "leek", pic: ("assets/leek.png"), price: "1.48")
     ];
+    
     setState(() {
       _plants = list;
       _chinese = chinese;
@@ -160,6 +161,11 @@ class _ShopPageState extends State<ShopPage> {
                                           text: _plants[index].name,
                                           filename: _plants[index].pic,
                                           price: _plants[index].price,
+                                          onTap: (){
+                                            print("idiwjed");
+                                            _cartList.add(_plants[index]);
+                                            print(_cartList);
+                                          },
                                         ));
                                       })),
                               SizedBox(
@@ -182,6 +188,7 @@ class _ShopPageState extends State<ShopPage> {
                                           text: _chinese[index].name,
                                           filename: _chinese[index].pic,
                                           price: _chinese[index].price,
+                                          
                                         );
                                       }))
                             ]))),
@@ -198,7 +205,7 @@ class Plants {
   final String name;
   final String pic;
   final String price;
-  Plants({this.name, this.pic, this.price});
+  Plants({this.name, this.pic, this.price,});
 }
 
 /*

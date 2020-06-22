@@ -6,7 +6,8 @@ class ProductCard extends StatelessWidget {
   final String filename;
   final String text;
   final String price;
-  ProductCard({this.filename, this.text, this.price});
+  Function onTap;
+  ProductCard({this.filename, this.text, this.price,this.onTap});
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -53,9 +54,11 @@ class ProductCard extends StatelessWidget {
                 ),
                 Positioned(
                   //alignment: Alignment.bottomCenter,
-                  top: 10,
-                  right: 10,
-                  child: Icon(Icons.add)
+                  top: 1,
+                  right: 1,
+                  child: IconButton(icon: Icon(Icons.add), onPressed: onTap),
+                  
+                
                 )
               ],
             ))));

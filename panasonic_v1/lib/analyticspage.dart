@@ -287,6 +287,7 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
                                             : mapper[_incubators[index]]
                                                 ["lights"],*/
                                       ));
+                                
                                 })),
                       ],
                     ),
