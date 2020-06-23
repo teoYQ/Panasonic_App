@@ -160,6 +160,7 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
                             child: Padding(
                               padding: EdgeInsets.only(left: 18, right: 22),
                               child: TextField(
+                                key: Key("Add"),
                                 controller: _controller,
                                 decoration: InputDecoration(
                                     border: InputBorder.none,
@@ -229,6 +230,7 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
                           height: 20,
                         ),
                         Container(
+                            key: Key("cards"),
                             height: MediaQuery.of(context).size.height - 100,
                             child: ListView.builder(
                                 itemCount:
@@ -270,7 +272,7 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
                                                     1))
                                             ? 0
                                             : (mapper[_incubators[index]]
-                                                    ["dose"]),
+                                                ["dose"]),
                                         name:
                                             name, //mapper.keys.toList()[index],
                                         /*temp: ((index ==
@@ -287,7 +289,6 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
                                             : mapper[_incubators[index]]
                                                 ["lights"],*/
                                       ));
-                                
                                 })),
                       ],
                     ),

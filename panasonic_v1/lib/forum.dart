@@ -16,6 +16,8 @@ class ForumPage extends StatefulWidget {
 }
 
 class _ForumPageState extends State<ForumPage> {
+  WebViewController controller;
+  bool _load = false;
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
@@ -23,20 +25,24 @@ class _ForumPageState extends State<ForumPage> {
           elevation: 0.0,
         ),
         body: Builder(builder: (BuildContext context) {
-          return Container(
-            child: Stack( 
-            children: <Widget>[
-           
+          return 
             WebView(
-            initialUrl: 'https://www.facebook.com/groups/541659439845227',
-            javascriptMode: JavascriptMode.unrestricted,
-          ),
-           Container(
-              color: Colors.green[900],
-              height: 1.0,
-              width: 468,
+              key: Key("fb"),
+              initialUrl: 'https://www.facebook.com/groups/541659439845227',
+              javascriptMode: JavascriptMode.unrestricted,
+              onWebViewCreated: (WebViewController webViewController) {
+                controller = webViewController;
+              },
+              onPageFinished:(String url) {
+                  print('Page finished loading: $url');
+                  //hide you progressbar here
+                setState(() {
+                _load = false;
+              });
+                
+              } ,
             
-          ),]));
+            );
         }));
   }
 }

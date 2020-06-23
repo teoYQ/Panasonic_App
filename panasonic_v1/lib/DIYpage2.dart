@@ -196,14 +196,17 @@ secondaryMeasureAxis: new charts.NumericAxisSpec(
                         // SizedBox(height: 50),
 
                         /*SizedBox(
-                          height: 170,
+                          height: 180,
                           child: chart,
                         ),*/
                         Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: Container(
-                              child: Text("Surface Area against Days Grown",style: TextStyle(color: Colors.white,)),
-                          )),
+                            padding: const EdgeInsets.all(20.0),
+                            child: Container(
+                              child: Text("Surface Area against Days Grown",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  )),
+                            )),
                         Padding(
                           padding: const EdgeInsets.all(20.0),
                           child: Container(
@@ -216,118 +219,136 @@ secondaryMeasureAxis: new charts.NumericAxisSpec(
                                 BezierLine(data: serie),
                               ],
                               config: BezierChartConfig(
-                                  verticalIndicatorStrokeWidth: 3.0,
-                                  verticalIndicatorColor: Colors.black26,
-                                  showVerticalIndicator: true,
-                                  //backgroundColor: Colors.red,
-                                  //updatePositionOnTap: true,
-                                  showDataPoints: true,
-                                  snap: false,
-                                  bubbleIndicatorColor: Colors.white,
-                                  displayDataPointWhenNoValue: true,
-                                  //displayYAxis: true
-                                  /*backgroundGradient: LinearGradient(
+                                verticalIndicatorStrokeWidth: 3.0,
+                                verticalIndicatorColor: Colors.black26,
+                                showVerticalIndicator: true,
+                                //backgroundColor: Colors.red,
+                                //updatePositionOnTap: true,
+                                showDataPoints: true,
+                                snap: false,
+                                bubbleIndicatorColor: Colors.white,
+                                displayDataPointWhenNoValue: true,
+                                //displayYAxis: true
+                                /*backgroundGradient: LinearGradient(
                                     colors: <Color>[
                                       Colors.green[900],
                                       Colors.green[800],
                                       Colors.green[400]
                                     ]),*/
-                                  ),
+                              ),
                             ),
                           ),
                         ),
-
-                        Row(
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                            child: Row(
                           children: <Widget>[
-                            ButtonActivity(
-                                Icons.lightbulb_outline,
-                                " Switch Lights \n Status : $light",
-                                () => {
-                                      widget.auth
-                                          .getIncubatorLight(
-                                              name, incubatorname, database)
-                                          .then((val) => setState(() {
-                                                print(val);
-                                                (val == "On")
-                                                    ? light = "Off"
-                                                    : light = "On";
-                                                userref
-                                                    .update({"lights": light});
-                                              }))
-                                    }),
+                            SizedBox(
+                                width: 180,
+                                child: ButtonActivity(
+                                    Icons.lightbulb_outline,
+                                    " Switch Lights \n Status : $light",
+                                    () => {
+                                          widget.auth
+                                              .getIncubatorLight(
+                                                  name, incubatorname, database)
+                                              .then((val) => setState(() {
+                                                    print(val);
+                                                    (val == "On")
+                                                        ? light = "Off"
+                                                        : light = "On";
+                                                    userref.update(
+                                                        {"lights": light});
+                                                  }))
+                                        })),
                             //ButtonActivity(Icons.lightbulb_outline, _state ? 'Turn x lights' : 'Turn on lights', () => {_state = !_state}),
-                            ButtonActivity(
-                                Icons.wb_sunny,
-                                " Increase \n temperature : $temp",
-                                () => {
-                                      widget.auth
-                                          .getIncubatorTemp(
-                                              name, incubatorname, database)
-                                          .then((val) => setState(() {
-                                                print(val);
-                                                int inc_temp = val + 1;
-                                                print(inc_temp);
-                                                temp = val + 1;
-                                                userref.update(
-                                                    {"temperature": inc_temp});
-                                              }))
-                                    })
+                            SizedBox(
+                                //width: 180,
+                                child: ButtonActivity(
+                                    Icons.wb_sunny,
+                                    " Increase \n temperature : $temp",
+                                    () => {
+                                          widget.auth
+                                              .getIncubatorTemp(
+                                                  name, incubatorname, database)
+                                              .then((val) => setState(() {
+                                                    print(val);
+                                                    int inc_temp = val + 1;
+                                                    print(inc_temp);
+                                                    temp = val + 1;
+                                                    userref.update({
+                                                      "temperature": inc_temp
+                                                    });
+                                                  }))
+                                        }))
                           ],
-                        ),
+                        )),
                         SizedBox(
                           height: 20,
                         ),
                         Row(
                           children: <Widget>[
-                            ButtonActivity(
-                                Icons.local_drink,
-                                "Dose Fertilizer",
-                                () => {
-                                      widget.auth
-                                          .getIncubatorDose(
-                                              name, incubatorname, database)
-                                          .then((val) => setState(() {
-                                                print(val);
-                                                int inc_dose = val + 1;
-                                                print(inc_dose);
+                            SizedBox(
+                                width: 180,
+                                child: ButtonActivity(
+                                    Icons.local_drink,
+                                    "Dose Fertilizer",
+                                    () => {
+                                          widget.auth
+                                              .getIncubatorDose(
+                                                  name, incubatorname, database)
+                                              .then((val) => setState(() {
+                                                    print(val);
+                                                    int inc_dose = val + 1;
+                                                    print(inc_dose);
 
-                                                userref
-                                                    .update({"dose": inc_dose});
-                                              }))
-                                    }),
-                            ButtonActivity(
-                                Icons.wb_cloudy,
-                                " Decrease \n temperature : $temp",
-                                () => {
-                                      widget.auth
-                                          .getIncubatorTemp(
-                                              name, incubatorname, database)
-                                          .then((val) => setState(() {
-                                                print(val);
-                                                int dec_temp = val - 1;
-                                                print(dec_temp);
-                                                temp = val - 1;
-                                                userref.update(
-                                                    {"temperature": dec_temp});
-                                              }))
-                                    })
+                                                    userref.update(
+                                                        {"dose": inc_dose});
+                                                  }))
+                                        })),
+                            SizedBox(
+                                width: 180,
+                                child: ButtonActivity(
+                                    Icons.wb_cloudy,
+                                    " Decrease \n temperature : $temp",
+                                    () => {
+                                          widget.auth
+                                              .getIncubatorTemp(
+                                                  name, incubatorname, database)
+                                              .then((val) => setState(() {
+                                                    print(val);
+                                                    int dec_temp = val - 1;
+                                                    print(dec_temp);
+                                                    temp = val - 1;
+                                                    userref.update({
+                                                      "temperature": dec_temp
+                                                    });
+                                                  }))
+                                        }))
                           ],
-
                         ),
-                        SizedBox(height: 20,),
+                        SizedBox(
+                          height: 20,
+                        ),
                         Container(
-                        height: 40,
-                        width: 350,
-                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.white),
-                        child: FlatButton(onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(
-                                  builder: (context) => MonitorPage()),);
-                          }, child: Text("View Plants",style: TextStyle(color: Colors.green[900]),)),
-                
+                          height: 40,
+                          width: 350,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white),
+                          child: FlatButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => MonitorPage()),
+                                );
+                              },
+                              child: Text(
+                                "View Plants",
+                                style: TextStyle(color: Colors.green[900]),
+                              )),
                         )
-                        
                       ],
                     ),
                   ),

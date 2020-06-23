@@ -11,7 +11,7 @@ class ButtonActivity extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.fromLTRB(16.0, 0, 8.0, 0),
         
-        child: 
+        child:  
              Ink(
                 decoration: BoxDecoration(
                   color: Colors.white,

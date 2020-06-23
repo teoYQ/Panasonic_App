@@ -11,7 +11,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:panasonic_v1/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('Check log in and sign up page loads', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(MyApp());
 
@@ -19,24 +19,22 @@ void main() {
     expect(find.text('Login'), findsOneWidget);
     expect(find.text('Sign Up'), findsOneWidget);
 
-    expect(find.text('1'), findsNothing);
-    final Finder email = find.widgetWithText(TextFormField, 'Email');
+    /*final Finder email = find.widgetWithText(TextFormField, 'Email');
     
     final Finder pw = find.widgetWithText(TextFormField, 'Password');
     await tester.enterText(email, 'yongquan13s105@gmail.com');
     await tester.enterText(pw, '123456');
 
     await tester.tap(find.text("Log In"));
-    await tester.pump();
+    await tester.pump();*/
 
-    expect(find.text("Welcome"),findsOneWidget);
     // Tap the '+' icon and trigger a frame.
-/*SIGN UP CHECK
+//SIGN UP CHECK
     await tester.tap(find.text("Sign Up"));
     //expect(find.byIcon(Icons.camera_alt), findsOneWidget);
 
     await tester.pumpAndSettle();
-    expect(find.byType(TextFormField), findsNWidgets(3));*/
+    expect(find.byType(TextFormField), findsNWidgets(3));
     /*await tester.tap(find.byIcon(Icons.add));
     await tester.pump();
 */
