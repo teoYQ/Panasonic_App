@@ -202,7 +202,7 @@ secondaryMeasureAxis: new charts.NumericAxisSpec(
                         Padding(
                             padding: const EdgeInsets.all(20.0),
                             child: Container(
-                              child: Text("Surface Area against Days Grown",
+                              child: Text("Surface Area (cm2) against Days Grown",
                                   style: TextStyle(
                                     color: Colors.white,
                                   )),
@@ -239,9 +239,7 @@ secondaryMeasureAxis: new charts.NumericAxisSpec(
                             ),
                           ),
                         ),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                            child: Row(
+                         Row(
                           children: <Widget>[
                             SizedBox(
                                 width: 180,
@@ -282,7 +280,7 @@ secondaryMeasureAxis: new charts.NumericAxisSpec(
                                                   }))
                                         }))
                           ],
-                        )),
+                        ),
                         SizedBox(
                           height: 20,
                         ),
@@ -332,10 +330,11 @@ secondaryMeasureAxis: new charts.NumericAxisSpec(
                         ),
                         Container(
                           height: 40,
-                          width: 350,
+                          width: 340,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               color: Colors.white),
+                              margin: const EdgeInsets.fromLTRB(0, 0, 10, 0) ,
                           child: FlatButton(
                               onPressed: () {
                                 Navigator.push(
@@ -373,14 +372,14 @@ secondaryMeasureAxis: new charts.NumericAxisSpec(
                 controller: _controller,
                 autofocus: true,
                 decoration: new InputDecoration(
-                    labelText: 'Full Name', hintText: 'eg. John Smith'),
+                    labelText: 'Incubator Name',),
               ),
             )
           ],
         ),
         actions: <Widget>[
           new FlatButton(
-              child: const Text('CANCEL'),
+              child: const Text('Cancel'),
               onPressed: () {
                 print("Cacnel");
 

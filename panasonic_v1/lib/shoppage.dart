@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:panasonic_v1/cartpage.dart';
 import 'package:panasonic_v1/widgets/productCard.dart';
 
 class ShopPage extends StatefulWidget {
@@ -84,15 +85,48 @@ class _ShopPageState extends State<ShopPage> {
                         "Shop",
                         style: TextStyle(color: Colors.white, fontSize: 40),
                       ),
-                      FlatButton(
-                          onPressed: null,
-                          child: Padding(
+                       GestureDetector(
+                        child: Stack(
+                          alignment: Alignment.topCenter,
+                          children: <Widget>[
+                            Padding(
 
                             padding: EdgeInsets.only(left:MediaQuery.of(context).size.width - 190),
-                              child: Icon(
+                              child:
+                             Icon(
                             Icons.shopping_cart,
                             color: Colors.white,
-                          )))
+                            size: 30,
+                          ))
+                            ,
+                            if (_cartList.length > 0)
+                              Padding(
+                                padding: EdgeInsets.only(left:MediaQuery.of(context).size.width - 190),
+                                child: CircleAvatar(
+                                  radius: 8.0,
+                                  backgroundColor: Colors.red,
+                                  foregroundColor: Colors.white,
+                                  child: Text(
+                                    _cartList.length.toString(),
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12.0,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
+                        onTap: () {
+                          if (_cartList.isNotEmpty)
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => CartPage(_cartList),
+        ),
+      );
+                        },
+                      )
+                      
                     ],
                   ),
                   SizedBox(
@@ -141,7 +175,7 @@ class _ShopPageState extends State<ShopPage> {
                                   child: Text(
                                 "Herbs",
                                 style: TextStyle(
-                                    color: Colors.white, fontSize: 30),
+                                    color: Colors.white, fontSize: 20),
                               )),
                               SizedBox(
                                 height: 20,
@@ -163,7 +197,10 @@ class _ShopPageState extends State<ShopPage> {
                                           price: _plants[index].price,
                                           onTap: (){
                                             print("idiwjed");
-                                            _cartList.add(_plants[index]);
+                                            setState(() {
+                                              _cartList.add(_plants[index]);
+                                            });
+                                            
                                             print(_cartList);
                                           },
                                         ));
@@ -175,7 +212,7 @@ class _ShopPageState extends State<ShopPage> {
                                   child: Text(
                                 "Chinese Vegetables",
                                 style: TextStyle(
-                                    color: Colors.white, fontSize: 30),
+                                    color: Colors.white, fontSize: 20),
                               )),
                               Container(
                                   height: 200,
