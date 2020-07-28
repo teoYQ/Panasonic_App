@@ -299,14 +299,14 @@ class _SignUpPageState extends State<SignUpPage> {
                                     .child("Users")
                                     .update({_name: _email});
                                 database.reference().update({
-                                  _name: {
+                                  _name: {"Incubator 1" :{
                                     "dose": 0,
                                     "lights": "off",
                                     "temperature": 25
-                                  }
+                                  }}
                                 });
                                 // widget.auth.signIn("ngjenyang@gmail.com", "capstone");
-                                uploadFile(_email, _password);
+                                //uploadFile(_email, _password);
                                 // widget.auth.signOut();
                                 // }
                                 Navigator.push(

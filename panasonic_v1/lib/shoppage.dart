@@ -225,7 +225,14 @@ class _ShopPageState extends State<ShopPage> {
                                           text: _chinese[index].name,
                                           filename: _chinese[index].pic,
                                           price: _chinese[index].price,
-                                          
+                                          onTap: (){
+                                            print("idiwjed");
+                                            setState(() {
+                                              _cartList.add(_chinese[index]);
+                                            });
+                                            
+                                            print(_cartList);
+                                          },
                                         );
                                       }))
                             ]))),

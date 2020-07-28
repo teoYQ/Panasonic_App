@@ -13,108 +13,107 @@ class _CartPageState extends State<CartPage> {
   //@override
   List<Plants> cartlist;
   _CartPageState(this.cartlist);
-  
+
   getTotalAmount() {
     double total = 0.0;
     for (int i = 0; i < cartlist.length; i++) {
-      
-        total += double.parse(cartlist[i].price);
+      total += double.parse(cartlist[i].price);
     }
     return total;
   }
-  
+
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.green[900],
-        elevation: 0.0,
-      ),
-      drawer: Drawer(
-          child: ListView(children: <Widget>[
-        DrawerHeader(
+        appBar: AppBar(
+          backgroundColor: Colors.green[900],
+          elevation: 0.0,
+        ),
+        drawer: Drawer(
+            child: ListView(children: <Widget>[
+          DrawerHeader(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(colors: <Color>[
+              Colors.green[900],
+              Colors.green[800],
+              Colors.green[400]
+            ])),
+            child: CircleAvatar(
+              radius: 15,
+              backgroundColor: Colors.white,
+            ),
+          ),
+          CustomListTile(Icons.person, "Profile", () => {}),
+          CustomListTile(Icons.settings, "Settings", () => {}),
+          CustomListTile(Icons.exit_to_app, "Log Out", () => {}),
+        ])),
+        body: Container(
+          width: double.infinity,
           decoration: BoxDecoration(
-              gradient: LinearGradient(colors: <Color>[
+              gradient: LinearGradient(begin: Alignment.topCenter, colors: [
             Colors.green[900],
             Colors.green[800],
-            Colors.green[400]
+            //Colors.green[400]
           ])),
-          child: CircleAvatar(
-            radius: 15,
-            backgroundColor: Colors.white,
-          ),
-        ),
-        CustomListTile(Icons.person, "Profile", () => {}),
-        CustomListTile(Icons.settings, "Settings", () => {}),
-        CustomListTile(Icons.exit_to_app, "Log Out", () => {}),
-      ])),
-      body: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-            gradient: LinearGradient(begin: Alignment.topCenter, colors: [
-          Colors.green[900],
-          Colors.green[800],
-          //Colors.green[400]
-        ])),
-        child: Column(
-          children: <Widget>[
-             Text(
-                        "Shopping Cart",
-                        style: TextStyle(color: Colors.white, fontSize: 30),
+          child: Column(children: <Widget>[
+            Text(
+              "Shopping Cart",
+              style: TextStyle(color: Colors.white, fontSize: 30),
+            ),
+            SizedBox(
+              height: 50,
+            ),
+            Container(
+                height: 500,
+                child: ListView.builder(
+                    itemCount: cartlist.length,
+                    scrollDirection: Axis.vertical,
+                    itemBuilder: (context, index) {
+                      var product = cartlist[index];
+
+                      return InkWell(
+                          onTap: () {
+                            print("HI");
+                          },
+                          child: CartCard(
+                            text: cartlist[index].name,
+                            filename: cartlist[index].pic,
+                            price: cartlist[index].price,
+                            onTap: () {
+                              setState(() {
+                                cartlist.remove(product);
+                              });
+                            },
+                          ));
+                    })),
+            Container(
+                height: 50.0,
+                width: double.infinity,
+                color: Colors.white,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text('Total: \$' + getTotalAmount().toStringAsFixed(2)),
+                    SizedBox(width: 10.0),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: RaisedButton(
+                        onPressed: () {},
+                        elevation: 0.5,
+                        color: Colors.red,
+                        child: Center(
+                          child: Text(
+                            'Pay Now',
+                          ),
+                        ),
+                        textColor: Colors.white,
                       ),
-                      SizedBox(height: 50,),
-          Container(
-                                  height: 500,
-                                  child: ListView.builder(
-                                      itemCount: cartlist.length,
-                                      scrollDirection: Axis.vertical,
-                                      itemBuilder: (context, index) {
-                                        //var product = _plants[index];
-                                        
-                                        return InkWell(
-                                          onTap:(){
-                                            print("HI");
-                                          },
-                                          child: CartCard(
-                                          text: cartlist[index].name,
-                                          filename: cartlist[index].pic,
-                                          price: cartlist[index].price,
-                                          onTap: (){
-                                            
-                                            print('lol');
-                                          },
-                                        ));
-                                      })),
-                                      Container(
-                      height: 50.0,
-                      width: double.infinity,
-                      color: Colors.white,
-                      child: Row(
-                        
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          Text('Total: \$' + getTotalAmount().toStringAsFixed(2)),
-                          SizedBox(width: 10.0),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: RaisedButton(
-                              onPressed: () {},
-                              elevation: 0.5,
-                              color: Colors.red,
-                              child: Center(
-                                child: Text(
-                                  'Pay Now',
-                                ),
-                              ),
-                              textColor: Colors.white,
-                            ),
-                          )
-                        ],
-                      ))]
-      ),
-    ));
+                    )
+                  ],
+                ))
+          ]),
+        ));
   }
 }
-
 
 /*
         body: Container(
