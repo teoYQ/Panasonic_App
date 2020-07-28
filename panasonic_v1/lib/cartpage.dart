@@ -28,24 +28,7 @@ class _CartPageState extends State<CartPage> {
           backgroundColor: Colors.green[900],
           elevation: 0.0,
         ),
-        drawer: Drawer(
-            child: ListView(children: <Widget>[
-          DrawerHeader(
-            decoration: BoxDecoration(
-                gradient: LinearGradient(colors: <Color>[
-              Colors.green[900],
-              Colors.green[800],
-              Colors.green[400]
-            ])),
-            child: CircleAvatar(
-              radius: 15,
-              backgroundColor: Colors.white,
-            ),
-          ),
-          CustomListTile(Icons.person, "Profile", () => {}),
-          CustomListTile(Icons.settings, "Settings", () => {}),
-          CustomListTile(Icons.exit_to_app, "Log Out", () => {}),
-        ])),
+        
         body: Container(
           width: double.infinity,
           decoration: BoxDecoration(
@@ -63,7 +46,7 @@ class _CartPageState extends State<CartPage> {
               height: 50,
             ),
             Container(
-                height: 500,
+                height:MediaQuery.of(context).size.height - 300,
                 child: ListView.builder(
                     itemCount: cartlist.length,
                     scrollDirection: Axis.vertical,
@@ -90,6 +73,7 @@ class _CartPageState extends State<CartPage> {
                 width: double.infinity,
                 color: Colors.white,
                 child: Row(
+                  
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Text('Total: \$' + getTotalAmount().toStringAsFixed(2)),

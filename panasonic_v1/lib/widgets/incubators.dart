@@ -57,34 +57,34 @@ class IncubatorCard extends StatelessWidget {
                       left: MediaQuery.of(context).size.width / 2 - 50,
                       top: 20,
                       //alignment:Alignment.bottomLeft,
-                      child: Text(text),
-                    ),
+                      child: Text(text ),
+                    )/*,
                     Positioned(
                       left: MediaQuery.of(context).size.width / 2 + 30,
                       top: 40,
                       //alignment:Alignment.bottomLeft,
                       child: Text(temp),
-                    ),
+                    )*/,
                     Positioned(
                       left: MediaQuery.of(context).size.width / 2 - 50,
                       top: 40,
 
                       //alignment:Alignment.bottomLeft,
-                      child: Text("temperature:"),
+                      child: Text("temperature: "+temp),
                     ),
                     Positioned(
                       left: MediaQuery.of(context).size.width / 2 - 50,
                       top: 60,
 
                       //alignment:Alignment.bottomLeft,
-                      child: Text("lights:"),
+                      child: Text("lights: " + lights),
                     ),
-                    Positioned(
+                    /*Positioned(
                       left: MediaQuery.of(context).size.width / 2 ,
                       top: 60,
                       //alignment:Alignment.bottomLeft,
                       child: Text(lights),
-                    ),
+                    ),*/
                   ],
                 ))));
   }

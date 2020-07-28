@@ -41,7 +41,7 @@ class _ShopPageState extends State<ShopPage> {
       appBar: AppBar(
         backgroundColor: Colors.green[900],
         elevation: 0.0,
-      ),
+      ),/*
       drawer: Drawer(
           child: ListView(children: <Widget>[
         DrawerHeader(
@@ -59,7 +59,7 @@ class _ShopPageState extends State<ShopPage> {
         CustomListTile(Icons.person, "Profile", () => {}),
         CustomListTile(Icons.settings, "Settings", () => {}),
         CustomListTile(Icons.exit_to_app, "Log Out", () => {}),
-      ])),
+      ])),*/
       body: Container(
         width: double.infinity,
         decoration: BoxDecoration(
