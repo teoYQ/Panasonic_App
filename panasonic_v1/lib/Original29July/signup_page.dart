@@ -7,7 +7,6 @@ import 'package:firebase_storage/firebase_storage.dart'; // For File Upload To F
 import 'package:path/path.dart' as Path;
 import 'package:panasonic_v1/authentication.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:supercharged/supercharged.dart';
 
 class SignUpPage extends StatefulWidget {
   SignUpPage({Key key, this.auth, this.loginCallback}) : super(key: key);
@@ -90,72 +89,87 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
-      appBar: AppBar(
-        backgroundColor: "#5a856b".toColor(),
-      ),
-      body:Container(
+      body: Container(
         width: double.infinity,
+        decoration: BoxDecoration(
+            gradient: LinearGradient(begin: Alignment.topCenter, colors: [
+          Colors.green[900],
+          Colors.green[800],
+          Colors.green[400]
+        ])),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Stack(children: <Widget>[
-            Container(
-              height: 200,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                    color: "#5a856b".toColor(),
-                  
-                   // image: Image.asset("assets/logo.png");
-                    ),
+            SizedBox(
+              height: 80,
+            ),
+            Padding(
+              padding: EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    "Sign Up",
+                    style: TextStyle(color: Colors.white, fontSize: 40),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  //FadeAnimation(1.3, Text("Welcome Back", style: TextStyle(color: Colors.white, fontSize: 18),)),
+                ],
               ),
-              Positioned(
-                bottom: 25,
-                left: 20,
-                child: Text("Sign Up",style: TextStyle(color: Colors.white,fontSize: 40),)
-                )
-                ],)
-        ,
-            
+            ),
+            SizedBox(height: 20),
             Expanded(
               child: Form(
                 key: _formKey,
                 child: Container(
-                  width: double.infinity,
-              
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(60),
+                          topRight: Radius.circular(60))),
                   child: SingleChildScrollView(
                     child: Padding(
-                      padding: EdgeInsets.fromLTRB(10,10,10,0),
+                      padding: EdgeInsets.all(30),
                       child: Column(
-                        
                         children: <Widget>[
-                    
+                          SizedBox(
+                            height: 60,
+                          ),
+
                           Container(
-                            
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Colors.green[100],
+                                      blurRadius: 20,
+                                      offset: Offset(0, 10))
+                                ]),
                             child: Column(
                               children: <Widget>[
-                                 Container(
-                                  width: double.infinity,
-                                  
-                                        child: Padding(padding: EdgeInsets.fromLTRB(250, 0, 0, 0),
-                                        child:IndexedStack(
+                                Container(
+                                  child: IndexedStack(
                                       index: _curIndex,
                                       children: <Widget>[
-                                         FlatButton(
-                                        
+                                        MaterialButton(
+                                          color: Colors.white,
+                                          shape: CircleBorder(),
                                           onPressed: () {
                                             _pickImage();
                                           },
-                                          child: Image.asset("assets/cam.PNG",width: 50,height: 50,),
+                                          child: Icon(Icons.camera_alt),
                                         ),
                                         CircleAvatar(
-                                          
                                           backgroundColor: Colors.grey[900],
                                           radius: 50,
                                           child: Container(
                                               width: 100,
                                               height: 100,
                                               decoration: new BoxDecoration(
+                                                  shape: BoxShape.circle,
                                                   image: new DecorationImage(
                                                       fit: BoxFit.fill,
                                                       image:
@@ -169,7 +183,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                         */
                                               ),
                                         )
-                                      ]))),
+                                      ]),
                                   /*child: Row(
                                     children: <Widget>[
                                       Expanded(child: CircleAvatar(
@@ -188,9 +202,9 @@ class _SignUpPageState extends State<SignUpPage> {
 
                                     ]
                                   )*/
-                                
+                                ),
                                 Container(
-                                  padding: EdgeInsets.fromLTRB(10,0,10,0),
+                                  padding: EdgeInsets.all(10),
                                   decoration: BoxDecoration(
                                       border: Border(
                                           bottom: BorderSide(
@@ -309,10 +323,10 @@ class _SignUpPageState extends State<SignUpPage> {
                                 margin: EdgeInsets.symmetric(horizontal: 50),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(50),
-                                    color:  "#5a856b".toColor()),
+                                    color: Colors.green[900]),
                                 child: Center(
                                   child: Text(
-                                    "Complete",
+                                    "Sign Up",
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold),

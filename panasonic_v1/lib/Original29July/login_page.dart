@@ -5,7 +5,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:panasonic_v1/activities.dart';
 import 'package:panasonic_v1/signup_page.dart';
 import 'package:panasonic_v1/authentication.dart';
-import 'package:supercharged/supercharged.dart';
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.auth, this.userId, this.loginCallback})
       : super(key: key);
@@ -86,68 +85,73 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: "#5a856b".toColor(),
-      ),
       body: Container(
         width: double.infinity,
+        decoration: BoxDecoration(
+            gradient: LinearGradient(begin: Alignment.topCenter, colors: [
+          Colors.green[900],
+          Colors.green[800],
+          Colors.green[400]
+        ])),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            
-            Container(
-              height: 200,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                    color: "#5a856b".toColor(),
-                   // image: Image.asset("assets/logo.png");
-                    ),
-              child: Image.asset("assets/logo.png",scale: 1.0,),
-              /*child: Positioned(
-                  
-                  //alignment: Alignment.center,
-                  child: Image.asset("assets/logo.png")
-                  ),*/
+            SizedBox(
+              height: 80,
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(20,10,20,10),
+              padding: EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    "Welcome!",
-                    style: TextStyle(color: "#5a856b".toColor() , fontSize: 40),
+                    "Login",
+                    style: TextStyle(color: Colors.white, fontSize: 40),
+                  ),
+                  SizedBox(
+                    height: 10,
                   ),
                   //FadeAnimation(1.3, Text("Welcome Back", style: TextStyle(color: Colors.white, fontSize: 18),)),
                 ],
               ),
             ),
+            SizedBox(height: 20),
             Expanded(
               child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(60),
+                        topRight: Radius.circular(60))),
                 child: SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.all(30),
                     child: Column(
                       children: <Widget>[
-                        
+                        SizedBox(
+                          height: 60,
+                        ),
 
                         Container(
                           decoration: BoxDecoration(
                               color: Colors.white,
-                              /*boxShadow: [
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
                                 BoxShadow(
                                     color: Colors.green[100],
                                     blurRadius: 20,
-                                    offset: Offset(0, 10))*/)
-                            ,
+                                    offset: Offset(0, 10))
+                              ]),
                           child: Form(
                           key: _formKey,
                           child: Column(
                             children: <Widget>[
                               Container(
-                                padding: EdgeInsets.fromLTRB(20,25,10,0),
+                                padding: EdgeInsets.all(10),
                                 decoration: BoxDecoration(
                                     border: Border(
                                         bottom: BorderSide(
-                                            color: Colors.white))),
+                                            color: Colors.grey[200]))),
                                 child: TextFormField(
                                   onSaved: (value) => _email = value,
                                   validator: (String value) {
@@ -158,16 +162,16 @@ class _LoginPageState extends State<LoginPage> {
                                   keyboardType: TextInputType.emailAddress,
                                   decoration: InputDecoration(
                                       hintText: "Email or Phone number",
-                                      hintStyle: TextStyle(color: Colors.grey[500]),
+                                      hintStyle: TextStyle(color: Colors.grey),
                                       border: InputBorder.none),
                                 ),
                               ),
                               Container(
-                                padding: EdgeInsets.fromLTRB(20,10,20,10),
+                                padding: EdgeInsets.all(10),
                                 decoration: BoxDecoration(
                                     border: Border(
                                         bottom: BorderSide(
-                                            color: Colors.white))),
+                                            color: Colors.grey[200]))),
                                 child: TextFormField(
                                   onSaved: (value) => _password = value,
                                   obscureText: true,
@@ -178,7 +182,7 @@ class _LoginPageState extends State<LoginPage> {
                                     },
                                   decoration: InputDecoration(
                                       hintText: "Password",
-                                      hintStyle: TextStyle(color: Colors.grey[500]),
+                                      hintStyle: TextStyle(color: Colors.grey),
                                       border: InputBorder.none),
                                 ),
                               ),
@@ -187,11 +191,10 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         SizedBox(
-                          height: 10,
+                          height: 40,
                         ),
-                        //FadeAnimation(1.5, Text("Forgot Password?", style: TextStyle(color: Colors.white),)),
+                        //FadeAnimation(1.5, Text("Forgot Password?", style: TextStyle(color: Colors.grey),)),
                         FlatButton(
-                          //color: "#5a856b".toColor(),
                             onPressed: () {
                               final form = _formKey.currentState;
                               if (validateAndSave()) {
@@ -241,7 +244,7 @@ class _LoginPageState extends State<LoginPage> {
                               margin: EdgeInsets.symmetric(horizontal: 50),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(50),
-                                  color: "#5a856b".toColor()),
+                                  color: Colors.green[900]),
                               child: Center(
                                 child: Text(
                                   "Log In",
@@ -255,17 +258,7 @@ class _LoginPageState extends State<LoginPage> {
                         SizedBox(
                           height: 10,
                         ),
-                        Stack(children: <Widget>[
-                        Container(
-                          width: double.infinity,
-                          height: MediaQuery.of(context).size.height - 400,
-                          decoration: BoxDecoration(
-                                  color:"#5a856b".toColor() ),
-
-                        ),
-                        Positioned(
-                          top: 20,
-                          child:  FlatButton(
+                        FlatButton(
                             onPressed: () {
                               Navigator.push(
                                 context,
@@ -274,24 +267,23 @@ class _LoginPageState extends State<LoginPage> {
                               );
                             },
                             child: Container(
-                              width: 260,
                               height: 50,
                               margin: EdgeInsets.symmetric(horizontal: 50),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(50),
-                                  color: Colors.white),
+                                  color: Colors.green[900]),
                               child: Center(
                                 child: Text(
                                   "Sign Up",
                                   style: TextStyle(
-                                      color: "#5a856b".toColor() ,
+                                      color: Colors.white,
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),
-                            )))],)
+                            ))
                       ],
                     ),
-                  
+                  ),
                 ),
               ),
             )
