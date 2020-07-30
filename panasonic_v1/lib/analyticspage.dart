@@ -6,6 +6,7 @@ import 'package:panasonic_v1/authentication.dart';
 import 'package:firebase_database/firebase_database.dart';
 //import 'package:panasonic_v1/DIYpage.dart';
 import 'authentication.dart';
+import 'package:supercharged/supercharged.dart';
 
 class AnlyticsPage extends StatefulWidget {
   final BaseAuth auth;
@@ -72,7 +73,7 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
 
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Colors.green[900],
+        backgroundColor: "#e0f0eb".toColor(),
           elevation: 0.0,
           leading: IconButton(
               icon: Icon(Icons.home),
@@ -107,12 +108,9 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
       ])),*/
       body: Container(
         width: double.infinity,
-        decoration: BoxDecoration(
-            gradient: LinearGradient(begin: Alignment.topCenter, colors: [
-          Colors.green[900],
-          Colors.green[800],
-          Colors.green[400]
-        ])),
+            decoration: BoxDecoration(
+          color: "#e0f0eb".toColor(),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -126,7 +124,7 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
                 children: <Widget>[
                   Text(
                     "Incubators",
-                    style: TextStyle(color: Colors.white, fontSize: 40),
+                    style: TextStyle(color: "#4d4d4d".toColor() , fontSize: 40),
                   ),
                   SizedBox(
                     height: 10,
@@ -137,6 +135,9 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
             ),
             Expanded(
               child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                ),
                 child: SingleChildScrollView(
                   child: Padding(
                     padding: EdgeInsets.all(10),
@@ -148,14 +149,8 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
                           //margin: EdgeInsets.symmetric(horizontal:10),
                           decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.circular(8),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(.12),
-                                  offset: Offset(0, 10),
-                                  blurRadius: 30,
-                                )
-                              ]),
+                              border: Border.all(color: "#e0f0eb".toColor()),
+                              ),
                           child: Center(
                             child: Padding(
                               padding: EdgeInsets.only(left: 18, right: 22),
@@ -231,7 +226,7 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
                         ),
                         Container(
                             key: Key("cards"),
-                            height: MediaQuery.of(context).size.height - 100,
+                            height: MediaQuery.of(context).size.height - 380,
                             child: ListView.builder(
                                 itemCount:
                                     itemcount, //mapper.keys.toList().length,
@@ -274,7 +269,8 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
                                             : (mapper[_incubators[index]]
                                                 ["dose"]),
                                         name:
-                                            name, //mapper.keys.toList()[index],
+                                            name, 
+                                          ind: index//mapper.keys.toList()[index],
                                         /*temp: ((index ==
                                                     _incubators.length - 1) &&
                                                 temp_bool)
@@ -290,11 +286,46 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
                                                 ["lights"],*/
                                       ));
                                 })),
+                                         
                       ],
                     ),
                   ),
+
                 ),
               ),
+            ),
+               Stack(
+            children: <Widget>[
+            Container(
+              width: double.infinity,
+              height: 80,
+              decoration: BoxDecoration(
+                color: "#e0f0eb".toColor(),
+              ),)
+          , Row(
+                children: <Widget>[
+                  FlatButton(
+                      onPressed: null,
+                      child: Container(
+                          width: MediaQuery.of(context).size.width / 3 - 40 ,
+                          //margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                          child: Text("Account",textAlign: TextAlign.right,))),
+                   FlatButton(
+                      onPressed: null,
+                      child:Container(
+                          width: MediaQuery.of(context).size.width / 3 ,
+                          height: 80,
+                          //margin: EdgeInsets.fromLTRB(20, 20, 0, 20),
+                          child: Image.asset("assets/home.png",scale: 1,))
+                    ),
+                    FlatButton(
+                      onPressed: null,
+                      child: Container(
+                          width: MediaQuery.of(context).size.width / 3 - 70 ,
+                          //margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                          child: Text("Notifs",textAlign: TextAlign.left,))),
+                    ],
+              )],
             )
           ],
         ),

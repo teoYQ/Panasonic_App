@@ -9,6 +9,7 @@ import 'package:panasonic_v1/shoppage.dart';
 import 'package:panasonic_v1/authentication.dart';
 import 'package:firebase_database/firebase_database.dart';
 //import 'package:panasonic_v1/toggle_buttons.dart';
+import 'package:supercharged/supercharged.dart';
 
 class ActivitiesPage extends StatefulWidget {
   final BaseAuth auth;
@@ -16,13 +17,21 @@ class ActivitiesPage extends StatefulWidget {
   final String userId;
   final String email;
   final String name;
-  String _imgUrl = "https://firebasestorage.googleapis.com/v0/b/capst0ned.appspot.com/o/profile%2Fscaled_f1062f2c-718c-4bd3-98d1-5c77673ffe2e5822050796730969480.jpg%7D?alt=media&token=412e3c50-5e35-4189-b7a3-46f29767e84c";
-  ActivitiesPage({Key key, this.auth, this.userId, @required this.email, this.name, this.logoutCallback})
+  String _imgUrl =
+      "https://firebasestorage.googleapis.com/v0/b/capst0ned.appspot.com/o/profile%2Fscaled_f1062f2c-718c-4bd3-98d1-5c77673ffe2e5822050796730969480.jpg%7D?alt=media&token=412e3c50-5e35-4189-b7a3-46f29767e84c";
+  ActivitiesPage(
+      {Key key,
+      this.auth,
+      this.userId,
+      @required this.email,
+      this.name,
+      this.logoutCallback})
       : super(key: key);
-  
+
   @override
-  _ActivitiesPageState createState() => _ActivitiesPageState(email,auth);
+  _ActivitiesPageState createState() => _ActivitiesPageState(email, auth);
 }
+
 class _ActivitiesPageState extends State<ActivitiesPage> {
   BaseAuth auth;
   // VoidCallback logoutCallback;
@@ -30,37 +39,41 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
   String email;
   static FirebaseDatabase database = FirebaseDatabase.instance;
   String name;
-  String _imgUrl = "https://firebasestorage.googleapis.com/v0/b/capst0ned.appspot.com/o/profile%2Fscaled_f1062f2c-718c-4bd3-98d1-5c77673ffe2e5822050796730969480.jpg%7D?alt=media&token=412e3c50-5e35-4189-b7a3-46f29767e84c";
+  String _imgUrl =
+      "https://firebasestorage.googleapis.com/v0/b/capst0ned.appspot.com/o/profile%2Fscaled_f1062f2c-718c-4bd3-98d1-5c77673ffe2e5822050796730969480.jpg%7D?alt=media&token=412e3c50-5e35-4189-b7a3-46f29767e84c";
   // _ActivitiesPageState(this.email,this.auth);
   //String _imgUrl;// = "https://firebasestorage.googleapis.com/v0/b/capst0ned.appspot.com/o/profile%2FJackson?alt=media&token=996b6707-6ac0-4053-b225-21d7654e6b49";
-  _ActivitiesPageState(this.email,this.auth) {
-    auth.getName(email,database).then((val) => setState(() {
+  _ActivitiesPageState(this.email, this.auth) {
+    auth.getName(email, database).then((val) => setState(() {
           name = val;
           print(name);
           display(email);
         }));
-    
-    //StorageReference storageReference = FirebaseStorage.instance.ref().child("profile/$name"); 
-    //storageReference.getDownloadURL().then((val) => setState((){
-      //   print(val);
-        //_imgUrl = val;
-   // }));
 
+    //StorageReference storageReference = FirebaseStorage.instance.ref().child("profile/$name");
+    //storageReference.getDownloadURL().then((val) => setState((){
+    //   print(val);
+    //_imgUrl = val;
+    // }));
   }
-  display(String name) async{
+  display(String name) async {
     print("hi");
     print(name);
     print(_imgUrl);
-    String filepath =  "profile/$name";
-    await FirebaseStorage.instance.ref().child(filepath).getDownloadURL().then((value) => setState((){
-      _imgUrl = value;
-    }));
+    String filepath = "profile/$name";
+    await FirebaseStorage.instance
+        .ref()
+        .child(filepath)
+        .getDownloadURL()
+        .then((value) => setState(() {
+              _imgUrl = value;
+            }));
     print(_imgUrl);
     //setState(() {
-      //_imgUrl = data;
+    //_imgUrl = data;
     //});
   }
-  
+
   @override
   String _lights = 'off';
 
@@ -71,7 +84,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
     print(_imgUrl);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green[900],
+        backgroundColor: "#e0f0eb".toColor(),
         elevation: 0.0,
       ),
       drawer: Drawer(
@@ -83,16 +96,18 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
             Colors.green[800],
             Colors.green[400]
           ])),
-          
           child: CircleAvatar(
-            child: ClipRRect(
-              
-              borderRadius: new BorderRadius.circular(75),
-              child: (_imgUrl == "https://firebasestorage.googleapis.com/v0/b/capst0ned.appspot.com/o/profile%2Fscaled_f1062f2c-718c-4bd3-98d1-5c77673ffe2e5822050796730969480.jpg%7D?alt=media&token=412e3c50-5e35-4189-b7a3-46f29767e84c") ? Image.asset("assets\coriander.png"): Image.network(_imgUrl,width:150,fit: BoxFit.fill,),
-                
-
-              )
-          ),
+              child: ClipRRect(
+            borderRadius: new BorderRadius.circular(75),
+            child: (_imgUrl ==
+                    "https://firebasestorage.googleapis.com/v0/b/capst0ned.appspot.com/o/profile%2Fscaled_f1062f2c-718c-4bd3-98d1-5c77673ffe2e5822050796730969480.jpg%7D?alt=media&token=412e3c50-5e35-4189-b7a3-46f29767e84c")
+                ? Image.asset("assets\coriander.png")
+                : Image.network(
+                    _imgUrl,
+                    width: 150,
+                    fit: BoxFit.fill,
+                  ),
+          )),
         ),
         CustomListTile(Icons.person, "Profile", () => {}),
         CustomListTile(Icons.settings, "Settings", () => {}),
@@ -101,40 +116,48 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
       body: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-            gradient: LinearGradient(begin: Alignment.topCenter, colors: [
-          Colors.green[900],
-          Colors.green[800],
-          Colors.green[400]
-        ])),
+          color: "#e0f0eb".toColor(),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             SizedBox(
-              height: 30,
+              height: 50,
             ),
-            Padding(
-              padding: EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    "Welcome Back, $name",
-                    style: TextStyle(color: Colors.white, fontSize: 40),
-                    key:  Key('Welcome'),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text("  What would you like to do today?",
-                      style: TextStyle(color: Colors.white, fontSize: 15)),
+            Container(
+              decoration: BoxDecoration(
+                color: "#e0f0eb".toColor(),
+              ),
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(20, 20, 0, 20),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      "Hello!",
+                      style:
+                          TextStyle(color: "#4d4d4d".toColor(), fontSize: 45),
+                      key: Key('Welcome'),
+                    ),
+                    SizedBox(
+                      width: 30,
+                      height: 50,
+                    ),
+                    Text("\nWhat would you like \nto do today?",
+                        style: TextStyle(
+                            color: "#5a856b".toColor(), fontSize: 14)),
 
-                  //FadeAnimation(1.3, Text("Welcome Back", style: TextStyle(color: Colors.white, fontSize: 18),)),
-                ],
+                    //FadeAnimation(1.3, Text("Welcome Back", style: TextStyle(color: Colors.white, fontSize: 18),)),
+                  ],
+                ),
               ),
             ),
             SizedBox(height: 10),
             Expanded(
               child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                ),
                 child: SingleChildScrollView(
                   child: Padding(
                     padding: EdgeInsets.all(10),
@@ -164,156 +187,170 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                                   builder: (context) => MonitorPage()),
                             );
                           },
-                        ),
-                        SizedBox(
-                          height: 10,
                         ),*/
-                        FlatButton(
-                          child: Container(
-                              height: 120,
-                              width: 480,
-                              margin: EdgeInsets.symmetric(horizontal: 10),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: Colors.white),
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    Image.asset("assets/PlantPerformance.png",
-                                        height: 100, width: 100),
-                                    Text("Incubators")
-                                  ])),
-                          onPressed: () {
-                            auth.getIncubatorMap(name, database).then((value) => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => AnlyticsPage(auth : widget.auth, name : name,mapper: value,)),
-                            ));
-                          },
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          children: <Widget>[
+                            FlatButton(
+                              child: Container(
+                                  height: 160,
+                                  width: MediaQuery.of(context).size.width / 2 -
+                                      60,
+                                  margin: EdgeInsets.fromLTRB(20, 10, 0, 10),
+                                  decoration:
+                                      BoxDecoration(color: "#e0f0eb".toColor()),
+                                  child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        SizedBox(height: 10),
+                                        Image.asset("assets/incubator.png",
+                                            height: 100, width: 100),
+                                        Text("Incubators")
+                                      ])),
+                              onPressed: () {
+                                auth
+                                    .getIncubatorMap(name, database)
+                                    .then((value) => Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  AnlyticsPage(
+                                                    auth: widget.auth,
+                                                    name: name,
+                                                    mapper: value,
+                                                  )),
+                                        ));
+                              },
+                            ),
+                            FlatButton(
+                                child: Container(
+                                    height: 160,
+                                    width:
+                                        MediaQuery.of(context).size.width / 2 -
+                                            60,
+                                    margin: EdgeInsets.fromLTRB(0, 10, 10, 10),
+                                    decoration: BoxDecoration(
+                                        color: "#e0f0eb".toColor()),
+                                    child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          SizedBox(height: 10),
+                                          Image.asset("assets/shop.png",
+                                              height: 100, width: 100),
+                                          Text("Shop")
+                                        ])),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ShopPage()),
+                                  );
+                                }),
+                          ],
                         ),
                         SizedBox(
                           height: 10,
                         ),
-                        /*FlatButton(
-                          child: Container(
-                              height: 120,
-                              width: 480,
-                              margin: EdgeInsets.symmetric(horizontal: 10),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: Colors.white),
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    Image.asset("assets/ManualAdjustment.png",
-                                        height: 100, width: 100),
-                                    Text("Do it myself")
-                                  ])),
-                          onPressed: () {
-                            auth.getTemp(name, database).then((value) => 
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => DIYPage(auth : widget.auth, name : name, temp : value)),
-                            )
-                            ); 
-                          },
+                        Row(
+                          children: <Widget>[
+                            FlatButton(
+                              child: Container(
+                                  height: 160,
+                                  width: MediaQuery.of(context).size.width / 2 -
+                                      60,
+                                  margin: EdgeInsets.fromLTRB(20, 10, 0, 10),
+                                  decoration:
+                                      BoxDecoration(color: "#e0f0eb".toColor()),
+                                  child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        SizedBox(height: 10),
+                                        Image.asset("assets/achievements.png",
+                                            height: 100, width: 100),
+                                        Text("Achievements")
+                                      ])),
+                              onPressed: () {},
+                            ),
+                            FlatButton(
+                              child: Container(
+                                  height: 160,
+                                  width: MediaQuery.of(context).size.width / 2 -
+                                      60,
+                                  margin: EdgeInsets.fromLTRB(0, 10, 10, 10),
+                                  decoration:
+                                      BoxDecoration(color: "#e0f0eb".toColor()),
+                                  child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        SizedBox(height: 10),
+                                        Image.asset("assets/forum.png",
+                                            height: 100, width: 100),
+                                        Text("Forum")
+                                      ])),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ForumPage()),
+                                );
+                              },
+                            ),
+                          ],
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),*/
-                        FlatButton(
-                          child: Container(
-                              height: 120,
-                              width: 480,
-                              margin: EdgeInsets.symmetric(horizontal: 10),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: Colors.white),
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    Image.asset("assets/shoppingcart.png",
-                                        height: 100, width: 100),
-                                    Text("Shop")
-                                  ])),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ShopPage()),
-                            );
-                          },
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        FlatButton(
-                          child: Container(
-                              height: 120,
-                              width: 480,
-                              margin: EdgeInsets.symmetric(horizontal: 10),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: Colors.white),
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    Image.asset("assets/trophy.png",
-                                        height: 100, width: 100),
-                                    Text("Achievements")
-                                  ])),
-                          onPressed: () {
-                            
-                          },
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        FlatButton(
-                          child: Container(
-                              height: 120,
-                              width: 480,
-                              margin: EdgeInsets.symmetric(horizontal: 10),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: Colors.white),
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    Image.asset("assets/forum-19.png",
-                                        height: 100, width: 100),
-                                    Text("Forum")
-                                  ])),
-                          onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(
-                                  builder: (context) => ForumPage()),);
-                          },
-                        )
-                        /*InkWell(
-                          child: Container(
-                            decoration: BoxDecoration(
-                                shape: BoxShape.rectangle,
-                                border: Border.all(
-                                  width: 1,
-                                )),
-                            child: Icon(Icons.add, color: Colors.black),
-                          ),
-                          onTap: () {},
-                        ),*/
-                        //FadeAnimation(1.5, Text("Forgot Password?", style: TextStyle(color: Colors.grey),)),
-                        //makeItem(image: "assets/LiveMonitoring.png",tag: 'green',text: " My Crops"),
                       ],
                     ),
                   ),
                 ),
               ),
+            ),
+            Stack(
+            children: <Widget>[
+            Container(
+              width: double.infinity,
+              height: 80,
+              decoration: BoxDecoration(
+                color: "#e0f0eb".toColor(),
+              ),)
+          , Row(
+                children: <Widget>[
+                  FlatButton(
+                      onPressed: null,
+                      child: Container(
+                          width: MediaQuery.of(context).size.width / 3 - 40 ,
+                          //margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                          child: Text("Account",textAlign: TextAlign.right,))),
+                   FlatButton(
+                      onPressed: null,
+                      child:Container(
+                          width: MediaQuery.of(context).size.width / 3 ,
+                          height: 80,
+                          //margin: EdgeInsets.fromLTRB(20, 20, 0, 20),
+                          child: Image.asset("assets/home.png",scale: 1,))
+                    ),
+                    FlatButton(
+                      onPressed: null,
+                      child: Container(
+                          width: MediaQuery.of(context).size.width / 3 - 70 ,
+                          //margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                          child: Text("Notifs",textAlign: TextAlign.left,))),
+                    ],
+              )],
             )
+
           ],
         ),
       ),

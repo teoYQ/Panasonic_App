@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:panasonic_v1/authentication.dart';
 import 'package:panasonic_v1/DIYpage2.dart';
+import 'package:supercharged/supercharged.dart';
+
 class IncubatorCard extends StatelessWidget {
   final String text;
   final String temp;
@@ -8,9 +10,9 @@ class IncubatorCard extends StatelessWidget {
   final String name;
   final BaseAuth auth;
   final int dose;
+  final int ind;
 
-
-  IncubatorCard({this.text, this.temp, this.lights,this.auth,this.name, this.dose});
+  IncubatorCard({this.text, this.temp, this.lights,this.auth,this.name, this.dose,this.ind});
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -26,7 +28,7 @@ class IncubatorCard extends StatelessWidget {
             padding: EdgeInsets.only(left: 1),
             child: Container(
                 width: 125,
-                height: 125,
+                height: 100,
                 child: Stack(
                   fit: StackFit.expand,
                   children: <Widget>[
@@ -38,46 +40,58 @@ class IncubatorCard extends StatelessWidget {
                             width: MediaQuery.of(context).size.width - 50,
                             height: 125,
                             decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(8))),
+                color: "#e0f0eb".toColor(),
+                                borderRadius: BorderRadius.circular(5))),
                       ),
                     ),
                     Positioned(
                         //alignment: Alignment.center,
                         width: 100,
                         height: 80,
-                        left: 30,
+                        left: 40,
                         top: 10,
-                        child: Image.asset(
-                          "assets/incub.png",
-                          scale: 0.5,
-                        )),
+                        child: Text(ind.toString(),style: TextStyle(fontSize:50,color:Colors.white),)),
                     
                     Positioned(
-                      left: MediaQuery.of(context).size.width / 2 - 50,
+                      left:100,
                       top: 20,
                       //alignment:Alignment.bottomLeft,
-                      child: Text(text ),
-                    )/*,
+                      child: Text(text,style: TextStyle(fontSize:30,color:"#177061".toColor()),)),
+                    /*,
                     Positioned(
                       left: MediaQuery.of(context).size.width / 2 + 30,
                       top: 40,
                       //alignment:Alignment.bottomLeft,
                       child: Text(temp),
-                    )*/,
+                    )*/
                     Positioned(
-                      left: MediaQuery.of(context).size.width / 2 - 50,
-                      top: 40,
+                     right: 30,
+                      bottom: 30,
 
                       //alignment:Alignment.bottomLeft,
-                      child: Text("temperature: "+temp),
+                      child: Container(
+                        width: 40,
+                        height: 20,
+                        decoration:BoxDecoration(color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(temp.toString(), style: TextStyle(color: Colors.grey[400]),textAlign: TextAlign.center,),
+                      )
                     ),
                     Positioned(
-                      left: MediaQuery.of(context).size.width / 2 - 50,
-                      top: 60,
-
+                      right: 30,
+                      top: 10,
                       //alignment:Alignment.bottomLeft,
-                      child: Text("lights: " + lights),
+                     child: Container(
+                        width: 40,
+                        height: 35,
+                        decoration:BoxDecoration(color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
+                        ),
+                        //a ? b : c evaluates to b if a is true and evaluates to c if a is false.
+                        child: lights == "On" ? Image.asset("assets/bulbon.png") : Image.asset("assets/bulboff.png") 
+                        //Text(lights.toString(), style: TextStyle(color: Colors.grey[400]),textAlign: TextAlign.center,),
+                      )
                     ),
                     /*Positioned(
                       left: MediaQuery.of(context).size.width / 2 ,
