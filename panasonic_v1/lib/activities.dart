@@ -1,6 +1,8 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:panasonic_v1/achievements.dart';
+import 'package:panasonic_v1/login_page.dart';
 //import 'package:panasonic_v1/DIYpage.dart';
 import 'package:panasonic_v1/analyticspage.dart';
 import 'package:panasonic_v1/forum.dart';
@@ -88,15 +90,12 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
         elevation: 0.0,
       ),
       drawer: Drawer(
+      
           child: ListView(children: <Widget>[
         DrawerHeader(
           decoration: BoxDecoration(
-              gradient: LinearGradient(colors: <Color>[
-            Colors.green[900],
-            Colors.green[800],
-            Colors.green[400]
-          ])),
-          child: CircleAvatar(
+              color:"#e0f0eb".toColor() ),
+          /*child: CircleAvatar(
               child: ClipRRect(
             borderRadius: new BorderRadius.circular(75),
             child: (_imgUrl ==
@@ -107,11 +106,15 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                     width: 150,
                     fit: BoxFit.fill,
                   ),
-          )),
+          )),*/
         ),
         CustomListTile(Icons.person, "Profile", () => {}),
         CustomListTile(Icons.settings, "Settings", () => {}),
-        CustomListTile(Icons.exit_to_app, "Log Out", () => {}),
+        CustomListTile(Icons.exit_to_app, "Log Out", () => {Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LoginPage(auth : new Auth())),
+                            )}),
       ])),
       body: Container(
         width: double.infinity,
@@ -200,7 +203,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                                       60,
                                   margin: EdgeInsets.fromLTRB(20, 10, 0, 10),
                                   decoration:
-                                      BoxDecoration(color: "#e0f0eb".toColor()),
+                                      BoxDecoration(borderRadius: BorderRadius.circular(5),color: "#e0f0eb".toColor()),
                                   child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
@@ -234,7 +237,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                                         MediaQuery.of(context).size.width / 2 -
                                             60,
                                     margin: EdgeInsets.fromLTRB(0, 10, 10, 10),
-                                    decoration: BoxDecoration(
+                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),
                                         color: "#e0f0eb".toColor()),
                                     child: Column(
                                         mainAxisAlignment:
@@ -268,7 +271,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                                       60,
                                   margin: EdgeInsets.fromLTRB(20, 10, 0, 10),
                                   decoration:
-                                      BoxDecoration(color: "#e0f0eb".toColor()),
+                                      BoxDecoration(borderRadius: BorderRadius.circular(5),color: "#e0f0eb".toColor()),
                                   child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
@@ -280,7 +283,12 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                                             height: 100, width: 100),
                                         Text("Achievements")
                                       ])),
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => AchievementPage()));
+                              },
                             ),
                             FlatButton(
                               child: Container(
@@ -289,7 +297,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                                       60,
                                   margin: EdgeInsets.fromLTRB(0, 10, 10, 10),
                                   decoration:
-                                      BoxDecoration(color: "#e0f0eb".toColor()),
+                                      BoxDecoration(borderRadius: BorderRadius.circular(5),color: "#e0f0eb".toColor()),
                                   child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,

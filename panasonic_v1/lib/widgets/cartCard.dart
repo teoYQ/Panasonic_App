@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 
+import 'package:supercharged/supercharged.dart';
 class CartCard extends StatelessWidget {
   final String filename;
   final String text;
@@ -16,8 +17,9 @@ class CartCard extends StatelessWidget {
         print(text);
       },
       child: Padding(
-        padding: EdgeInsets.only(left: 1),
+        padding: EdgeInsets.only(top: 10),
         child: Container(
+          
             width: MediaQuery.of(context).size.width - 100,
             height: 100,
             child: Stack(
@@ -32,14 +34,15 @@ class CartCard extends StatelessWidget {
                         height: 175,
                         decoration: BoxDecoration(
                             color: Colors.white,
+                            border: Border.all(width: 2, color:"#e0f0eb".toColor() ),
                             borderRadius: BorderRadius.circular(8))),
                   ),
                 ),
                 Positioned(
-                  bottom: 20,
+                  bottom: 30,
                   left:15,
                   //alignment: Alignment.center,
-                  child: Image.asset(filename,width:100,height:80)
+                  child: Image.asset(filename,width:100,height:60)
                   ),
                 Positioned(
                   left:120,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:panasonic_v1/activities.dart';
 import 'package:panasonic_v1/monitorpage.dart';
 import 'package:panasonic_v1/widgets/buttons_.dart';
 import 'package:panasonic_v1/widgets/tapbox.dart';
@@ -8,6 +9,7 @@ import 'analyticspage.dart';
 import 'authentication.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:bezier_chart/bezier_chart.dart';
+import 'package:supercharged/supercharged.dart';
 
 class DIYPage extends StatefulWidget {
   final BaseAuth auth;
@@ -59,61 +61,16 @@ class _DIYPageState extends State<DIYPage> {
       new charts.Series(
           id: "growth",
           data: gdata,
-          colorFn: (_, __) => charts.MaterialPalette.white,
+          colorFn: (_, __) => charts.MaterialPalette.black,
           domainFn: (growthPlot growthData, _) => growthData.day,
           measureFn: (growthPlot growthData, _) => growthData.surface_area),
     ];
-    /*var chart = new charts.LineChart(
-      series,
-      behaviors: [
-        /*new charts.ChartTitle('Surface Area against Time',
 
-            //subTitle: 'Top sub-title text',
-            behaviorPosition: charts.BehaviorPosition.top,
-            titleOutsideJustification: charts.OutsideJustification.start,
-            // Set a larger inner padding than the default (10) to avoid
-            // rendering the text too close to the top measure axis tick label.
-            // The top tick label may extend upwards into the top margin region
-            // if it is located at the top of the draw area.
-            innerPadding: 18),
-        new charts.ChartTitle('Days Planted',
-            behaviorPosition: charts.BehaviorPosition.bottom,
-            titleOutsideJustification:
-                charts.OutsideJustification.middleDrawArea),
-        new charts.ChartTitle('Surface Area',
-            behaviorPosition: charts.BehaviorPosition.start,
-            titleOutsideJustification:
-                charts.OutsideJustification.middleDrawArea),*/
-        charts.LinePointHighlighter(
-          drawFollowLinesAcrossChart: true,
-          showHorizontalFollowLine:
-              charts.LinePointHighlighterFollowLineType.all,
-        )
-      ],
-
-      defaultRenderer:
-          new charts.LineRendererConfig(includeArea: true, includePoints: true),
-      animate: true,
-      primaryMeasureAxis: new charts.NumericAxisSpec(
-          tickProviderSpec:
-              new charts.BasicNumericTickProviderSpec(desiredTickCount: 4),
-          renderSpec: charts.GridlineRendererSpec(
-              labelStyle: charts.TextStyleSpec(
-                  fontSize: 10, color: charts.MaterialPalette.white))),
-secondaryMeasureAxis: new charts.NumericAxisSpec(
-          tickProviderSpec:
-              new charts.BasicNumericTickProviderSpec(desiredTickCount: 4),
-          renderSpec: charts.GridlineRendererSpec(
-              labelStyle: charts.TextStyleSpec(
-                  fontSize: 10, color: charts.MaterialPalette.white))),
-      
-      //domainAxis: new charts.NumericAxisSpec(tickProviderSpec: charts.),
-    );*/
     print("DIS IS MAH $incubatorname");
     bool _state = false;
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Colors.green[900],
+          backgroundColor: "#e0f0eb".toColor(),
           elevation: 0.0,
           leading: IconButton(
               icon: Icon(Icons.arrow_back),
@@ -151,16 +108,13 @@ secondaryMeasureAxis: new charts.NumericAxisSpec(
       body: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-            gradient: LinearGradient(begin: Alignment.topCenter, colors: [
-          Colors.green[900],
-          Colors.green[800],
-          Colors.green[400]
-        ])),
+          color: "#e0f0eb".toColor(),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.all(20),
+              padding: EdgeInsets.fromLTRB(20,20,20,0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -169,65 +123,88 @@ secondaryMeasureAxis: new charts.NumericAxisSpec(
                       onTap: _showDialog,
                       child: Text(
                         "$incubatorname",
-                        style: TextStyle(color: Colors.white, fontSize: 40),
+                        style:
+                            TextStyle(color: "#4d4d4d".toColor(), fontSize: 40),
                       ),
                     ),
                     Icon(
                       Icons.edit,
-                      color: Colors.white,
+                      color: "#9ebebe".toColor(),
                     )
                   ]),
-
+/*
                   Text(
                     " Days left to harvest: 24",
                     style: TextStyle(color: Colors.white, fontSize: 12),
-                  ),
+                  ),*/
                   //FadeAnimation(1.3, Text("Welcome Back", style: TextStyle(color: Colors.white, fontSize: 18),)),
                 ],
               ),
             ),
             Expanded(
               child: Container(
+                decoration: BoxDecoration(color: Colors.white),
                 child: SingleChildScrollView(
                   child: Padding(
-                    padding: EdgeInsets.all(7),
+                    padding: EdgeInsets.all(1),
                     child: Column(
                       children: <Widget>[
                         // SizedBox(height: 50),
 
-                        /*SizedBox(
-                          height: 180,
-                          child: chart,
-                        ),*/
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Container(
+                          decoration: BoxDecoration(color: "#e0f0eb".toColor(),),
+                          child:Column(
+                            children : <Widget>[
                         Padding(
-                            padding: const EdgeInsets.all(20.0),
+                            padding: const EdgeInsets.fromLTRB(20,20,20,20),
                             child: Container(
-                              child: Text("Surface Area (cm2) against Days Grown",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                  )),
+                              decoration: BoxDecoration(color: "#e0f0eb".toColor(), ),
+                              child: Text(
+                                  "Surface Area (cm2) against Days Grown",
+                                  style: TextStyle(color: "#177061".toColor())),
                             )),
                         Padding(
-                          padding: const EdgeInsets.all(20.0),
+                          padding: const EdgeInsets.fromLTRB(20.0,20,20,0),
                           child: Container(
-                            height: 200,
+                            width: 280,
+                            height: 150,
+                            decoration: BoxDecoration(),
                             child: BezierChart(
                               //bezierChartScale: BezierChartScale.CUSTOM,
                               bezierChartScale: BezierChartScale.CUSTOM,
                               xAxisCustomValues: const [0, 1, 2, 3, 4, 5, 6],
                               series: [
-                                BezierLine(data: serie),
+                                BezierLine(
+                                  data: serie,
+                                  lineColor: "#177061".toColor(),
+                                ),
                               ],
                               config: BezierChartConfig(
+                                
+                                backgroundColor: "#e0f0eb".toColor(),
                                 verticalIndicatorStrokeWidth: 3.0,
-                                verticalIndicatorColor: Colors.black26,
+                                verticalIndicatorColor: "#177061".toColor(),
                                 showVerticalIndicator: true,
+                                xAxisTextStyle:
+                                    TextStyle(color: "#177061".toColor()),
+                                yAxisTextStyle:
+                                    TextStyle(color: "#177061".toColor()),
                                 //backgroundColor: Colors.red,
                                 //updatePositionOnTap: true,
                                 showDataPoints: true,
                                 snap: false,
-                                bubbleIndicatorColor: Colors.white,
+                                bubbleIndicatorColor: "#177061".toColor(),
+                                bubbleIndicatorLabelStyle:
+                                    TextStyle(color: Colors.white),
+                                bubbleIndicatorValueStyle:
+                                    TextStyle(color: Colors.white),
+                                bubbleIndicatorTitleStyle:
+                                    TextStyle(color: Colors.white),
                                 displayDataPointWhenNoValue: true,
+
                                 //displayYAxis: true
                                 /*backgroundGradient: LinearGradient(
                                     colors: <Color>[
@@ -238,15 +215,68 @@ secondaryMeasureAxis: new charts.NumericAxisSpec(
                               ),
                             ),
                           ),
-                        ),
-                         Row(
-                          children: <Widget>[
-                            SizedBox(
-                                width: 180,
-                                child: ButtonActivity(
-                                    Icons.lightbulb_outline,
-                                    " Switch Lights \n Status : $light",
-                                    () => {
+                        ),]
+                          )),
+                        Container(
+                          height: 200,
+                          width: double.infinity,
+                          decoration: BoxDecoration(color: Colors.white),
+                          child: Stack(
+                            children: <Widget>[
+                              //# LIGHTS TEXT
+                              Positioned(
+                                left: 50,
+                                top: 60,
+                                child: Container(
+                                    width: 50,
+                                    height: 20,
+                                    decoration:
+                                        BoxDecoration(color: Colors.white),
+                                    child: Text(
+                                      "Lights",
+                                      textAlign: TextAlign.center,
+                                    )),
+                              ),
+                              // FERTILIZER TEXT
+                              Positioned(
+                                left: 50,
+                                top: 130,
+                                child: Container(
+                                    width: 70,
+                                    height: 20,
+                                    decoration:
+                                        BoxDecoration(color: Colors.white),
+                                    child: Text(
+                                      "Fertilizer",
+                                      textAlign: TextAlign.center,
+                                    )),
+                              ),
+                              // LIGHTS LOGO
+                              Positioned(
+                                left: 130,
+                                top: 40,
+                                child: Container(
+                                    width: 50,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(5),
+                                        
+                                        border: Border.all(width: 2,
+                                            color: "#177061".toColor())),
+                                    child: Stack(children: <Widget>[
+                                      light == "On"
+                                          ? Image.asset(
+                                              "assets/bulbon.png",
+                                              width: 50,
+                                              height: 50,
+                                            )
+                                          : Image.asset(
+                                              "assets/bulboff.png",
+                                              scale: 2,
+                                            ),
+                                      FlatButton(
+                                        onPressed: () => {
                                           widget.auth
                                               .getIncubatorLight(
                                                   name, incubatorname, database)
@@ -258,14 +288,63 @@ secondaryMeasureAxis: new charts.NumericAxisSpec(
                                                     userref.update(
                                                         {"lights": light});
                                                   }))
-                                        })),
-                            //ButtonActivity(Icons.lightbulb_outline, _state ? 'Turn x lights' : 'Turn on lights', () => {_state = !_state}),
-                            SizedBox(
-                                //width: 180,
-                                child: ButtonActivity(
-                                    Icons.wb_sunny,
-                                    " Increase \n temperature : $temp",
-                                    () => {
+                                        },
+                                        child: null,
+                                      ),
+                                    ])),
+                              ),
+                              //FERTILIZER LOGO
+                              Positioned(
+                                left: 130,
+                                top: 116,
+                                child: Container(
+                                    width: 50,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(5),
+                                        border: Border.all(width: 2,
+                                            color: "#177061".toColor())),
+                                    child: Stack(children: <Widget>[
+                                    
+                                     Image.asset("assets/dose.png",),
+                                      FlatButton(
+                                        onPressed:() => {
+                                          widget.auth
+                                              .getIncubatorDose(
+                                                  name, incubatorname, database)
+                                              .then((val) => setState(() {
+                                                    print(val);
+                                                    int inc_dose = val + 1;
+                                                    print(inc_dose);
+
+                                                    userref.update(
+                                                        {"dose": inc_dose});
+                                                  }))
+                                        },
+                                        
+                                        child: null,
+                                      ),
+                                    ])),
+                              ),
+                              //TEMPERATURE ADJUSTER
+                              Positioned(
+                                right: 140,
+                                top: 40,
+                                child: Container(
+                                    width: 50,
+                                    height: 127,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(5),
+                                        border: Border.all(width: 2,
+                                            color: "#177061".toColor())),
+                                            child: Column(
+                                              children: <Widget>[
+                                                Stack(
+                                                  children: <Widget>[
+                                                    Icon(Icons.arrow_drop_up,size: 50,color: "#177061".toColor(),),
+                                                    FlatButton(onPressed: () => {
                                           widget.auth
                                               .getIncubatorTemp(
                                                   name, incubatorname, database)
@@ -278,38 +357,14 @@ secondaryMeasureAxis: new charts.NumericAxisSpec(
                                                       "temperature": inc_temp
                                                     });
                                                   }))
-                                        }))
-                          ],
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          children: <Widget>[
-                            SizedBox(
-                                width: 180,
-                                child: ButtonActivity(
-                                    Icons.local_drink,
-                                    "Dose Fertilizer",
-                                    () => {
-                                          widget.auth
-                                              .getIncubatorDose(
-                                                  name, incubatorname, database)
-                                              .then((val) => setState(() {
-                                                    print(val);
-                                                    int inc_dose = val + 1;
-                                                    print(inc_dose);
-
-                                                    userref.update(
-                                                        {"dose": inc_dose});
-                                                  }))
-                                        })),
-                            SizedBox(
-                                width: 180,
-                                child: ButtonActivity(
-                                    Icons.wb_cloudy,
-                                    " Decrease \n temperature : $temp",
-                                    () => {
+                                        }, child: null)
+                                                  ]
+                                                ),
+                                                Text(temp.toString(),style: TextStyle(fontSize:20,color:"#5a856b".toColor() ),),
+                                                Stack(
+                                                  children: <Widget>[
+                                                    Icon(Icons.arrow_drop_down,size: 50,color: "#177061".toColor(),),
+                                                    FlatButton(onPressed: () => {
                                           widget.auth
                                               .getIncubatorTemp(
                                                   name, incubatorname, database)
@@ -322,19 +377,37 @@ secondaryMeasureAxis: new charts.NumericAxisSpec(
                                                       "temperature": dec_temp
                                                     });
                                                   }))
-                                        }))
-                          ],
+                                        }, child: null)
+                                                  ]
+                                                ),
+                                              ],
+                                            ),),
+                              ),
+                              //TEMPERATURE WORD
+                              Positioned(
+                                right: 40,
+                                top: 90,
+                                child: Container(
+                                    width: 90,
+                                    height: 20,
+                                    decoration:
+                                        BoxDecoration(color: Colors.white),
+                                    child: Text(
+                                      "Temperature",
+                                      textAlign: TextAlign.center,
+                                    )),
+                              ),
+                            ],
+                          ),
                         ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          height: 40,
-                          width: 340,
+                      Container(
+                          height: 30,
+                          width: 310,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(width:2,color:"#177061".toColor()),
                               color: Colors.white),
-                              margin: const EdgeInsets.fromLTRB(0, 0, 10, 0) ,
+                              margin: const EdgeInsets.fromLTRB(0, 0, 0, 0) ,
                           child: FlatButton(
                               onPressed: () {
                                 Navigator.push(
@@ -345,15 +418,60 @@ secondaryMeasureAxis: new charts.NumericAxisSpec(
                               },
                               child: Text(
                                 "View Plants",
-                                style: TextStyle(color: Colors.green[900]),
-                              )),
-                        )
+                                style: TextStyle(color: "#4d4d4d".toColor()),
+                              )),)
                       ],
                     ),
                   ),
+                  
                 ),
               ),
+            ),
+                                    
+            Stack(
+            children: <Widget>[
+            Container(
+              width: double.infinity,
+              height: 80,
+              decoration: BoxDecoration(
+                color: "#e0f0eb".toColor(),
+              ),)
+          , Row(
+                children: <Widget>[
+                  FlatButton(
+                      onPressed: null,
+                      child: Container(
+                          width: MediaQuery.of(context).size.width / 3 - 40 ,
+                          //margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                          child: Text("Account",textAlign: TextAlign.right,))),
+                   FlatButton(
+                      onPressed: () {
+                auth.getEmail(name, database).then((value) => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ActivitiesPage(
+                                auth: widget.auth,
+                                name: name,
+                                email: value,
+                              )),
+                    ));
+              },
+                      child:Container(
+                          width: MediaQuery.of(context).size.width / 3 ,
+                          height: 80,
+                          //margin: EdgeInsets.fromLTRB(20, 20, 0, 20),
+                          child: Image.asset("assets/home.png",scale: 1,))
+                    ),
+                    FlatButton(
+                      onPressed: null,
+                      child: Container(
+                          width: MediaQuery.of(context).size.width / 3 - 70 ,
+                          //margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                          child: Text("Notifs",textAlign: TextAlign.left,))),
+                    ],
+              )],
             )
+
           ],
         ),
       ),
@@ -372,7 +490,8 @@ secondaryMeasureAxis: new charts.NumericAxisSpec(
                 controller: _controller,
                 autofocus: true,
                 decoration: new InputDecoration(
-                    labelText: 'Incubator Name',),
+                  labelText: 'Incubator Name',
+                ),
               ),
             )
           ],

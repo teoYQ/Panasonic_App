@@ -54,9 +54,9 @@ class IncubatorCard extends StatelessWidget {
                     
                     Positioned(
                       left:100,
-                      top: 20,
+                      top: 22,
                       //alignment:Alignment.bottomLeft,
-                      child: Text(text,style: TextStyle(fontSize:30,color:"#177061".toColor()),)),
+                      child: Text(text,style: TextStyle(fontSize:26,color:"#5a856b".toColor()),)),
                     /*,
                     Positioned(
                       left: MediaQuery.of(context).size.width / 2 + 30,

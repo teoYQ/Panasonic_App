@@ -75,19 +75,9 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
       appBar: AppBar(
         backgroundColor: "#e0f0eb".toColor(),
           elevation: 0.0,
-          leading: IconButton(
-              icon: Icon(Icons.home),
-              onPressed: () {
-                auth.getEmail(name, database).then((value) => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ActivitiesPage(
-                                auth: widget.auth,
-                                name: name,
-                                email: value,
-                              )),
-                    ));
-              })),
+          iconTheme: IconThemeData(
+    color: "#5a856b".toColor(), //change your color here
+  ),),
       /*drawer: Drawer(
           child: ListView(children: <Widget>[
         DrawerHeader(
@@ -149,11 +139,12 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
                           //margin: EdgeInsets.symmetric(horizontal:10),
                           decoration: BoxDecoration(
                               color: Colors.white,
-                              border: Border.all(color: "#e0f0eb".toColor()),
+                              border: Border.all(width:2,color: "#e0f0eb".toColor()),
+                              borderRadius: BorderRadius.circular(5)
                               ),
                           child: Center(
                             child: Padding(
-                              padding: EdgeInsets.only(left: 18, right: 22),
+                              padding: EdgeInsets.only(left: 18, right: 12),
                               child: TextField(
                                 key: Key("Add"),
                                 controller: _controller,
@@ -311,7 +302,17 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
                           //margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
                           child: Text("Account",textAlign: TextAlign.right,))),
                    FlatButton(
-                      onPressed: null,
+                      onPressed: () {
+                auth.getEmail(name, database).then((value) => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ActivitiesPage(
+                                auth: widget.auth,
+                                name: name,
+                                email: value,
+                              )),
+                    ));
+              },
                       child:Container(
                           width: MediaQuery.of(context).size.width / 3 ,
                           height: 80,

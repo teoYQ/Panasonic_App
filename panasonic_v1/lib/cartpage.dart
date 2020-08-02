@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:panasonic_v1/widgets/cartCard.dart';
 import 'shoppage.dart';
-
+import 'package:supercharged/supercharged.dart';
 class CartPage extends StatefulWidget {
   final List<Plants> cartlist;
   CartPage(this.cartlist);
@@ -25,27 +25,27 @@ class _CartPageState extends State<CartPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.green[900],
+          backgroundColor: "#e0f0eb".toColor(),
           elevation: 0.0,
         ),
         
         body: Container(
           width: double.infinity,
           decoration: BoxDecoration(
-              gradient: LinearGradient(begin: Alignment.topCenter, colors: [
-            Colors.green[900],
-            Colors.green[800],
-            //Colors.green[400]
-          ])),
+              color:  "#e0f0eb".toColor(),),
           child: Column(children: <Widget>[
             Text(
               "Shopping Cart",
-              style: TextStyle(color: Colors.white, fontSize: 30),
+              style: TextStyle(color: "#4d4d4d".toColor(), fontSize: 30),
             ),
             SizedBox(
-              height: 50,
+              height: 20,
             ),
+           
+             
             Container(
+              
+              decoration: BoxDecoration(color: Colors.white),
                 height:MediaQuery.of(context).size.height - 300,
                 child: ListView.builder(
                     itemCount: cartlist.length,
@@ -83,7 +83,7 @@ class _CartPageState extends State<CartPage> {
                       child: RaisedButton(
                         onPressed: () {},
                         elevation: 0.5,
-                        color: Colors.red,
+                        color: "#177061".toColor(),
                         child: Center(
                           child: Text(
                             'Pay Now',

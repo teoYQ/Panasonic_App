@@ -10,6 +10,8 @@ import 'package:panasonic_v1/authentication.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 //import 'package:panasonic_v1/toggle_buttons.dart';
+import 'package:supercharged/supercharged.dart';
+
 
 class ForumPage extends StatefulWidget {
   @override
@@ -22,8 +24,7 @@ class _ForumPageState extends State<ForumPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.green[900],
-          elevation: 0.0,
+backgroundColor: "#e0f0eb".toColor(),          elevation: 0.0,
         ),
         body: Builder(builder: (BuildContext context) {
           return Container(
@@ -44,12 +45,7 @@ class _ForumPageState extends State<ForumPage> {
                 
               } ,
             ),
-            Container(
-              color: Color.fromARGB(255, 59, 89, 152),
-              height: 50.0,
-              width: 468,
-              
-            ),
+            
           ]));
         }));
   }

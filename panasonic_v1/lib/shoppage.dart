@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:panasonic_v1/cartpage.dart';
 import 'package:panasonic_v1/widgets/productCard.dart';
-
+import 'package:supercharged/supercharged.dart';
 class ShopPage extends StatefulWidget {
   @override
   _ShopPageState createState() => _ShopPageState();
@@ -15,13 +15,13 @@ class _ShopPageState extends State<ShopPage> {
   String _lights = 'off';
   void _populatePlants() {
     var list = <Plants>[
-      Plants(name: "rosemary", pic: ("assets/rosemary.png"), price: "1.48"),
-      Plants(name: "mint", pic: ("assets/mint.png"), price: "1.48"),
-      Plants(name: "coriander", pic: ("assets/coriander.png"), price: "2.48")
+      Plants(name: "Rosemary", pic: ("assets/rosemary.png"), price: "1.48"),
+      Plants(name: "Mint", pic: ("assets/mint.png"), price: "1.48"),
+      Plants(name: "Coriander", pic: ("assets/coriander.png"), price: "2.48")
     ];
     var chinese = <Plants>[
-      Plants(name: "lettuce", pic: ("assets/lettuce.png"), price: "1.48"),
-      Plants(name: "leek", pic: ("assets/leek.png"), price: "1.48")
+      Plants(name: "Lettuce", pic: ("assets/lettuce.png"), price: "1.48"),
+      Plants(name: "Mizuna", pic: ("assets/mizuna.png"), price: "1.48")
     ];
     
     setState(() {
@@ -39,7 +39,7 @@ class _ShopPageState extends State<ShopPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green[900],
+        backgroundColor: "#e0f0eb".toColor(),
         elevation: 0.0,
       ),/*
       drawer: Drawer(
@@ -63,19 +63,13 @@ class _ShopPageState extends State<ShopPage> {
       body: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-            gradient: LinearGradient(begin: Alignment.topCenter, colors: [
-          Colors.green[900],
-          Colors.green[800],
-          //Colors.green[400]
-        ])),
+            color :  "#e0f0eb".toColor()),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            SizedBox(
-              height: 10,
-            ),
+            
             Padding(
-              padding: EdgeInsets.all(20),
+              padding: EdgeInsets.fromLTRB(20,10,20,20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -83,7 +77,7 @@ class _ShopPageState extends State<ShopPage> {
                     children: <Widget>[
                       Text(
                         "Shop",
-                        style: TextStyle(color: Colors.white, fontSize: 40),
+                        style: TextStyle(color: "#4d4d4d".toColor() , fontSize: 40),
                       ),
                        GestureDetector(
                         child: Stack(
@@ -91,20 +85,17 @@ class _ShopPageState extends State<ShopPage> {
                           children: <Widget>[
                             Padding(
 
-                            padding: EdgeInsets.only(left:MediaQuery.of(context).size.width - 190),
+                            padding: EdgeInsets.only(left:MediaQuery.of(context).size.width - 200),
                               child:
-                             Icon(
-                            Icons.shopping_cart,
-                            color: Colors.white,
-                            size: 30,
-                          ))
+                             Image.asset("assets/cart.png",width: 70,height: 70,)
+                          )
                             ,
                             if (_cartList.length > 0)
                               Padding(
-                                padding: EdgeInsets.only(left:MediaQuery.of(context).size.width - 190),
+                                padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width - 190,20,0,0),
                                 child: CircleAvatar(
                                   radius: 8.0,
-                                  backgroundColor: Colors.red,
+                                  backgroundColor: "#177061".toColor(),
                                   foregroundColor: Colors.white,
                                   child: Text(
                                     _cartList.length.toString(),
@@ -165,6 +156,7 @@ class _ShopPageState extends State<ShopPage> {
             ),
             Expanded(
               child: Container(
+                decoration: BoxDecoration(color: Colors.white),
                 child: SingleChildScrollView(
                     child: Padding(
                         padding: EdgeInsets.all(10),
@@ -172,16 +164,17 @@ class _ShopPageState extends State<ShopPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Container(
+                                margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
                                   child: Text(
                                 "Herbs",
                                 style: TextStyle(
-                                    color: Colors.white, fontSize: 20),
+                                    color: "#4d4d4d".toColor(), fontSize: 30),
                               )),
                               SizedBox(
-                                height: 20,
+                                height: 1,
                               ),
                               Container(
-                                  height: 200,
+                                  height: 170,
                                   child: ListView.builder(
                                       itemCount: _plants.length,
                                       scrollDirection: Axis.horizontal,
@@ -192,6 +185,7 @@ class _ShopPageState extends State<ShopPage> {
                                             print("HI");
                                           },
                                           child: ProductCard(
+                                          chi: false,
                                           text: _plants[index].name,
                                           filename: _plants[index].pic,
                                           price: _plants[index].price,
@@ -206,22 +200,24 @@ class _ShopPageState extends State<ShopPage> {
                                         ));
                                       })),
                               SizedBox(
-                                height: 20,
+                                height: 1,
                               ),
                               Container(
+                                margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
                                   child: Text(
                                 "Chinese Vegetables",
                                 style: TextStyle(
-                                    color: Colors.white, fontSize: 20),
+                                    color: "#4d4d4d".toColor(), fontSize: 30),
                               )),
                               Container(
-                                  height: 200,
+                                  height: 170,
                                   child: ListView.builder(
                                       itemCount: _chinese.length,
                                       scrollDirection: Axis.horizontal,
                                       itemBuilder: (context, index) {
                                         var chineseplants = _chinese[index];
                                         return ProductCard(
+                                          chi: true,
                                           text: _chinese[index].name,
                                           filename: _chinese[index].pic,
                                           price: _chinese[index].price,
@@ -237,6 +233,41 @@ class _ShopPageState extends State<ShopPage> {
                                       }))
                             ]))),
               ),
+            ),
+            Stack(
+            children: <Widget>[
+            Container(
+              width: double.infinity,
+              height: 80,
+              decoration: BoxDecoration(
+                color: "#e0f0eb".toColor(),
+              ),)
+          , Row(
+                children: <Widget>[
+                  FlatButton(
+                      onPressed: null,
+                      child: Container(
+                          width: MediaQuery.of(context).size.width / 3 - 40 ,
+                          //margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                          child: Text("Account",textAlign: TextAlign.right,))),
+                   FlatButton(
+                      onPressed: (){
+                        Navigator.pop(context);
+                      },
+                      child:Container(
+                          width: MediaQuery.of(context).size.width / 3 ,
+                          height: 80,
+                          //margin: EdgeInsets.fromLTRB(20, 20, 0, 20),
+                          child: Image.asset("assets/home.png",scale: 1,))
+                    ),
+                    FlatButton(
+                      onPressed: null,
+                      child: Container(
+                          width: MediaQuery.of(context).size.width / 3 - 70 ,
+                          //margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                          child: Text("Notifs",textAlign: TextAlign.left,))),
+                    ],
+              )],
             )
           ],
         ),

@@ -86,23 +86,21 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: "#5a856b".toColor(),
-      ),
       body: Container(
         width: double.infinity,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            
+           
             Container(
-              height: 200,
+              height: 270,
               width: double.infinity,
               decoration: BoxDecoration(
                     color: "#5a856b".toColor(),
                    // image: Image.asset("assets/logo.png");
                     ),
-              child: Image.asset("assets/logo.png",scale: 1.0,),
+              child:Column(children:<Widget>[SizedBox(height:50), Image.asset("assets/logo.png",scale: 1.3,),
+              ])
               /*child: Positioned(
                   
                   //alignment: Alignment.center,

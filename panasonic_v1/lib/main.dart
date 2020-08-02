@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        fontFamily: "LGC"
       ),
       // home: HomePage(),
       home: LoginPage(auth : new Auth()),
