@@ -1,12 +1,5 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sun Jun 28 14:57:37 2020
-
-@author: Jen Yang
-"""
-
-# -*- coding: utf-8 -*-
-"""
 Created on Sat Jun 27 15:35:12 2020
 
 @author: Jen Yang
@@ -32,7 +25,7 @@ pwd = "109db4a63b9cbdf01e3d74e3406baadwadwaedf"
 current_config = {
     "dose" : 0,
     "lights" : "On",
-    "temperature" : "25",
+    "temperature" : 25,
     }
 stop_threads = False
 
@@ -157,7 +150,9 @@ def handle_updates():
     duration = 5
     attached_devices = {}
     active_devices = {}
+    active_devices_data = {}
     while True:
+        ##New Connections/Active Devices
         #poll both queues for any updates
         if device_queue.empty() != True:
             (new_device,action) = device_queue.get()
@@ -175,9 +170,19 @@ def handle_updates():
             if attached_devices[inc_name] == "added":
                 attached_devices[inc_name] = "active" #change state, make active instead of just added
                 active_devices[inc_name] = user_name
+                active_devices_data[inc_name] = db.reference(user_name+"/"+inc_name) #initialise data for comparison
                 print("active devices : ",active_devices)
         else:
             print("Update thread: no new registration confirmations")
+        ##New Updates/Commands
+        for active_inc in active_devices.keys():
+            new_data = db.reference(user_name+"/"+active_inc) #initialise data for comparison
+            changed_keys,changed_values=compare_jsons(active_devices_data[active_inc],new_data)
+            if type(changed_values) == list:
+                for change in changed_values:
+                    commands.put((active_inc,change))
+            else:
+                print("No changes observed for active plant unit " + active_inc)
         time.sleep(duration)
         
 def usb_detection():
