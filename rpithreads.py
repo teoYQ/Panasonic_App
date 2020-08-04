@@ -26,7 +26,7 @@ import shlex
 import serial
 
 name = "duckduckgoat"
-incubator_name = "Carrot 2"
+#incubator_name = "Carrot 2"
 new_incubator_name = "Technical Unit"
 pwd = "109db4a63b9cbdf01e3d74e3406baadwadwaedf"
 current_config = {
@@ -142,14 +142,14 @@ def updates_handler():
     logging.info("Update thread: finishing")
 
 def usb_handler():
-    logging.info("Thread %s: starting", name)
+    logging.info("USB Handling Thread : starting")
     usb_detection()
-    logging.info("Thread %s: finishing", name)
+    logging.info("USB Handling Thread : finishing")
 
 def registration_handler():
-    logging.info("Thread %s: starting", name)
+    logging.info("Registration Thread : starting")
     registration()
-    logging.info("Thread %s: finishing", name)
+    logging.info("Registration Thread : finishing")
 
 '''actual work'''
 def handle_updates():
@@ -163,11 +163,11 @@ def handle_updates():
             (new_device,action) = device_queue.get()
             if action == "added":
                 attached_devices[new_device] = action
-                print(attached_devices,active_devices)
+                print(new_device+ " connection added",attached_devices,active_devices)
             elif action == "removed":
                 del attached_devices[new_device]
                 del active_devices[new_device]
-                print(attached_devices,active_devices)
+                print(new_device + " removed",attached_devices,active_devices)
         else:
             print("Update thread: no new connections")
         if registered_queue.empty() != True:
@@ -186,7 +186,7 @@ def usb_detection():
     cmd = "./dmsgts.sh 5"
     old_results= [""]
     while True:
-        print("checking USB devices")
+        print("USB Handler: checking USB devices")
         result = subprocess.run(cmd,stdout=subprocess.PIPE,shell=True).stdout.decode('utf-8').split("\n")
         for thing in result:
             if thing not in old_results:
@@ -200,24 +200,24 @@ def usb_detection():
                          removed_device = usb_conns[location]
                          del usb_conns[location]
                          del plant_units[removed_device]
-                         device_queue.add((removed_device,"removed"))
+                         device_queue.put((removed_device,"removed"))
                      elif "attached" in thing:
                          print("attempting to query " + location)
                          namequery = False
                          ser = serial.Serial("/dev/"+location,115200, timeout =1)
                          ser.write(str.encode('i'))
                          while namequery == False:
-                                 namepwd = ser.readline().decode().strip().split(",")
+                                 namepwd = ser.readline().decode().rstrip().split(",")
+                                 print(namepwd)
                                  name = namepwd[0]
                                  pwd = namepwd[1]
-                                 print(name)
                                  if name:
                                      print("NAME FOUND: NAME IS " + name, "PWD IS : " + pwd)
                                      plant_units[name] = location
                                      usb_conns[location] = name
                                      print(plant_units.items())
-                                     device_queue.add((name,"added"))
-                                     registration_queue.add((name,pwd))
+                                     device_queue.put((name,"added"))
+                                     registration_queue.put((name,pwd))
                                      namequery = True
                      else:
                           print(thing)
@@ -227,28 +227,32 @@ def usb_detection():
             print("Got new command, ", item)
             commands.task_done()
         else:
-            print("No new commands at the time")
+            print("USB Handler : No new commands at the time")
         time.sleep(3)
 
-def registration(inc_name):
+def registration():
     # cred = credentials.Certificate("/home/pi/Downloads/capst0ned-firebase-adminsdk-oxj6s-7003ae62a1.json")
     # firebase_admin.initialize_app(cred,{'databaseURL': 'https://capst0ned.firebaseio.com/'})
     while True:
         if registration_queue.empty() != True:
             item = registration_queue.get()
             incubator_name,new_pwd = item
-            print("checking if " + item + " is registered")
-            incref = db.reference("Active Incubators/"+item)
+            print("checking if " + incubator_name + " is registered")
+            incref = db.reference("Active Incubators/"+incubator_name)
             activeinc = incref.get()
+            print("ACTIVE INC",activeinc)
             if activeinc != None:
                 if "registered" not in activeinc:
-                    user_name = register_new_incubator(incubator_name,new_pwd)
-                    registered_queue.add((incubator_name,user_name))
+                    print(incubator_name + " still pending registration...")
                 else:
                     print(incubator_name + " already " + activeinc)
                     user_name = " ".join(activeinc.split(" ")[2:])
-                    registered_queue.add((incubator_name,user_name))
-        
+                    registered_queue.put((incubator_name,user_name))
+            else:
+                print("registering new incubator " + incubator_name)
+                user_name = register_new_incubator(incubator_name,new_pwd)
+                print(incubator_name + " successfully registered under " + user_name)
+                registered_queue.put((incubator_name,user_name))
 
 if __name__ == "__main__":
     format = "%(asctime)s: %(message)s"
@@ -258,14 +262,14 @@ if __name__ == "__main__":
     # x = threading.Thread(target=thread_function, args=(1,),daemon=True)
     # logging.info("Main    : before running thread")
     # x.start()
-    x = threading.Thread(target=updates_handler, args=(1,),daemon=True)
-    logging.info("Main    : before running thread")
+    x = threading.Thread(target=updates_handler,daemon=True)
+    logging.info("Main    : before running update thread")
     x.start()
     usbhandler = threading.Thread(target=usb_handler,daemon=True)
-    logging.info("Main    : before running thread")
+    logging.info("Main    : before running usb thread")
     usbhandler.start()
     registrationhandler = threading.Thread(target=registration_handler,daemon=True)
-    logging.info("Main    : before running thread")
+    logging.info("Main    : before running registration thread")
     registrationhandler.start()
     # while True:
     #     if q.empty() != True:
