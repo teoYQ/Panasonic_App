@@ -202,7 +202,32 @@ def usb_detection():
     plant_units = {}
     usb_conns = {}
     cmd = "./dmsgts.sh 5"
+    scanusb = "./scanusb.sh"
     old_results= [""]
+    #first run, scan current devices
+    print("USB Handler : First scan")
+    currently_connected = subprocess.run(scanusb,stdout=subprocess.PIPE,shell=True).stdout.decode('utf-8').split("\n")
+    for currently_connected_device in currently_connected:
+        print(currently_connected_device)
+        if "USB2.0-Serial" in currently_connected_device:
+            location = currently_connected_device.split(" - ")[0].split("/")[-1]
+            print("attempting to query " + location)
+            namequery = False
+            ser = serial.Serial("/dev/"+location,115200, timeout =1)
+            ser.write(str.encode('i'))
+            while namequery == False:
+                namepwd = ser.readline().decode().rstrip().split(",")
+                print(namepwd)
+                name = namepwd[0]
+                pwd = namepwd[1]
+                if name:
+                    print("NAME FOUND: NAME IS " + name, "PWD IS : " + pwd)
+                    plant_units[name] = location
+                    usb_conns[location] = name
+                    print(plant_units.items())
+                    device_queue.put((name,"added"))
+                    registration_queue.put((name,pwd))
+                    namequery = True
     while True:
         print("USB Handler: checking USB devices")
         result = subprocess.run(cmd,stdout=subprocess.PIPE,shell=True).stdout.decode('utf-8').split("\n")
