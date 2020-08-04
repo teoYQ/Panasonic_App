@@ -39,33 +39,22 @@ stop_threads = False
 q = queue.Queue()
 commands = queue.Queue()
 registration_queue = queue.Queue()
+device_queue = queue.Queue()
+registered_queue = queue.Queue()
 
 cred = credentials.Certificate("/home/pi/Downloads/capst0ned-firebase-adminsdk-oxj6s-7003ae62a1.json")
 firebase_admin.initialize_app(cred,{'databaseURL': 'https://capst0ned.firebaseio.com/'})
+
+'''' helper functions '''
 def read_inc_data(username,incubator_name):
     ref = db.reference(username + "/" + incubator_name)
     return ref.get()
     # print()
-
-# class IncubatorData(username,incubator_name):
-#     def __init__(self):
-#         self.object_lock = threading.Lock()
-#         self.data = {}
-#         self.username = username
-#         self.incubator_name = incubator_name
     
-#     def get_data(self):
-#         if self.object_lock != "available":
-#             return "Object in use; please try again later"
-#         else:
-#             return self.data        
-        
-#     def set_data(self,new_data):
-#         if self.object_lock != "available":
-#             return "Object in use; please try again later"
-#         else:
-#             return "ok"
-
+def send_command(port,command):
+    ser = serial.Serial("/dev/"+port,115200, timeout =1)
+    ser.write(str.encode(command))
+    
 def compare_jsons(old_data,new_data):
     ok = set(old_data.keys())
     nk = set(new_data.keys())
@@ -91,7 +80,7 @@ def compare_jsons(old_data,new_data):
     ans1 = ans1p1,ans1p2
     return ans1,ans2
     
-    
+
 def read_inc_data_every_n_seconds(username,incubator_name,n):
     old_data = read_inc_data(username,incubator_name)
     while stop_threads != True:
@@ -137,7 +126,7 @@ def register_new_incubator(incubator_name,new_pwd):
                 found = True
     return name
 
-#raw startup
+'''raw startup : worker definitions '''
 def incubator_subprocess():
     #name = register_new_incubator(new_incubator_name, pwd)
     read_inc_data_every_n_seconds(name,new_incubator_name,5)
@@ -147,6 +136,10 @@ def thread_function(name):
     incubator_subprocess()
     logging.info("Central Thread: finishing")
 
+def updates_handler():
+    logging.info("Update thread: starting")
+    handle_updates()
+    logging.info("Update thread: finishing")
 
 def usb_handler():
     logging.info("Thread %s: starting", name)
@@ -158,21 +151,40 @@ def registration_handler():
     registration()
     logging.info("Thread %s: finishing", name)
 
+'''actual work'''
+def handle_updates():
+    ##setup
+    duration = 5
+    attached_devices = {}
+    active_devices = {}
+    while True:
+        #poll both queues for any updates
+        if device_queue.empty() != True:
+            (new_device,action) = device_queue.get()
+            if action == "added":
+                attached_devices[new_device] = action
+                print(attached_devices,active_devices)
+            elif action == "removed":
+                del attached_devices[new_device]
+                del active_devices[new_device]
+                print(attached_devices,active_devices)
+        else:
+            print("Update thread: no new connections")
+        if registered_queue.empty() != True:
+            (inc_name,user_name) = registered_queue.get()
+            if attached_devices[inc_name] == "added":
+                attached_devices[inc_name] = "active" #change state, make active instead of just added
+                active_devices[inc_name] = user_name
+                print("active devices : ",active_devices)
+        else:
+            print("Update thread: no new registration confirmations")
+        time.sleep(duration)
+        
 def usb_detection():
     plant_units = {}
-    active_workers = []
+    usb_conns = {}
     cmd = "./dmsgts.sh 5"
-#    cmd = "ls"
     old_results= [""]
-#     for thing in result:
-#         print(thing) 
-#     result = subprocess.run(['lsusb'],stdout=subprocess.PIPE).stdout.decode('utf-8').split("\n")
-#     print("checking USB devices")
-#     for thing in result:
-#         print(thing)
-#         if thing not in old_results:
-#              print("WAO " + thing)
-#         old_results.append(thing)
     while True:
         print("checking USB devices")
         result = subprocess.run(cmd,stdout=subprocess.PIPE,shell=True).stdout.decode('utf-8').split("\n")
@@ -185,6 +197,10 @@ def usb_detection():
                      #prefix = "/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:"+location+".0-port0"
                      if "disconnected" in thing:
                          print(thing)
+                         removed_device = usb_conns[location]
+                         del usb_conns[location]
+                         del plant_units[removed_device]
+                         device_queue.add((removed_device,"removed"))
                      elif "attached" in thing:
                          print("attempting to query " + location)
                          namequery = False
@@ -198,7 +214,9 @@ def usb_detection():
                                  if name:
                                      print("NAME FOUND: NAME IS " + name, "PWD IS : " + pwd)
                                      plant_units[name] = location
+                                     usb_conns[location] = name
                                      print(plant_units.items())
+                                     device_queue.add((name,"added"))
                                      registration_queue.add((name,pwd))
                                      namequery = True
                      else:
@@ -213,8 +231,8 @@ def usb_detection():
         time.sleep(3)
 
 def registration(inc_name):
-    cred = credentials.Certificate("/home/pi/Downloads/capst0ned-firebase-adminsdk-oxj6s-7003ae62a1.json")
-    firebase_admin.initialize_app(cred,{'databaseURL': 'https://capst0ned.firebaseio.com/'})
+    # cred = credentials.Certificate("/home/pi/Downloads/capst0ned-firebase-adminsdk-oxj6s-7003ae62a1.json")
+    # firebase_admin.initialize_app(cred,{'databaseURL': 'https://capst0ned.firebaseio.com/'})
     while True:
         if registration_queue.empty() != True:
             item = registration_queue.get()
@@ -224,51 +242,23 @@ def registration(inc_name):
             activeinc = incref.get()
             if activeinc != None:
                 if "registered" not in activeinc:
-                    register_new_incubator(incubator_name,new_pwd)
+                    user_name = register_new_incubator(incubator_name,new_pwd)
+                    registered_queue.add((incubator_name,user_name))
                 else:
                     print(incubator_name + " already " + activeinc)
-def specific_worker(port):
-    namequery = False
-    send_command(location)
-    while namequery == False:
-        name = ser.readline()
-        namequery = True
-    
-    send_command
-def send_command(port):
-    ser = serial.Serial("/dev/"+port,115200, timeout =1)
-    ser.write('i')
-    
-#         if "QinHeng Electronics HL-340 USB-Serial" in thing:
-#            plant_unit
-#     cmd = "dmesg | grep tty"
-#     process = subprocess.Popen(shlex.split(cmd),stdout=subprocess.PIPE,shell=True)
-#     while True:
-#         output = process.stdout.readline()
-#         if output == '' and process.poll() is not None:
-#             break
-#         if output:
-#             print(output.strip())
+                    user_name = " ".join(activeinc.split(" ")[2:])
+                    registered_queue.add((incubator_name,user_name))
         
-    
-    print(result)
-#     context = pyudev.Context()
-#     old_devices = context.list_devices()
-#     
-#     for device in old_devices:
-#         pprint.pprint(dict(device))
-#     while True:
-#         for device in context.list_devices():
-#             if device not in old_devices:
-#                 print("new device found: " + ppprint.pprint(dict(device)))
-#                 old_devices.append(device)
 
 if __name__ == "__main__":
     format = "%(asctime)s: %(message)s"
     logging.basicConfig(format=format, level=logging.INFO,
                         datefmt="%H:%M:%S")
     logging.info("Main    : before creating thread")
-    x = threading.Thread(target=thread_function, args=(1,),daemon=True)
+    # x = threading.Thread(target=thread_function, args=(1,),daemon=True)
+    # logging.info("Main    : before running thread")
+    # x.start()
+    x = threading.Thread(target=updates_handler, args=(1,),daemon=True)
     logging.info("Main    : before running thread")
     x.start()
     usbhandler = threading.Thread(target=usb_handler,daemon=True)
