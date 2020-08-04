@@ -45,8 +45,13 @@ def read_inc_data(username,incubator_name):
     # print()
     
 def send_command(port,command):
+    print(str(command) + " sent to port " + port)
     ser = serial.Serial("/dev/"+port,115200, timeout =1)
-    ser.write(str.encode(command))
+    if type(command) == str:
+        command = str.encode(command)
+    elif type(command) == int:
+        pass
+    ser.write(command)
     
 def compare_jsons(old_data,new_data):
     ok = set(old_data.keys())
@@ -170,22 +175,30 @@ def handle_updates():
             if attached_devices[inc_name] == "added":
                 attached_devices[inc_name] = "active" #change state, make active instead of just added
                 active_devices[inc_name] = user_name
-                active_devices_data[inc_name] = db.reference(user_name+"/"+inc_name) #initialise data for comparison
+                init_data_ref = db.reference(user_name+"/"+inc_name)
+                init_data = init_data_ref.get()
+                active_devices_data[inc_name] = init_data #initialise data for comparison
                 print("active devices : ",active_devices)
         else:
             print("Update thread: no new registration confirmations")
         ##New Updates/Commands
         for active_inc in active_devices.keys():
-            new_data = db.reference(user_name+"/"+active_inc) #initialise data for comparison
+            new_data_ref = db.reference(user_name+"/"+active_inc)
+            new_data = new_data_ref.get()
             changed_keys,changed_values=compare_jsons(active_devices_data[active_inc],new_data)
             if type(changed_values) == list:
                 for change in changed_values:
                     commands.put((active_inc,change))
+                    active_devices_data[active_inc][change[0]] = change[1]
             else:
                 print("No changes observed for active plant unit " + active_inc)
         time.sleep(duration)
         
 def usb_detection():
+    instructions = {
+        "dose" : {0:0,1:1},
+        "lights" : {"On":"R","Off":"r"},
+        }
     plant_units = {}
     usb_conns = {}
     cmd = "./dmsgts.sh 5"
@@ -230,6 +243,10 @@ def usb_detection():
         if commands.empty() != True:
             item = commands.get()
             print("Got new command, ", item)
+            related_port = plant_units[item[0]]
+            instruction = item[1]
+            command = instructions[instruction[0]][instruction[1]]
+            send_command(related_port,command)
             commands.task_done()
         else:
             print("USB Handler : No new commands at the time")
@@ -255,9 +272,9 @@ def registration():
                     registered_queue.put((incubator_name,user_name))
             else:
                 print("registering new incubator " + incubator_name)
-                user_name = register_new_incubator(incubator_name,new_pwd)
-                print(incubator_name + " successfully registered under " + user_name)
-                registered_queue.put((incubator_name,user_name))
+                new_registered_user_name = register_new_incubator(incubator_name,new_pwd)
+                print(incubator_name + " successfully registered under " + new_registered_user_name)
+                registered_queue.put((incubator_name,new_registered_user_name))
 
 if __name__ == "__main__":
     format = "%(asctime)s: %(message)s"
