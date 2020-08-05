@@ -39,8 +39,8 @@ class AchievementCard extends StatelessWidget {
                   child: Image.asset(filename,width:120,height:110,scale: filename =="assets/fb.png"? 2.5 : 1)
                   ),
                 Positioned(
-                  left:  text.length < 12 ?  35 : 25 ,
-                  bottom: text.length < 14 ?  15 : 10,
+                  left:  text.length < 12 ?  26 : 18 ,
+                  bottom: text.length < 14 ?  10 : 5,
                   //alignment:Alignment.bottomLeft,
                   child: Text(text,textAlign: TextAlign.center,),)
                 /*Positioned(

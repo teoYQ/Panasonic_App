@@ -18,10 +18,11 @@ class IncubatorCard extends StatelessWidget {
     // TODO: implement build
     return InkResponse(
         onTap: () {
+          print(lights);
           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => DIYPage(auth : this.auth, name : name, temp : int.parse(temp),dose: dose,incubatorname: this.text)),
+                                  builder: (context) => DIYPage(auth : this.auth, name : name, temp : int.parse(temp),dose: dose,lights: this.lights,incubatorname: this.text)),
                             );
         },
         child: Padding(

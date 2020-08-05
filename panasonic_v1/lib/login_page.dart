@@ -99,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
                     color: "#5a856b".toColor(),
                    // image: Image.asset("assets/logo.png");
                     ),
-              child:Column(children:<Widget>[SizedBox(height:50), Image.asset("assets/logo.png",scale: 1.3,),
+              child:Column(children:<Widget>[SizedBox(height:40), Image.asset("assets/logo.png",scale: 1,),
               ])
               /*child: Positioned(
                   
@@ -272,7 +272,7 @@ class _LoginPageState extends State<LoginPage> {
                               );
                             },
                             child: Container(
-                              width: 260,
+                              width: 280,
                               height: 50,
                               margin: EdgeInsets.symmetric(horizontal: 50),
                               decoration: BoxDecoration(

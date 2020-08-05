@@ -41,6 +41,8 @@ class _ShopPageState extends State<ShopPage> {
       appBar: AppBar(
         backgroundColor: "#e0f0eb".toColor(),
         elevation: 0.0,
+            iconTheme: IconThemeData(color: "#177061".toColor()),
+
       ),/*
       drawer: Drawer(
           child: ListView(children: <Widget>[
@@ -85,14 +87,14 @@ class _ShopPageState extends State<ShopPage> {
                           children: <Widget>[
                             Padding(
 
-                            padding: EdgeInsets.only(left:MediaQuery.of(context).size.width - 200),
+                            padding: EdgeInsets.only(left:MediaQuery.of(context).size.width - 219),
                               child:
                              Image.asset("assets/cart.png",width: 70,height: 70,)
                           )
                             ,
                             if (_cartList.length > 0)
                               Padding(
-                                padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width - 190,20,0,0),
+                                padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width - 210,20,0,0),
                                 child: CircleAvatar(
                                   radius: 8.0,
                                   backgroundColor: "#177061".toColor(),

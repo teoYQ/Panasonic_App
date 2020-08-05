@@ -24,6 +24,8 @@ class _ForumPageState extends State<ForumPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+              iconTheme: IconThemeData(color: "#177061".toColor()),
+
 backgroundColor: "#e0f0eb".toColor(),          elevation: 0.0,
         ),
         body: Builder(builder: (BuildContext context) {

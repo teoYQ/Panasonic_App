@@ -18,9 +18,9 @@ class _AchievementPageState extends State<AchievementPage> {
       Achievements(name: "30th Harvest", pic: ("assets/30harvest.png"), complete: false)
     ];
 var col2 = <Achievements>[
-      Achievements(name: "Grow 2 Types \n  of Plants", pic: ("assets/2types.png"), complete: true),
-      Achievements(name: "Grow 5 types \n  of Plants", pic: ("assets/5type.png"), complete: false),
-      Achievements(name: "Connected to \n  Facebook", pic: ("assets/fb.png"), complete: false)
+      Achievements(name: "Grow 2 Types \n of Plants", pic: ("assets/2types.png"), complete: true),
+      Achievements(name: "Grow 5 types \n of Plants", pic: ("assets/5type.png"), complete: false),
+      Achievements(name: "Connected to \n Facebook", pic: ("assets/fb.png"), complete: false)
     ];
     setState(() {
       _achievements_1 = col1;
@@ -39,6 +39,8 @@ var col2 = <Achievements>[
     return Scaffold(
       appBar: AppBar(
         backgroundColor: "#e0f0eb".toColor(),
+            iconTheme: IconThemeData(color: "#177061".toColor()),
+
         elevation: 0.0,
       ),/*
       drawer: Drawer(
@@ -142,7 +144,7 @@ var col2 = <Achievements>[
                             ]))),
               ),
             ),
-            Stack(
+           /* Stack(
             children: <Widget>[
             Container(
               width: double.infinity,
@@ -176,7 +178,7 @@ var col2 = <Achievements>[
                           child: Text("Notifs",textAlign: TextAlign.left,))),
                     ],
               )],
-            )
+            )*/
           ],
         ),
       ),

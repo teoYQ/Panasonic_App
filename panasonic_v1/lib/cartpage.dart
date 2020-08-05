@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:panasonic_v1/widgets/cartCard.dart';
 import 'shoppage.dart';
 import 'package:supercharged/supercharged.dart';
+
 class CartPage extends StatefulWidget {
   final List<Plants> cartlist;
   CartPage(this.cartlist);
@@ -27,12 +28,13 @@ class _CartPageState extends State<CartPage> {
         appBar: AppBar(
           backgroundColor: "#e0f0eb".toColor(),
           elevation: 0.0,
+          iconTheme: IconThemeData(color: "#177061".toColor()),
         ),
-        
         body: Container(
           width: double.infinity,
           decoration: BoxDecoration(
-              color:  "#e0f0eb".toColor(),),
+            color: "#e0f0eb".toColor(),
+          ),
           child: Column(children: <Widget>[
             Text(
               "Shopping Cart",
@@ -41,12 +43,9 @@ class _CartPageState extends State<CartPage> {
             SizedBox(
               height: 20,
             ),
-           
-             
             Container(
-              
-              decoration: BoxDecoration(color: Colors.white),
-                height:MediaQuery.of(context).size.height - 300,
+                decoration: BoxDecoration(color: Colors.white),
+                height: MediaQuery.of(context).size.height - 300,
                 child: ListView.builder(
                     itemCount: cartlist.length,
                     scrollDirection: Axis.vertical,
@@ -73,7 +72,6 @@ class _CartPageState extends State<CartPage> {
                 width: double.infinity,
                 color: Colors.white,
                 child: Row(
-                  
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Text('Total: \$' + getTotalAmount().toStringAsFixed(2)),

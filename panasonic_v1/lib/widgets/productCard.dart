@@ -72,7 +72,7 @@ class ProductCard extends StatelessWidget {
                         children: <Widget>[
                            SizedBox(width: 7),
                           Text(text,textAlign: TextAlign.center,),
-                          SizedBox(width: (10 + 7.5*(10-text.length)).toDouble()),
+                          SizedBox(width: (8 + 7.5*(10-text.length)).toDouble()),
                           Text('\$' + price)
                         ]
                       ))

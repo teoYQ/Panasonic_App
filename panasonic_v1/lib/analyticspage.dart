@@ -7,6 +7,8 @@ import 'package:firebase_database/firebase_database.dart';
 //import 'package:panasonic_v1/DIYpage.dart';
 import 'authentication.dart';
 import 'package:supercharged/supercharged.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
 
 class AnlyticsPage extends StatefulWidget {
   final BaseAuth auth;
@@ -53,7 +55,7 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
         }));
     print("sadiwqojd");
     //auth.getIncubatorMap(name, database).then((value) => mapper = value);
-    auth.getActiveIncubators(name, database).then((value) => active = value);
+    //auth.getActiveIncubators(name, database).then((value) => active = value);
     ready = true;
   }
 
@@ -74,10 +76,11 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: "#e0f0eb".toColor(),
-          elevation: 0.0,
-          iconTheme: IconThemeData(
-    color: "#5a856b".toColor(), //change your color here
-  ),),
+        elevation: 0.0,
+        iconTheme: IconThemeData(
+          color: "#5a856b".toColor(), //change your color here
+        ),
+      ),
       /*drawer: Drawer(
           child: ListView(children: <Widget>[
         DrawerHeader(
@@ -98,7 +101,7 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
       ])),*/
       body: Container(
         width: double.infinity,
-            decoration: BoxDecoration(
+        decoration: BoxDecoration(
           color: "#e0f0eb".toColor(),
         ),
         child: Column(
@@ -112,10 +115,30 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    "Incubators",
-                    style: TextStyle(color: "#4d4d4d".toColor() , fontSize: 40),
+                  Row(
+                    children: <Widget>[
+                      Text(
+                        "Incubators",
+                        style:
+                            TextStyle(color: "#4d4d4d".toColor(), fontSize: 40),
+                      ),
+                      FlatButton(onPressed:  () {
+                                auth
+                                    .getIncubatorMap(name, database)
+                                    .then((value) => Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  AnlyticsPage(
+                                                    auth: widget.auth,
+                                                    name: name,
+                                                    mapper: value,
+                                                  )),
+                                        ));
+                              }, child: Padding(padding: EdgeInsets.fromLTRB(0, 10, 30, 0),child: Icon(Icons.refresh)))
+                    ],
                   ),
+
                   SizedBox(
                     height: 10,
                   ),
@@ -139,9 +162,9 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
                           //margin: EdgeInsets.symmetric(horizontal:10),
                           decoration: BoxDecoration(
                               color: Colors.white,
-                              border: Border.all(width:2,color: "#e0f0eb".toColor()),
-                              borderRadius: BorderRadius.circular(5)
-                              ),
+                              border: Border.all(
+                                  width: 2, color: "#e0f0eb".toColor()),
+                              borderRadius: BorderRadius.circular(5)),
                           child: Center(
                             child: Padding(
                               padding: EdgeInsets.only(left: 18, right: 12),
@@ -159,6 +182,21 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
                                           if (_incubators.length > 3) {
                                             showAlertDialog(context);
                                           } else {
+                                            database
+                                                .reference()
+                                                .child("Submitted Passwords")
+                                                .update(
+                                                    {name: _controller.text});
+                                            //showAlertDialog2(context);
+                                            Fluttertoast.showToast(
+        msg: "Please Refresh the page to see your newly added incubator",
+        toastLength: Toast.LENGTH_SHORT,
+        backgroundColor: "#4d4d4d".toColor(),
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1
+    );
+                                          }
+                                          /*
                                             if (active != null &&
                                                 active[1].contains(
                                                     _controller.text)) {
@@ -202,7 +240,7 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
                                             } else {
                                               showAlertDialog2(context);
                                             }
-                                          }
+                                          }*/
 
                                           /* setState((){
                                             _incubators = ;
@@ -237,32 +275,31 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
                                       },
                                       //a ? b : c evaluates to b if a is true and evaluates to c if a is false.
                                       child: IncubatorCard(
-                                        text: _incubators[index],
-                                        temp: (index >
-                                                (mapper.keys.toList().length -
-                                                    1))
-                                            ? "25"
-                                            : (mapper[_incubators[index]]
-                                                    ["temperature"])
-                                                .toString(),
-                                        lights: (index >
-                                                (mapper.keys.toList().length -
-                                                    1))
-                                            ? "off"
-                                            : (mapper[_incubators[index]]
-                                                    ["lights"])
-                                                .toString(),
-                                        auth: widget.auth,
-                                        dose: (index >
-                                                (mapper.keys.toList().length -
-                                                    1))
-                                            ? 0
-                                            : (mapper[_incubators[index]]
-                                                ["dose"]),
-                                        name:
-                                            name, 
-                                          ind: index//mapper.keys.toList()[index],
-                                        /*temp: ((index ==
+                                          text: _incubators[index],
+                                          temp: (index >
+                                                  (mapper.keys.toList().length -
+                                                      1))
+                                              ? "25"
+                                              : (mapper[_incubators[index]]
+                                                      ["temperature"])
+                                                  .toString(),
+                                          lights: (index >
+                                                  (mapper.keys.toList().length -
+                                                      1))
+                                              ? "off"
+                                              : (mapper[_incubators[index]]
+                                                      ["lights"])
+                                                  .toString(),
+                                          auth: widget.auth,
+                                          dose: (index >
+                                                  (mapper.keys.toList().length -
+                                                      1))
+                                              ? 0
+                                              : (mapper[_incubators[index]]
+                                                  ["dose"]),
+                                          name: name,
+                                          ind: index //mapper.keys.toList()[index],
+                                          /*temp: ((index ==
                                                     _incubators.length - 1) &&
                                                 temp_bool)
                                             ? "25"
@@ -275,64 +312,75 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
                                             ? "off"
                                             : mapper[_incubators[index]]
                                                 ["lights"],*/
-                                      ));
+                                          ));
                                 })),
-                                         
                       ],
                     ),
                   ),
-
                 ),
               ),
             ),
-               Stack(
-            children: <Widget>[
-            Container(
-              width: double.infinity,
-              height: 80,
-              decoration: BoxDecoration(
-                color: "#e0f0eb".toColor(),
-              ),)
-          , Row(
-                children: <Widget>[
-                  FlatButton(
-                      onPressed: null,
-                      child: Container(
-                          width: MediaQuery.of(context).size.width / 3 - 40 ,
-                          //margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                          child: Text("Account",textAlign: TextAlign.right,))),
-                   FlatButton(
-                      onPressed: () {
-                auth.getEmail(name, database).then((value) => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ActivitiesPage(
-                                auth: widget.auth,
-                                name: name,
-                                email: value,
-                              )),
-                    ));
-              },
-                      child:Container(
-                          width: MediaQuery.of(context).size.width / 3 ,
-                          height: 80,
-                          //margin: EdgeInsets.fromLTRB(20, 20, 0, 20),
-                          child: Image.asset("assets/home.png",scale: 1,))
-                    ),
+            Stack(
+              children: <Widget>[
+                Container(
+                  width: double.infinity,
+                  height: 80,
+                  decoration: BoxDecoration(
+                    color: "#e0f0eb".toColor(),
+                  ),
+                ),
+                Row(
+                  children: <Widget>[
                     FlatButton(
-                      onPressed: null,
-                      child: Container(
-                          width: MediaQuery.of(context).size.width / 3 - 70 ,
-                          //margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                          child: Text("Notifs",textAlign: TextAlign.left,))),
-                    ],
-              )],
+                        onPressed: null,
+                        child: Container(
+                            width: MediaQuery.of(context).size.width / 3 - 40,
+                            //margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                            child: Text(
+                              "Account",
+                              textAlign: TextAlign.right,
+                            ))),
+                    FlatButton(
+                        onPressed: () {
+                          auth
+                              .getEmail(name, database)
+                              .then((value) => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ActivitiesPage(
+                                              auth: widget.auth,
+                                              name: name,
+                                              email: value,
+                                            )),
+                                  ));
+                        },
+                        child: Container(
+                            width: MediaQuery.of(context).size.width / 3,
+                            height: 80,
+                            //margin: EdgeInsets.fromLTRB(20, 20, 0, 20),
+                            child: Image.asset(
+                              "assets/home.png",
+                              scale: 1,
+                            ))),
+                    FlatButton(
+                        onPressed: null,
+                        child: Container(
+                            width: MediaQuery.of(context).size.width / 3 - 70,
+                            //margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                            child: Text(
+                              "Notifs",
+                              textAlign: TextAlign.left,
+                            ))),
+                  ],
+                )
+              ],
             )
           ],
         ),
       ),
     );
   }
+
 }
 /*
         body: Container(
@@ -394,7 +442,16 @@ class CustomListTile extends StatelessWidget {
                 ))));
   }
 }
-
+    void _showToast(BuildContext context) {
+    final scaffold = Scaffold.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: const Text('Added to favorite'),
+        action: SnackBarAction(
+            label: 'UNDO', onPressed: scaffold.hideCurrentSnackBar),
+      ),
+    );
+  }
 showAlertDialog(BuildContext context) {
   // set up the buttons
   Widget cancelButton = FlatButton(
@@ -424,6 +481,7 @@ showAlertDialog2(BuildContext context) {
   // set up the buttons
   Widget cancelButton = FlatButton(
     child: Text("Cancel"),
+    
     onPressed: () {
       Navigator.pop(context);
     },
@@ -431,7 +489,7 @@ showAlertDialog2(BuildContext context) {
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
     title: Text("Alert"),
-    content: Text("Invalid Password"),
+    content: Text("Please Refresh the page"),
     actions: [
       cancelButton,
     ],

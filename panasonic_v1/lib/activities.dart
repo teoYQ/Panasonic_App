@@ -88,9 +88,11 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
       appBar: AppBar(
         backgroundColor: "#e0f0eb".toColor(),
         elevation: 0.0,
-      ),
-      drawer: Drawer(
+    iconTheme: IconThemeData(color: "#177061".toColor()),
+   ),
       
+      drawer: Drawer(
+          
           child: ListView(children: <Widget>[
         DrawerHeader(
           decoration: BoxDecoration(
@@ -125,7 +127,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             SizedBox(
-              height: 50,
+              height: 40,
             ),
             Container(
               decoration: BoxDecoration(
@@ -155,7 +157,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                 ),
               ),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 1),
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
@@ -198,10 +200,10 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                           children: <Widget>[
                             FlatButton(
                               child: Container(
-                                  height: 160,
+                                  height: 150,
                                   width: MediaQuery.of(context).size.width / 2 -
                                       60,
-                                  margin: EdgeInsets.fromLTRB(20, 10, 0, 10),
+                                  margin: EdgeInsets.fromLTRB(20, 0, 0, 10),
                                   decoration:
                                       BoxDecoration(borderRadius: BorderRadius.circular(5),color: "#e0f0eb".toColor()),
                                   child: Column(
@@ -232,11 +234,11 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                             ),
                             FlatButton(
                                 child: Container(
-                                    height: 160,
+                                    height: 150,
                                     width:
                                         MediaQuery.of(context).size.width / 2 -
                                             60,
-                                    margin: EdgeInsets.fromLTRB(0, 10, 10, 10),
+                                    margin: EdgeInsets.fromLTRB(0, 0, 10, 10),
                                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),
                                         color: "#e0f0eb".toColor()),
                                     child: Column(
@@ -266,10 +268,10 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                           children: <Widget>[
                             FlatButton(
                               child: Container(
-                                  height: 160,
+                                  height: 150,
                                   width: MediaQuery.of(context).size.width / 2 -
                                       60,
-                                  margin: EdgeInsets.fromLTRB(20, 10, 0, 10),
+                                  margin: EdgeInsets.fromLTRB(20, 0, 0, 10),
                                   decoration:
                                       BoxDecoration(borderRadius: BorderRadius.circular(5),color: "#e0f0eb".toColor()),
                                   child: Column(
@@ -292,10 +294,10 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                             ),
                             FlatButton(
                               child: Container(
-                                  height: 160,
+                                  height: 150,
                                   width: MediaQuery.of(context).size.width / 2 -
                                       60,
-                                  margin: EdgeInsets.fromLTRB(0, 10, 10, 10),
+                                  margin: EdgeInsets.fromLTRB(0, 0, 10, 10),
                                   decoration:
                                       BoxDecoration(borderRadius: BorderRadius.circular(5),color: "#e0f0eb".toColor()),
                                   child: Column(

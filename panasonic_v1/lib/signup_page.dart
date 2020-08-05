@@ -101,7 +101,7 @@ class _SignUpPageState extends State<SignUpPage> {
           children: <Widget>[
             Stack(children: <Widget>[
             Container(
-              height: 160,
+              height: 140,
               width: double.infinity,
               decoration: BoxDecoration(
                     color: "#5a856b".toColor(),

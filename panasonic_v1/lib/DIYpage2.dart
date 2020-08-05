@@ -17,24 +17,26 @@ class DIYPage extends StatefulWidget {
   final int temp;
   final String incubatorname;
   final int dose;
+  final String lights;
   DIYPage(
-      {Key key, this.auth, this.name, this.temp, this.dose, this.incubatorname})
+      {Key key, this.auth, this.name, this.temp, this.dose,this.lights, this.incubatorname})
       : super(key: key);
   @override
   _DIYPageState createState() =>
-      _DIYPageState(auth, name, temp, dose, incubatorname);
+      _DIYPageState(auth, name, temp, dose,lights, incubatorname);
 }
 
 class _DIYPageState extends State<DIYPage> {
-  String _lights = 'Turn on the lights';
-  String light = "On";
+  //int dose = dose;
+  //String light = "Off";
   String name;
   int temp;
   BaseAuth auth;
   int dose;
+  String lights;
   final TextEditingController _controller = new TextEditingController();
   String incubatorname;
-  _DIYPageState(this.auth, this.name, this.temp, this.dose, this.incubatorname);
+  _DIYPageState(this.auth, this.name, this.temp, this.dose,this.lights, this.incubatorname);
   static FirebaseDatabase database = FirebaseDatabase.instance;
 
   @override
@@ -72,8 +74,10 @@ class _DIYPageState extends State<DIYPage> {
       appBar: AppBar(
           backgroundColor: "#e0f0eb".toColor(),
           elevation: 0.0,
+          iconTheme: IconThemeData(color: "#177061".toColor()),
           leading: IconButton(
-              icon: Icon(Icons.arrow_back),
+              icon: Icon(Icons.arrow_back,),
+              
               onPressed: () {
                 auth
                     .getIncubatorMap(name, database)
@@ -247,7 +251,7 @@ class _DIYPageState extends State<DIYPage> {
                                     decoration:
                                         BoxDecoration(color: Colors.white),
                                     child: Text(
-                                      "Fertilizer",
+                                      "R/B lights",
                                       textAlign: TextAlign.center,
                                     )),
                               ),
@@ -265,7 +269,7 @@ class _DIYPageState extends State<DIYPage> {
                                         border: Border.all(width: 2,
                                             color: "#177061".toColor())),
                                     child: Stack(children: <Widget>[
-                                      light == "On"
+                                      lights == "On"
                                           ? Image.asset(
                                               "assets/bulbon.png",
                                               width: 50,
@@ -283,10 +287,10 @@ class _DIYPageState extends State<DIYPage> {
                                               .then((val) => setState(() {
                                                     print(val);
                                                     (val == "On")
-                                                        ? light = "Off"
-                                                        : light = "On";
+                                                        ? lights = "Off"
+                                                        : lights = "On";
                                                     userref.update(
-                                                        {"lights": light});
+                                                        {"lights": lights});
                                                   }))
                                         },
                                         child: null,
@@ -307,7 +311,16 @@ class _DIYPageState extends State<DIYPage> {
                                             color: "#177061".toColor())),
                                     child: Stack(children: <Widget>[
                                     
-                                     Image.asset("assets/dose.png",),
+                                     dose == 1
+                                          ? Image.asset(
+                                              "assets/bulbon.png",
+                                              width: 50,
+                                              height: 50,
+                                            )
+                                          : Image.asset(
+                                              "assets/bulboff.png",
+                                              scale: 2,
+                                            ),
                                       FlatButton(
                                         onPressed:() => {
                                           widget.auth
@@ -315,11 +328,12 @@ class _DIYPageState extends State<DIYPage> {
                                                   name, incubatorname, database)
                                               .then((val) => setState(() {
                                                     print(val);
-                                                    int inc_dose = val + 1;
-                                                    print(inc_dose);
+                                                    (val == 1)
+                                                        ? dose = 0
+                                                        : dose = 1;
 
                                                     userref.update(
-                                                        {"dose": inc_dose});
+                                                        {"dose": dose});
                                                   }))
                                         },
                                         
@@ -329,11 +343,11 @@ class _DIYPageState extends State<DIYPage> {
                               ),
                               //TEMPERATURE ADJUSTER
                               Positioned(
-                                right: 140,
-                                top: 40,
+                                right: 145,
+                                top: 38,
                                 child: Container(
                                     width: 50,
-                                    height: 127,
+                                    height: 130,
                                     decoration: BoxDecoration(
                                         color: Colors.white,
                                         borderRadius: BorderRadius.circular(5),
@@ -388,18 +402,18 @@ class _DIYPageState extends State<DIYPage> {
                                 right: 40,
                                 top: 90,
                                 child: Container(
-                                    width: 90,
+                                    width: 100,
                                     height: 20,
                                     decoration:
                                         BoxDecoration(color: Colors.white),
                                     child: Text(
                                       "Temperature",
-                                      textAlign: TextAlign.center,
+                                      textAlign: TextAlign.left,
                                     )),
                               ),
                             ],
                           ),
-                        ),
+                        ),/*
                       Container(
                           height: 30,
                           width: 310,
@@ -419,7 +433,7 @@ class _DIYPageState extends State<DIYPage> {
                               child: Text(
                                 "View Plants",
                                 style: TextStyle(color: "#4d4d4d".toColor()),
-                              )),)
+                              )),)*/
                       ],
                     ),
                   ),
@@ -516,7 +530,7 @@ class _DIYPageState extends State<DIYPage> {
                     "dose":
                         dose, //widget.auth.getIncubatorDose(name, incubatorname, database),
                     "lights":
-                        light, //widget.auth.getIncubatorLight(name, incubatorname, database),
+                        lights, //widget.auth.getIncubatorLight(name, incubatorname, database),
                     "temperature":
                         temp, //widget.auth.getIncubatorTemp(name, incubatorname, database)
                   }
