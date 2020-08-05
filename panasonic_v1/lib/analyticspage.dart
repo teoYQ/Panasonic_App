@@ -297,6 +297,18 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
                                               ? 0
                                               : (mapper[_incubators[index]]
                                                   ["dose"]),
+                                          fertilizer: (index >
+                                                  (mapper.keys.toList().length -
+                                                      1))
+                                              ? 0
+                                              : (mapper[_incubators[index]]
+                                                  ["fertilizer"]),
+                                          sensor: (index >
+                                                  (mapper.keys.toList().length -
+                                                      1))
+                                              ? 0
+                                              : (mapper[_incubators[index]]
+                                                  ["sensor"]),
                                           name: name,
                                           ind: index //mapper.keys.toList()[index],
                                           /*temp: ((index ==

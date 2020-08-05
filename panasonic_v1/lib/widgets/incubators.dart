@@ -11,8 +11,10 @@ class IncubatorCard extends StatelessWidget {
   final BaseAuth auth;
   final int dose;
   final int ind;
+  final int sensor;
+  final int fertilizer;
 
-  IncubatorCard({this.text, this.temp, this.lights,this.auth,this.name, this.dose,this.ind});
+  IncubatorCard({this.text, this.temp, this.lights,this.auth,this.name, this.dose,this.ind,this.fertilizer,this.sensor});
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -92,6 +94,36 @@ class IncubatorCard extends StatelessWidget {
                         //a ? b : c evaluates to b if a is true and evaluates to c if a is false.
                         child: lights == "On" ? Image.asset("assets/bulbon.png") : Image.asset("assets/bulboff.png") 
                         //Text(lights.toString(), style: TextStyle(color: Colors.grey[400]),textAlign: TextAlign.center,),
+                      )
+                    ),
+                    //fertilizer logo here
+                    Positioned(
+                      right: 80,
+                      top: 10,
+                      //alignment:Alignment.bottomLeft,
+                     child: Container(
+                        width: 40,
+                        height: 35,
+                        decoration:BoxDecoration(color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
+                        ),
+                        //a ? b : c evaluates to b if a is true and evaluates to c if a is false.
+                        child: fertilizer == 1 ? Image.asset("assets/bulbon.png") : Image.asset("assets/bulboff.png") 
+                        //Text(lights.toString(), style: TextStyle(color: Colors.grey[400]),textAlign: TextAlign.center,),
+                      )
+                    ),
+                    Positioned(
+                     right: 80,
+                      bottom: 30,
+
+                      //alignment:Alignment.bottomLeft,
+                      child: Container(
+                        width: 40,
+                        height: 20,
+                        decoration:BoxDecoration(color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(sensor.toString(), style: TextStyle(color: Colors.grey[400]),textAlign: TextAlign.center,),
                       )
                     ),
                     /*Positioned(
