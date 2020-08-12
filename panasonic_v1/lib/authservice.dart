@@ -5,7 +5,6 @@ class AuthService with ChangeNotifier {
   var currentUser;
 
   AuthService() {
-    print("new AuthService");
   }
 
   Future getUser() {

@@ -28,7 +28,6 @@ class _DIYPageState extends State<DIYPage> {
 
   Widget build(BuildContext context) {
     var userref = database.reference().child(name);
-    print("DIS IS MAH $name");
     bool _state = false;
         return Scaffold(
           appBar: AppBar(
@@ -97,9 +96,7 @@ class _DIYPageState extends State<DIYPage> {
                               //ButtonActivity(Icons.lightbulb_outline, _state ? 'Turn x lights' : 'Turn on lights', () => {_state = !_state}),
                           ButtonActivity(Icons.wb_sunny, "   Increase  \n  temperature \n $temp", () => {
                               widget.auth.getTemp(name,database).then((val) => setState(() {
-                              print(val);
                               int inc_temp = val+1;
-                              print(inc_temp);
                               temp = val+1;
                               userref.update({"temperature":inc_temp});
                             }))
@@ -109,18 +106,14 @@ class _DIYPageState extends State<DIYPage> {
                         Row(children: <Widget>[
                           ButtonActivity(Icons.local_drink, "Dose Fertilizer", () => {
                               widget.auth.getDose(name,database).then((val) => setState(() {
-                              print(val);
                               int inc_dose = val+1;
-                              print(inc_dose);
 
                               userref.update({"dose":inc_dose});
                               }))
                           }),
                           ButtonActivity(Icons.wb_cloudy, "   Decrease  \n  temperature \n $temp", () => {
                               widget.auth.getTemp(name,database).then((val) => setState(() {
-                              print(val);
                               int dec_temp = val-1;
-                              print(dec_temp);
                               temp = val -1;
                               userref.update({"temperature":dec_temp});
                             }))
@@ -154,18 +147,15 @@ class _DIYPageState extends State<DIYPage> {
                 RaisedButton(
                     child: Text("Monitor Plants"),
                     onPressed: () {
-                      print("looking at my plant");
                     }),
                     RaisedButton(
                     child: Text("Water plant"),
                     onPressed: () {
-                      print("watering plant");
                     }),
                     TapboxA(),
                     RaisedButton(
                     child: Text("Is my crop ready to eat"),
                     onPressed: () {
-                      print("No");
                     }),
                             ],
             ),

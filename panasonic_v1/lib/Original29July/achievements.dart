@@ -84,40 +84,7 @@ class _DIYPageState extends State<DIYPage> {
 
 
 }
-/*
-        body: Container(
-          padding: EdgeInsets.all(20.0),
-          child: Form(
-            child: Column(
-              children: <Widget>[
-                SizedBox(height: 20.0), // <= NEW
-                Text(
-                  'What would you like to do today',
-                  style: TextStyle(fontSize: 20),
-                ),
-                RaisedButton(
-                    child: Text("Monitor Plants"),
-                    onPressed: () {
-                      print("looking at my plant");
-                    }),
-                    RaisedButton(
-                    child: Text("Water plant"),
-                    onPressed: () {
-                      print("watering plant");
-                    }),
-                    TapboxA(),
-                    RaisedButton(
-                    child: Text("Is my crop ready to eat"),
-                    onPressed: () {
-                      print("No");
-                    }),
-                            ],
-            ),
-          ),
-        ));
-  }
-}
-*/
+
 
 class CustomListTile extends StatelessWidget {
   IconData icon;

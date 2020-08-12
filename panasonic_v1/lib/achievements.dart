@@ -2,25 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:panasonic_v1/widgets/achievementCard.dart';
 import 'package:supercharged/supercharged.dart';
 class AchievementPage extends StatefulWidget {
+  final List<int> achieved;
+  AchievementPage(this.achieved);
   @override
-  _AchievementPageState createState() => _AchievementPageState();
+  _AchievementPageState createState() => _AchievementPageState(achieved);
 }
 
 class _AchievementPageState extends State<AchievementPage> {
   List<Achievements> _achievements_1 = List<Achievements>();
   List<Achievements> _achievements_2 = List<Achievements>();
+  List<int> achieved;
+  _AchievementPageState(this.achieved);
   @override
   String _lights = 'off';
   void _populateAchievements() {
     var col1 = <Achievements>[
-      Achievements(name: "1st Harvest", pic: ("assets/1harvest.png"), complete: true),
-      Achievements(name: "10th Harvest", pic: ("assets/10harvest.png"), complete: false),
-      Achievements(name: "30th Harvest", pic: ("assets/30harvest.png"), complete: false)
+      Achievements(name: "1st Harvest", pic: ("assets/1harvest.png"), complete: achieved[4]==1),
+      Achievements(name: "10th Harvest", pic: ("assets/10harvest.png"), complete: achieved[5]==1),
+      Achievements(name: "30th Harvest", pic: ("assets/30harvest.png"), complete: achieved[3]==1)
     ];
 var col2 = <Achievements>[
-      Achievements(name: "Grow 2 Types \n of Plants", pic: ("assets/2types.png"), complete: true),
-      Achievements(name: "Grow 5 types \n of Plants", pic: ("assets/5type.png"), complete: false),
-      Achievements(name: "Connected to \n Facebook", pic: ("assets/fb.png"), complete: false)
+      Achievements(name: "Grow 2 Types \n of Plants", pic: ("assets/2types.png"), complete: achieved[1]==1),
+      Achievements(name: "Grow 5 types \n of Plants", pic: ("assets/5type.png"), complete: achieved[0]==1),
+      Achievements(name: "Connected to \n Facebook", pic: ("assets/fb.png"), complete: achieved[2]==1)
     ];
     setState(() {
       _achievements_1 = col1;
@@ -36,6 +40,7 @@ var col2 = <Achievements>[
   }
 
   Widget build(BuildContext context) {
+    print(achieved);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: "#e0f0eb".toColor(),
@@ -109,7 +114,7 @@ var col2 = <Achievements>[
                                 height: 1,
                               ),
                               Container(
-                                  height: 600,
+                                  height: 390,
                                   child: ListView.builder(
                                       itemCount: _achievements_1.length,
                                       scrollDirection: Axis.vertical,
@@ -144,7 +149,7 @@ var col2 = <Achievements>[
                             ]))),
               ),
             ),
-           /* Stack(
+           Stack(
             children: <Widget>[
             Container(
               width: double.infinity,
@@ -178,7 +183,7 @@ var col2 = <Achievements>[
                           child: Text("Notifs",textAlign: TextAlign.left,))),
                     ],
               )],
-            )*/
+            )
           ],
         ),
       ),

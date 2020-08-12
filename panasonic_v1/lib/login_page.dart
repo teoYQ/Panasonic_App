@@ -45,12 +45,10 @@ class _LoginPageState extends State<LoginPage> {
       try {
         if (_isLoginForm) {
           userId = await widget.auth.signIn(_email, _password);
-          print('Signed in: $userId');
         } else {
           userId = await widget.auth.signUp(_email, _password);
           //widget.auth.sendEmailVerification();
           //_showVerifyEmailSentDialog();
-          print('Signed up user: $userId');
         }
         setState(() {
           _isLoading = false;
@@ -60,7 +58,6 @@ class _LoginPageState extends State<LoginPage> {
           widget.loginCallback();
         }
       } catch (e) {
-        print('Error: $e');
         setState(() {
           _isLoading = false;
           _errorMessage = e.message;
@@ -74,8 +71,7 @@ class _LoginPageState extends State<LoginPage> {
   //   try{
   //     username = await database.reference().child('Users').orderByValue().equalTo("$_email").once();
   //   }catch (e) {
-  //       print('Error: $e');
-  //       setState(() {
+//         setState(() {
   //         _isLoading = false;
   //         _errorMessage = e.message;
   //         _formKey.currentState.reset();
@@ -193,12 +189,9 @@ class _LoginPageState extends State<LoginPage> {
                             onPressed: () {
                               final form = _formKey.currentState;
                               if (validateAndSave()) {
-                                // print("$_email $_password");
-                                widget.auth.signIn("$_email", "$_password");
+                      //        widget.auth.signIn("$_email", "$_password");
                                 // database.reference().child("Users").equalTo("$_email");
                                 var _name = widget.auth.getName("$_email",database);
-                                print('DIS MAH NAME $_name'); 
-                                print("SENDING");
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -209,19 +202,15 @@ class _LoginPageState extends State<LoginPage> {
 
                               // Validate will return true if is valid, or false if invalid.
                               if (form.validate()) {
-                                print("$_email $_password");
                                 _auth.signInWithEmailAndPassword(
                                     email: "$_email", password: "$_password");
-                                print('login successful');
                                 FirebaseDatabase database =
                                     FirebaseDatabase.instance;
                                 DatabaseReference myRef = database.reference();
                                 DateTime current_time = DateTime.now();
                                 myRef.set(
                                     "user $_email with password $_password logged it at $current_time");
-                                print('write successful');
                                 _auth.signOut();
-                                print('logout successful');
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(

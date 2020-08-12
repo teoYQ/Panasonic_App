@@ -286,10 +286,12 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                                         Text("Achievements")
                                       ])),
                               onPressed: () {
-                                Navigator.push(
-                                    context,
+                                 auth
+                                    .getAchievements(name, database)
+                                    .then((value) => Navigator.push(
+                                          context,
                                     MaterialPageRoute(
-                                        builder: (context) => AchievementPage()));
+                                        builder: (context) => AchievementPage(value))));
                               },
                             ),
                             FlatButton(

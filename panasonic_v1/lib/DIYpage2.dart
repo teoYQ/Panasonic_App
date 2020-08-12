@@ -51,24 +51,8 @@ class _DIYPageState extends State<DIYPage> {
       DataPoint<double>(value: 24, xAxis: 5),
       DataPoint<double>(value: 25, xAxis: 6),
     ];
-    var gdata = [
-      new growthPlot(0, 5),
-      new growthPlot(1, 10),
-      new growthPlot(2, 14),
-      new growthPlot(3, 17),
-      new growthPlot(4, 21),
-      new growthPlot(5, 22)
-    ];
-    var series = [
-      new charts.Series(
-          id: "growth",
-          data: gdata,
-          colorFn: (_, __) => charts.MaterialPalette.black,
-          domainFn: (growthPlot growthData, _) => growthData.day,
-          measureFn: (growthPlot growthData, _) => growthData.surface_area),
-    ];
 
-    print("DIS IS MAH $incubatorname");
+
     bool _state = false;
     return Scaffold(
       appBar: AppBar(
@@ -285,7 +269,6 @@ class _DIYPageState extends State<DIYPage> {
                                               .getIncubatorLight(
                                                   name, incubatorname, database)
                                               .then((val) => setState(() {
-                                                    print(val);
                                                     (val == "On")
                                                         ? lights = "Off"
                                                         : lights = "On";
@@ -327,7 +310,6 @@ class _DIYPageState extends State<DIYPage> {
                                               .getIncubatorDose(
                                                   name, incubatorname, database)
                                               .then((val) => setState(() {
-                                                    print(val);
                                                     (val == 1)
                                                         ? dose = 0
                                                         : dose = 1;
@@ -363,9 +345,7 @@ class _DIYPageState extends State<DIYPage> {
                                               .getIncubatorTemp(
                                                   name, incubatorname, database)
                                               .then((val) => setState(() {
-                                                    print(val);
                                                     int inc_temp = val + 1;
-                                                    print(inc_temp);
                                                     temp = val + 1;
                                                     userref.update({
                                                       "temperature": inc_temp
@@ -383,9 +363,7 @@ class _DIYPageState extends State<DIYPage> {
                                               .getIncubatorTemp(
                                                   name, incubatorname, database)
                                               .then((val) => setState(() {
-                                                    print(val);
                                                     int dec_temp = val - 1;
-                                                    print(dec_temp);
                                                     temp = val - 1;
                                                     userref.update({
                                                       "temperature": dec_temp
@@ -514,17 +492,13 @@ class _DIYPageState extends State<DIYPage> {
           new FlatButton(
               child: const Text('Cancel'),
               onPressed: () {
-                print("Cacnel");
 
                 Navigator.pop(context);
               }),
           new FlatButton(
               child: const Text('Rename'),
               onPressed: () {
-                print("RENAMIGN");
-                print(incubatorname);
 
-                print(_controller.text);
                 database.reference().child(name).update({
                   _controller.text: {
                     "dose":
@@ -558,40 +532,7 @@ class _DIYPageState extends State<DIYPage> {
     );
   }
 }
-/*
-        body: Container(
-          padding: EdgeInsets.all(20.0),
-          child: Form(
-            child: Column(
-              children: <Widget>[
-                SizedBox(height: 20.0), // <= NEW
-                Text(
-                  'What would you like to do today',
-                  style: TextStyle(fontSize: 20),
-                ),
-                RaisedButton(
-                    child: Text("Monitor Plants"),
-                    onPressed: () {
-                      print("looking at my plant");
-                    }),
-                    RaisedButton(
-                    child: Text("Water plant"),
-                    onPressed: () {
-                      print("watering plant");
-                    }),
-                    TapboxA(),
-                    RaisedButton(
-                    child: Text("Is my crop ready to eat"),
-                    onPressed: () {
-                      print("No");
-                    }),
-                            ],
-            ),
-          ),
-        ));
-  }
-}
-*/
+
 
 class CustomListTile extends StatelessWidget {
   IconData icon;

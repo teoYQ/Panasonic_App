@@ -184,7 +184,6 @@ class _ShopPageState extends State<ShopPage> {
                                         //var product = _plants[index];
                                         return InkWell(
                                           onTap:(){
-                                            print("HI");
                                           },
                                           child: ProductCard(
                                           chi: false,
@@ -192,12 +191,10 @@ class _ShopPageState extends State<ShopPage> {
                                           filename: _plants[index].pic,
                                           price: _plants[index].price,
                                           onTap: (){
-                                            print("idiwjed");
                                             setState(() {
                                               _cartList.add(_plants[index]);
                                             });
                                             
-                                            print(_cartList);
                                           },
                                         ));
                                       })),
@@ -224,12 +221,10 @@ class _ShopPageState extends State<ShopPage> {
                                           filename: _chinese[index].pic,
                                           price: _chinese[index].price,
                                           onTap: (){
-                                            print("idiwjed");
                                             setState(() {
                                               _cartList.add(_chinese[index]);
                                             });
                                             
-                                            print(_cartList);
                                           },
                                         );
                                       }))
@@ -299,18 +294,15 @@ class Plants {
                 RaisedButton(
                     child: Text("Monitor Plants"),
                     onPressed: () {
-                      print("looking at my plant");
                     }),
                     RaisedButton(
                     child: Text("Water plant"),
                     onPressed: () {
-                      print("watering plant");
                     }),
                     TapboxA(),
                     RaisedButton(
                     child: Text("Is my crop ready to eat"),
                     onPressed: () {
-                      print("No");
                     }),
                             ],
             ),

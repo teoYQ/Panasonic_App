@@ -14,16 +14,22 @@ class _CartPageState extends State<CartPage> {
   //@override
   List<Plants> cartlist;
   _CartPageState(this.cartlist);
-
+List<bool> seedlings = [];
   getTotalAmount() {
     double total = 0.0;
     for (int i = 0; i < cartlist.length; i++) {
       total += double.parse(cartlist[i].price);
+      seedlings.add(true);
     }
     return total;
   }
-
+  refresh() {
+  setState(() {});
+}
+  
   Widget build(BuildContext context) {
+    
+
     return Scaffold(
         appBar: AppBar(
           backgroundColor: "#e0f0eb".toColor(),
@@ -54,7 +60,6 @@ class _CartPageState extends State<CartPage> {
 
                       return InkWell(
                           onTap: () {
-                            print("HI");
                           },
                           child: CartCard(
                             text: cartlist[index].name,
@@ -64,8 +69,13 @@ class _CartPageState extends State<CartPage> {
                               setState(() {
                                 cartlist.remove(product);
                               });
+                          
                             },
-                          ));
+                           
+                            
+                          )
+                          );
+                          
                     })),
             Container(
                 height: 50.0,
@@ -97,40 +107,7 @@ class _CartPageState extends State<CartPage> {
   }
 }
 
-/*
-        body: Container(
-          padding: EdgeInsets.all(20.0),
-          child: Form(
-            child: Column(
-              children: <Widget>[
-                SizedBox(height: 20.0), // <= NEW
-                Text(
-                  'What would you like to do today',
-                  style: TextStyle(fontSize: 20),
-                ),
-                RaisedButton(
-                    child: Text("Monitor Plants"),
-                    onPressed: () {
-                      print("looking at my plant");
-                    }),
-                    RaisedButton(
-                    child: Text("Water plant"),
-                    onPressed: () {
-                      print("watering plant");
-                    }),
-                    TapboxA(),
-                    RaisedButton(
-                    child: Text("Is my crop ready to eat"),
-                    onPressed: () {
-                      print("No");
-                    }),
-                            ],
-            ),
-          ),
-        ));
-  }
-}
-*/
+
 
 class CustomListTile extends StatelessWidget {
   IconData icon;

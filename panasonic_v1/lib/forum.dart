@@ -39,7 +39,6 @@ backgroundColor: "#e0f0eb".toColor(),          elevation: 0.0,
                 controller = webViewController;
               },
               onPageFinished:(String url) {
-                  print('Page finished loading: $url');
                   //hide you progressbar here
                 setState(() {
                 _load = false;

@@ -42,37 +42,25 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
   List templist = [];
   @override
   void initState() {
-    print(_list);
     super.initState();
     auth.getIncubators(name, database).then((value) => setState(() {
-          print("hi");
           _incubators = value;
           itemcount = _incubators.length;
           /*for (var item in _list) {
         _addIncubator(item);
       }*/
-          print(_incubators);
         }));
-    print("sadiwqojd");
     //auth.getIncubatorMap(name, database).then((value) => mapper = value);
     //auth.getActiveIncubators(name, database).then((value) => active = value);
     ready = true;
   }
 
   Widget build(BuildContext context) {
-    print("dewdsadasDIS IS MAH $name");
-    print(_list);
     /*setState(() {
       _incubators = _list;
     });*/
-    print("hello");
-    print(_incubators);
-    print("mapper");
-    print(mapper);
-    print("printing acitve");
-    print(active);
     var userref = database.reference().child("Active Incubators");
-
+  
     return Scaffold(
       appBar: AppBar(
         backgroundColor: "#e0f0eb".toColor(),
@@ -200,8 +188,6 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
                                             if (active != null &&
                                                 active[1].contains(
                                                     _controller.text)) {
-                                              print("exists");
-                                              print(_controller.text);
                                               int index = active[1]
                                                   .indexOf(_controller.text);
                                               _incubators.add(active[0][index]);
@@ -216,9 +202,7 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
                                                 }
                                               });
                                               new_inc = true;
-                                              //print(new_inc);
-                                              debugPrint(_controller.text);
-                                              userref
+                                  //bug       userref
                                                   .child(active[0][index])
                                                   .remove();
 
@@ -253,6 +237,7 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
                         SizedBox(
                           height: 20,
                         ),
+                        
                         Container(
                             key: Key("cards"),
                             height: MediaQuery.of(context).size.height - 380,
@@ -266,12 +251,10 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
                                       new_inc) {
                                     temp_bool = new_inc;
                                     new_inc = false;
-                                    print("iejjiodew");
                                   }
-
+                      //          
                                   return InkWell(
                                       onTap: () {
-                                        print("go to diy page");
                                       },
                                       //a ? b : c evaluates to b if a is true and evaluates to c if a is false.
                                       child: IncubatorCard(
@@ -302,7 +285,7 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
                                                       1))
                                               ? 0
                                               : (mapper[_incubators[index]]
-                                                  ["fertilizer"]),
+                                                  ["fertiliser"]),
                                           sensor: (index >
                                                   (mapper.keys.toList().length -
                                                       1))
@@ -408,18 +391,15 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
                 RaisedButton(
                     child: Text("Monitor Plants"),
                     onPressed: () {
-                      print("looking at my plant");
                     }),
                     RaisedButton(
                     child: Text("Water plant"),
                     onPressed: () {
-                      print("watering plant");
                     }),
                     TapboxA(),
                     RaisedButton(
                     child: Text("Is my crop ready to eat"),
                     onPressed: () {
-                      print("No");
                     }),
                             ],
             ),

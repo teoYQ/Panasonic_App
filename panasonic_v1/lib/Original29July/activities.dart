@@ -36,26 +36,20 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
   _ActivitiesPageState(this.email,this.auth) {
     auth.getName(email,database).then((val) => setState(() {
           name = val;
-          print(name);
           display(email);
         }));
     
     //StorageReference storageReference = FirebaseStorage.instance.ref().child("profile/$name"); 
     //storageReference.getDownloadURL().then((val) => setState((){
-      //   print(val);
-        //_imgUrl = val;
+//      //_imgUrl = val;
    // }));
 
   }
   display(String name) async{
-    print("hi");
-    print(name);
-    print(_imgUrl);
     String filepath =  "profile/$name";
     await FirebaseStorage.instance.ref().child(filepath).getDownloadURL().then((value) => setState((){
       _imgUrl = value;
     }));
-    print(_imgUrl);
     //setState(() {
       //_imgUrl = data;
     //});
@@ -66,9 +60,7 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
 
   Widget build(BuildContext context) {
     // var name = widget.auth.getName(widget.email,database);
-    print(_imgUrl);
     //display(name);
-    print(_imgUrl);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green[900],
@@ -378,18 +370,15 @@ class _ActivitiesPageState extends State<ActivitiesPage> {
                 RaisedButton(
                     child: Text("Monitor Plants"),
                     onPressed: () {
-                      print("looking at my plant");
                     }),
                     RaisedButton(
                     child: Text("Water plant"),
                     onPressed: () {
-                      print("watering plant");
                     }),
                     TapboxA(),
                     RaisedButton(
                     child: Text("Is my crop ready to eat"),
                     onPressed: () {
-                      print("No");
                     }),
                             ],
             ),

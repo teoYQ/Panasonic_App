@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:panasonic_v1/authentication.dart';
 import 'package:panasonic_v1/DIYpage2.dart';
 import 'package:supercharged/supercharged.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class IncubatorCard extends StatelessWidget {
   final String text;
@@ -18,9 +19,28 @@ class IncubatorCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+
     return InkResponse(
         onTap: () {
           print(lights);
+               if(fertilizer == 0){
+                                    Fluttertoast.showToast(
+        msg: "Please add some fertiliser to the tank",
+        toastLength: Toast.LENGTH_SHORT,
+        backgroundColor: "#4d4d4d".toColor(),
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1
+    );
+                                  }
+                                   if(sensor == 0){
+                                    Fluttertoast.showToast(
+        msg: "Please top up water to the tank",
+        toastLength: Toast.LENGTH_SHORT,
+        backgroundColor: "#4d4d4d".toColor(),
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1
+    );
+                                  }
           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -73,21 +93,25 @@ class IncubatorCard extends StatelessWidget {
 
                       //alignment:Alignment.bottomLeft,
                       child: Container(
-                        width: 40,
-                        height: 20,
+                        width: 30,
+                        height: 26,
+                       // margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
                         decoration:BoxDecoration(color: Colors.white,
                         borderRadius: BorderRadius.circular(8),
                         ),
-                        child: Text(temp.toString(), style: TextStyle(color: Colors.grey[400]),textAlign: TextAlign.center,),
-                      )
+                        child: Column(
+                          children: <Widget>[
+                            SizedBox(height: 3),
+                        Text( temp.toString() + "°", style: TextStyle(color: Colors.grey[400]),textAlign: TextAlign.center,),
+                          ]))
                     ),
                     Positioned(
                       right: 30,
                       top: 10,
                       //alignment:Alignment.bottomLeft,
                      child: Container(
-                        width: 40,
-                        height: 35,
+                        width: 30,
+                        height: 30,
                         decoration:BoxDecoration(color: Colors.white,
                         borderRadius: BorderRadius.circular(8),
                         ),
@@ -98,34 +122,36 @@ class IncubatorCard extends StatelessWidget {
                     ),
                     //fertilizer logo here
                     Positioned(
-                      right: 80,
+                      right: 65,
                       top: 10,
                       //alignment:Alignment.bottomLeft,
                      child: Container(
-                        width: 40,
-                        height: 35,
+                        width: 30,
+                        height: 30,
                         decoration:BoxDecoration(color: Colors.white,
                         borderRadius: BorderRadius.circular(8),
                         ),
                         //a ? b : c evaluates to b if a is true and evaluates to c if a is false.
-                        child: fertilizer == 1 ? Image.asset("assets/bulbon.png") : Image.asset("assets/bulboff.png") 
+                        child: fertilizer == 1 ? Image.asset("assets/highfertilizer.png") : Image.asset("assets/lowFertilizer.png") 
                         //Text(lights.toString(), style: TextStyle(color: Colors.grey[400]),textAlign: TextAlign.center,),
                       )
                     ),
                     Positioned(
-                     right: 80,
+                     right: 65,
                       bottom: 30,
 
                       //alignment:Alignment.bottomLeft,
                       child: Container(
-                        width: 40,
-                        height: 20,
+                        width: 30,
+                        height: 26,
                         decoration:BoxDecoration(color: Colors.white,
                         borderRadius: BorderRadius.circular(8),
                         ),
-                        child: Text(sensor.toString(), style: TextStyle(color: Colors.grey[400]),textAlign: TextAlign.center,),
+                        child: sensor == 1 ? Image.asset("assets/highwater.png") : Image.asset("assets/lowwater.png"),
                       )
                     ),
+               
+
                     /*Positioned(
                       left: MediaQuery.of(context).size.width / 2 ,
                       top: 60,

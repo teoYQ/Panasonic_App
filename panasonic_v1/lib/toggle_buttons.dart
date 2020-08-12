@@ -13,7 +13,6 @@ class _TapboxAState extends State<TapboxA> {
   void _handleTap() {
     setState(() {
       _active = !_active;
-      print("switched light");
     });
   }
 
