@@ -18,12 +18,13 @@ class DIYPage extends StatefulWidget {
   final String incubatorname;
   final int dose;
   final String lights;
+  var growth;
   DIYPage(
-      {Key key, this.auth, this.name, this.temp, this.dose,this.lights, this.incubatorname})
+      {Key key, this.auth, this.name, this.temp, this.dose,this.lights, this.incubatorname,this.growth})
       : super(key: key);
   @override
   _DIYPageState createState() =>
-      _DIYPageState(auth, name, temp, dose,lights, incubatorname);
+      _DIYPageState(auth, name, temp, dose,lights, incubatorname,growth);
 }
 
 class _DIYPageState extends State<DIYPage> {
@@ -33,16 +34,36 @@ class _DIYPageState extends State<DIYPage> {
   int temp;
   BaseAuth auth;
   int dose;
+  var growth;
   String lights;
   final TextEditingController _controller = new TextEditingController();
   String incubatorname;
-  _DIYPageState(this.auth, this.name, this.temp, this.dose,this.lights, this.incubatorname);
+  _DIYPageState(this.auth, this.name, this.temp, this.dose,this.lights, this.incubatorname,this.growth);
   static FirebaseDatabase database = FirebaseDatabase.instance;
 
   @override
   Widget build(BuildContext context) {
     var userref = database.reference().child(name).child(incubatorname);
-    var serie = [
+    var keys = growth.keys.toList();
+    var vals = growth.values.toList();
+    List<DataPoint> serie = [];
+    int length = keys.length;
+    List<DateTime> dt = [];
+    print(keys);
+    for (int i= length; i>0;i--){
+      print("iojdewionef");
+      DateTime day = (DateTime.parse(keys[i-1]));
+      dt.add(day);
+    }
+    for (int i=0; i< length;i++){
+      print("HEIDJIEOJD");
+      print((vals[i]));
+      serie.add(DataPoint<DateTime>(value: vals[i],xAxis: dt[i]));
+      print("added");
+    }
+    print(serie);
+    print(dt[1]);
+    var seriez = [
       DataPoint<double>(value: 5, xAxis: 0),
       DataPoint<double>(value: 10, xAxis: 1),
       DataPoint<double>(value: 15, xAxis: 2),
@@ -158,22 +179,24 @@ class _DIYPageState extends State<DIYPage> {
                           padding: const EdgeInsets.fromLTRB(20.0,20,20,0),
                           child: Container(
                             width: 280,
-                            height: 150,
+                            height: 160,
                             decoration: BoxDecoration(),
-                            child: BezierChart(
-                              //bezierChartScale: BezierChartScale.CUSTOM,
-                              bezierChartScale: BezierChartScale.CUSTOM,
-                              xAxisCustomValues: const [0, 1, 2, 3, 4, 5, 6],
-                              series: [
-                                BezierLine(
-                                  data: serie,
-                                  lineColor: "#177061".toColor(),
-                                ),
-                              ],
-                              config: BezierChartConfig(
+                            child:  BezierChart(
+        bezierChartScale: BezierChartScale.WEEKLY,
+        fromDate: dt[0],
+        toDate: dt[length-1],
+        series: [
+          BezierLine(
+           
+            data: serie
+          ),
+        ],config: BezierChartConfig(
                                 
-                                backgroundColor: "#e0f0eb".toColor(),
-                                verticalIndicatorStrokeWidth: 3.0,
+          verticalIndicatorStrokeWidth: 1.0,
+          //verticalIndicatorColor: Colors.black26,
+          //showVerticalIndicator: true,
+          verticalIndicatorFixedPosition: false,
+          backgroundColor: "#e0f0eb".toColor(), 
                                 verticalIndicatorColor: "#177061".toColor(),
                                 showVerticalIndicator: true,
                                 xAxisTextStyle:
@@ -192,6 +215,7 @@ class _DIYPageState extends State<DIYPage> {
                                 bubbleIndicatorTitleStyle:
                                     TextStyle(color: Colors.white),
                                 displayDataPointWhenNoValue: true,
+                                footerHeight:  60,
 
                                 //displayYAxis: true
                                 /*backgroundGradient: LinearGradient(
@@ -200,8 +224,9 @@ class _DIYPageState extends State<DIYPage> {
                                       Colors.green[800],
                                       Colors.green[400]
                                     ]),*/
-                              ),
-                            ),
+       
+      )),
+    
                           ),
                         ),]
                           )),

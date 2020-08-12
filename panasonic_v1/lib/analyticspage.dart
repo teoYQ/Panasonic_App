@@ -59,6 +59,7 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
     /*setState(() {
       _incubators = _list;
     });*/
+    print(mapper["PlantUnit1"]);
     var userref = database.reference().child("Active Incubators");
   
     return Scaffold(
@@ -293,7 +294,8 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
                                               : (mapper[_incubators[index]]
                                                   ["sensor"]),
                                           name: name,
-                                          ind: index //mapper.keys.toList()[index],
+                                          ind: index,
+                                          growth: mapper[_incubators[index]]["growth"] //mapper.keys.toList()[index],
                                           /*temp: ((index ==
                                                     _incubators.length - 1) &&
                                                 temp_bool)

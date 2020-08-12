@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:panasonic_v1/authentication.dart';
 import 'package:panasonic_v1/DIYpage2.dart';
@@ -14,12 +16,13 @@ class IncubatorCard extends StatelessWidget {
   final int ind;
   final int sensor;
   final int fertilizer;
+  var  growth;
 
-  IncubatorCard({this.text, this.temp, this.lights,this.auth,this.name, this.dose,this.ind,this.fertilizer,this.sensor});
+  IncubatorCard({this.text, this.temp, this.lights,this.auth,this.name, this.dose,this.ind,this.fertilizer,this.sensor,this.growth});
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-
+  print(growth);
     return InkResponse(
         onTap: () {
           print(lights);
@@ -44,7 +47,7 @@ class IncubatorCard extends StatelessWidget {
           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => DIYPage(auth : this.auth, name : name, temp : int.parse(temp),dose: dose,lights: this.lights,incubatorname: this.text)),
+                                  builder: (context) => DIYPage(auth : this.auth, name : name, temp : int.parse(temp),dose: dose,lights: this.lights,incubatorname: this.text,growth: this.growth,)),
                             );
         },
         child: Padding(
