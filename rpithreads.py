@@ -40,6 +40,7 @@ device_queue = queue.Queue()
 registered_queue = queue.Queue()
 tech_queue = queue.Queue()
 temp_queue = queue.Queue()
+feedback_queue = queue.Queue()
 
 cred = credentials.Certificate("/home/pi/Downloads/capst0ned-firebase-adminsdk-oxj6s-7003ae62a1.json")
 firebase_admin.initialize_app(cred,{'databaseURL': 'https://capst0ned.firebaseio.com/'})
@@ -178,6 +179,7 @@ def handle_updates():
     current_day = datetime.today().date()
     trigger = True
     duration = 2
+    previous_lowest_temp = None
     attached_devices = {}
     active_devices = {}
     active_devices_data = {}
@@ -235,27 +237,41 @@ def handle_updates():
                     changed_keys,changed_values=compare_jsons(active_devices_data[active_inc],new_data)
                     if type(changed_values) == list:
                         for change in changed_values:
-                            if change == "temperature":
+                            if change[0] == "temperature":
 #                                 temperature =
 #                                 print("temp change recognised")
                                 active_devices_data[active_inc][change[0]] = change[1]
                                 active_devices_temp[active_inc] = change[1]
-                                if min(active_devices_temp.values()) == change[1]:
+                                if min(active_devices_temp.values()) == change[1] and list(active_devices_temp.values()).count(change[1]) == 1:
                                     temp_queue.put(change[1])
+                                    print("New lowest temp recorded : " + str(change[1]))
+                                    for user,iname in active_devices.items():
+                                        if iname != active_inc:
+                                            db.reference(user+"/"+iname+"/temperature").set(change[1])
+                                elif min(active_devices_temp.values()) == change[1] and list(active_devices_temp.values()).count(change[1]) != 1:
+                                    print("ignoring this temp update for " + active_inc +"; rebound from previous temp setting...")
+                                else:
+                                    print("waduhek")
                             else:
                                 commands.put((active_inc,change))
                                 active_devices_data[active_inc][change[0]] = change[1]
-                            
                 else:
                     print("No changes observed for active plant unit " + active_inc)
+        ## check feedback queue and update all incs accordingly
+        if feedback_queue.empty() != True:
+            (tupdate,tvalue) = feedback_queue.get()
+            print(tupdate,tvalue)
+            for (inm,unm) in active_devices.items():
+                print("updating " + unm + "/" + inm + "/" + tupdate + " with value " + str(tvalue))
+                db.reference(unm + "/" + inm + "/" + tupdate).set(tvalue)
         time.sleep(duration)
         
 def usb_detection():
     instructions = {
         "dose" : {0:"r",1:"R"},
         "lights" : {"On":"W","Off":"w"},
-        "sensor" : {0:0,1:1},
-        "fertiliser" : {0:0,1:1},
+#         "sensor" : {0:0,1:1},
+#         "fertiliser" : {0:0,1:1},
         "growth" : {datetime.today().date():0},
         "temperature" : 2,
         }
@@ -351,21 +367,21 @@ def usb_detection():
             item = commands.get()
             print("Got new command, ", item)
             instruction = item[1]
-            if instruction[0] == "temperature":
-                if tech_unit != None:
-                    #print("send_command(tech_unit[location],idk what to put yet")
-                    temp_queue.put(temperature)
-                    related_port = plant_units[item[0]]
-                    print(item[1][1],type(item[1][1]))
-                    if type(item[1][1]) != dict:
-                        command = instructions[instruction[0]][instruction[1]]
-                        send_command(related_port,command)
-                        commands.task_done()
-                    else:
-                        commands.task_done()
-                else:
-                    print("tech unit not conected!")
-            elif instruction[0] == "c":
+#             if instruction[0] == "temperature":
+#                 if tech_unit != None:
+#                     #print("send_command(tech_unit[location],idk what to put yet")
+#                     temp_queue.put(temperature)
+#                     related_port = plant_units[item[0]]
+#                     print(item[1][1],type(item[1][1]))
+#                     if type(item[1][1]) != dict:
+#                         command = instructions[instruction[0]][instruction[1]]
+#                         send_command(related_port,command)
+#                         commands.task_done()
+#                     else:
+#                         commands.task_done()
+#                 else:
+#                     print("tech unit not conected!")
+            if instruction[0] == "c":
                 print("creating prediction for " + item[0])
                 related_port = plant_units[item[0]]
                 username = instruction[1]
@@ -375,9 +391,12 @@ def usb_detection():
                 related_port = plant_units[item[0]]
                 print(item[1][1],type(item[1][1]))
                 if type(item[1][1]) != dict:
-                    command = instructions[instruction[0]][instruction[1]]
-                    send_command(related_port,command)
-                    commands.task_done()
+                    if item[1][0] in instructions.keys():
+                        command = instructions[instruction[0]][instruction[1]]
+                        send_command(related_port,command)
+                        commands.task_done()
+                    else:
+                        print(item, "ignored")
                 else:
                     commands.task_done()
         else:
@@ -386,16 +405,24 @@ def usb_detection():
         
 def tech_unit():
     tech_unit = None
+    previous_ec = None
+    previous_water_level = None
     lowest_temp = None
     ser = None
+    ec_change = None
+    wl_change = None
     while True:
         #check if there is an update to temp
         while temp_queue.empty() != True:
             new_lowest_temp = temp_queue.get()
-            if lowest_temp > new_lowest_temp:
+            if lowest_temp == None:
                 lowest_temp = new_lowest_temp
             else:
-                print("logic problem for temp, but is ok second check caught it")
+                lowest_temp = new_lowest_temp
+#                 if lowest_temp > new_lowest_temp:
+#                     lowest_temp = new_lowest_temp
+#                 else:
+#                     print("logic problem for temp, but is ok second check caught it")
         #get tech unit from usbhandler
         while tech_queue.empty() != True:
             tech_unit = tech_queue.get()
@@ -408,23 +435,49 @@ def tech_unit():
             status = query_techunit(tech_unit_location,"2")
             print(status)
             temperature,ec,water_level = status.split(";")
+            temperature,ec,water_level = float(temperature),float(ec),float(water_level)
             cold_enough = True
             cooling_down = False
             if lowest_temp != None:
                 #compare temps
                 if temperature > lowest_temp:
-                    print("too hot, " + temperature + " > " + lowest_temp)
+                    print("too hot, " + str(temperature) + " > " + str(lowest_temp))
                     cold_enough = False
                 elif temperature + 2 < lowest_temp:
                     ser.write('0'.encode('utf-8'))
-                    print("cold enough, " + temperature + " < (by 2) " + lowest_temp)
+                    print("cold enough, " + str(temperature) + " < (by 2) " + str(lowest_temp))
                     cold_enough = True
                 if cold_enough == False and cooling_down == False:
                     ser.write('1'.encode('utf-8'))
+                    print("turning on cooler")
                     cooling_down = True
                 elif cold_enough == True and cooling_down == False:
                     ser.write('0'.encode('utf-8'))
-                    cooling_down = False                
+                    print("turning off cooler")
+                    cooling_down = False
+            #parse waterlevels and ec, check if change
+            if previous_water_level == None:
+                previous_water_level = water_level #init
+                print("water level init : ",water_level)
+            else:
+                if previous_water_level != water_level:
+                    wl_change = True
+                    print("water level change : ",previous_water_level,water_level)
+                    feedback_queue.put(("sensor",water_level))
+                else:
+                    wl_change = False
+            if previous_ec == None:
+                previous_ec = ec
+                print("ec init")
+            else:
+                if previous_ec != ec:
+                    ec_change = True
+                    print("ec change : ",previous_ec,ec)
+                    feedback_queue.put(("fertiliser",ec))
+                else:
+                    ec_change = False
+            previous_water_level = water_level
+            previous_ec = ec
         else:
             print("No available tech unit...")
         time.sleep(5)
@@ -498,7 +551,7 @@ if __name__ == "__main__":
         stop_threads = True
         x.join()
         usbhandler.join()
-        registrationahandler.join()
+        registrationhandler.join()
         logging.info("Main    : all done")
         sys.exit()
         
