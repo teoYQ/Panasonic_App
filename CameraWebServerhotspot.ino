@@ -18,8 +18,8 @@ const char RB_LED = 13;
 const char W_LED = 14;
 const char* ssid = "Pixel_6370";
 const char* password = "capstone";
-const String IncName = "TechUnit0";
-const String IncPwd = "TechUnit0pwd";
+const String IncName = "PlantUnit1";
+const String IncPwd = "PlantUnit1pwd";
 void startCameraServer();
 
 void setup() {
@@ -88,16 +88,16 @@ void setup() {
   s->set_hmirror(s, 1);
 #endif
 
-//  WiFi.begin(ssid, password);
-//
-//  while (WiFi.status() != WL_CONNECTED) {
-//    delay(500);
-//    Serial.print(".");
-//  }
-//  Serial.println("");
-//  Serial.println("WiFi connected");
-//
-//  startCameraServer();
+  WiFi.begin(ssid, password);
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("");
+  Serial.println("WiFi connected");
+
+  startCameraServer();
 //
 //  Serial.print("Camera Ready! Use 'http://");
 //  Serial.print(WiFi.localIP());
@@ -113,25 +113,30 @@ void loop() {
       case '1':
         Serial.println("got it, 1");
         break;
+      
       case 'R':
-        digitalWrite(RB_LED, HIGH);
+        digitalWrite(RB_LED, HIGH);    
         Serial.println("RB on"); 
-        digitalWrite(W_LED, LOW);
-        Serial.println("W off"); 
         break;   
-      case 'r':
-        digitalWrite(RB_LED, LOW);
-        Serial.println("RB off");
+      case 'W':
         digitalWrite(W_LED, HIGH);
         Serial.println("W on");
         break;
-      case '0':
-        digitalWrite(W_LED, LOW);
+      case 'r':
         digitalWrite(RB_LED, LOW);
-        Serial.println("Both off");
+        Serial.println("RB off");
+        break;
+      case 'w':
+        digitalWrite(W_LED, LOW);
+        Serial.println("W off");
         break;
       case 'i':
-        Serial.println(IncName+','+IncPwd);
+        Serial.println(IncName+","+IncPwd);
+        break;
+      case 'c':
+        Serial.print("Camera Ready! Use 'http://");
+        Serial.print(WiFi.localIP());
+        Serial.println("' to connect");
       }
   }
 }
