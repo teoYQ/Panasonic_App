@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 class TapboxA extends StatefulWidget {
   TapboxA({Key key}) : super(key: key);
 
@@ -12,7 +13,6 @@ class _TapboxAState extends State<TapboxA> {
   void _handleTap() {
     setState(() {
       _active = !_active;
-      print("switched light");
     });
   }
 
