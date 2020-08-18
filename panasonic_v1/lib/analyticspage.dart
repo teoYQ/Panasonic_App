@@ -286,13 +286,13 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
                                                       1))
                                               ? 0
                                               : (mapper[_incubators[index]]
-                                                  ["fertiliser"]),
+                                                  ["fertiliser"]).toInt(),
                                           sensor: (index >
                                                   (mapper.keys.toList().length -
                                                       1))
                                               ? 0
-                                              : (mapper[_incubators[index]]
-                                                  ["sensor"]),
+                                              : ((mapper[_incubators[index]]
+                                                  ["sensor"]).toInt()),
                                           name: name,
                                           ind: index,
                                           growth: mapper[_incubators[index]]["growth"] //mapper.keys.toList()[index],
