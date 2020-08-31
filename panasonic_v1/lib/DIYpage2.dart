@@ -51,28 +51,12 @@ class _DIYPageState extends State<DIYPage> {
     List<DateTime> dt = [];
     print(keys);
     for (int i= length; i>0;i--){
-      print("iojdewionef");
       DateTime day = (DateTime.parse(keys[i-1]));
       dt.add(day);
     }
     for (int i=0; i< length;i++){
-      print("HEIDJIEOJD");
-      print((vals[i]));
       serie.add(DataPoint<DateTime>(value: vals[i],xAxis: dt[i]));
-      print("added");
     }
-    print(serie);
-    print(dt[1]);
-    var seriez = [
-      DataPoint<double>(value: 5, xAxis: 0),
-      DataPoint<double>(value: 10, xAxis: 1),
-      DataPoint<double>(value: 15, xAxis: 2),
-      DataPoint<double>(value: 18, xAxis: 3),
-      DataPoint<double>(value: 22, xAxis: 4),
-      DataPoint<double>(value: 24, xAxis: 5),
-      DataPoint<double>(value: 25, xAxis: 6),
-    ];
-
 
     bool _state = false;
     return Scaffold(
@@ -250,7 +234,7 @@ class _DIYPageState extends State<DIYPage> {
                                       textAlign: TextAlign.center,
                                     )),
                               ),
-                              // FERTILIZER TEXT
+                              // R/B TEXT
                               Positioned(
                                 left: 50,
                                 top: 130,
@@ -305,7 +289,7 @@ class _DIYPageState extends State<DIYPage> {
                                       ),
                                     ])),
                               ),
-                              //FERTILIZER LOGO
+                              //R/B LOGO
                               Positioned(
                                 left: 130,
                                 top: 116,

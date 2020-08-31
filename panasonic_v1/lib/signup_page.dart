@@ -134,7 +134,8 @@ class _SignUpPageState extends State<SignUpPage> {
                             
                             child: Column(
                               children: <Widget>[
-                                 Container(
+                                Container(child: SizedBox(height: 100,)),
+                                /* Container(
                                   width: double.infinity,
                                   
                                         child: Padding(padding: EdgeInsets.fromLTRB(250, 0, 0, 0),
@@ -163,13 +164,13 @@ class _SignUpPageState extends State<SignUpPage> {
                                                               _pickedImage
                                                                   .path)))
 
-                                              /*_pickedImage == null
+                                              _pickedImage == null
                                         ? Text("?")
                                         : Image.file(_pickedImage),
-                                        */
+                                        
                                               ),
                                         )
-                                      ]))),
+                                      ]))),*/
                                   /*child: Row(
                                     children: <Widget>[
                                       Expanded(child: CircleAvatar(
@@ -274,7 +275,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                           //FadeAnimation(1.5, Text("Forgot Password?", style: TextStyle(color: Colors.grey),)),
                           FlatButton(
-                              onPressed: (_newimg) ? () {
+                              onPressed:(){
                                 final form = _formKey.currentState;
                                 form.save();
                                 // if (validateAndSave()) {
@@ -303,7 +304,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   ),
                                 );
                                 // Validate will return true if is valid, or false if invalid.
-                              } : null,
+                              },
                               child: Container(
                                 height: 50,
                                 margin: EdgeInsets.symmetric(horizontal: 50),

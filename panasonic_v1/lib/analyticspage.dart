@@ -34,7 +34,7 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
   final TextEditingController _controller = new TextEditingController();
   List _incubators;
   List active;
-
+  
   /*void _addIncubator(String name) {
     _list.add(Incubators(name: name));
   }*/
@@ -185,51 +185,7 @@ class _AnlyticsPageState extends State<AnlyticsPage> {
         timeInSecForIosWeb: 1
     );
                                           }
-                                          /*
-                                            if (active != null &&
-                                                active[1].contains(
-                                                    _controller.text)) {
-                                              int index = active[1]
-                                                  .indexOf(_controller.text);
-                                              _incubators.add(active[0][index]);
-                                              database
-                                                  .reference()
-                                                  .child(name)
-                                                  .update({
-                                                active[0][index]: {
-                                                  "dose": 0,
-                                                  "lights": "off",
-                                                  "temperature": 25
-                                                }
-                                              });
-                                              new_inc = true;
-                                  //bug       userref
-                                                  .child(active[0][index])
-                                                  .remove();
-
-                                              auth
-                                                  .getIncubatorMap(
-                                                      name, database)
-                                                  .then((value) =>
-                                                      Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                AnlyticsPage(
-                                                                  auth: widget
-                                                                      .auth,
-                                                                  name: name,
-                                                                  mapper: value,
-                                                                )),
-                                                      ));
-                                            } else {
-                                              showAlertDialog2(context);
-                                            }
-                                          }*/
-
-                                          /* setState((){
-                                            _incubators = ;
-                                          });*/
+                                        
                                         })),
                               ),
                             ),
@@ -436,16 +392,7 @@ class CustomListTile extends StatelessWidget {
                 ))));
   }
 }
-    void _showToast(BuildContext context) {
-    final scaffold = Scaffold.of(context);
-    scaffold.showSnackBar(
-      SnackBar(
-        content: const Text('Added to favorite'),
-        action: SnackBarAction(
-            label: 'UNDO', onPressed: scaffold.hideCurrentSnackBar),
-      ),
-    );
-  }
+  
 showAlertDialog(BuildContext context) {
   // set up the buttons
   Widget cancelButton = FlatButton(
